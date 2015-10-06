@@ -1,4 +1,5 @@
 import serial, threading, time, signal
+from devices import lectorDevice
 class serialEventListener():
 	def handle(self,data,disp):pass
 class serialReader(threading.Thread):
@@ -11,25 +12,28 @@ class serialReader(threading.Thread):
 		self._busy = val
 	pn='COM0'
 	to=None
+	_lector=None
 	listeners=[]
-	def __init__(self,portname,time_out):
+	def __init__(self,device,time_out):
 		threading.Thread.__init__(self)
 		self._stop = threading.Event()
-		self.pn=portname
+		if isinstance(device,lectorDevice):
+			self._lector=device
+		else:
+			raise Exception('el parametro device debe ser de tipo lectorDevice')
 		self.to=time_out
-		
 	def dispatch(self,text):
 		for l in self.listeners:
 			l.handle(text,self)
 	def signal_handler(self,signal, frame):
 		print 'You pressed Ctrl+C!'
-		#sys.exit(0)
 		self.close()
 	def run(self):
-		ser= serial.Serial(self.pn,9600,timeout=self.to)
+		if self._lector.device['name'] == 'COMX':
+			raise Exception('puerto no valido, revise coneccion')
+		ser= serial.Serial(self._lector.device['name'],9600,timeout=self.to)
 		init=False
 		bufer='';
-		
 		while 1:
 			#time.sleep(10)
 			buf = ser.readline()
@@ -43,7 +47,8 @@ class serialReader(threading.Thread):
 		signal.signal(signal.SIGINT, self.signal_handler)
 		self.start()
 	def close(self):
-		self._Thread__stop()
+		if self.isAlive():
+			self._Thread__stop()
 	def addEventListener(self,lst):
 		if isinstance(lst,serialEventListener):
 			self.listeners.append(lst)
