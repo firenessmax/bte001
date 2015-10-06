@@ -3,9 +3,9 @@
 
 import sqlite3
 
-con = sqlite3.connect('prueba.db')
+conexion = sqlite3.connect('prueba.db')
 
-cursor = con.cursor()
+cursor = conexion.cursor()
 
 print u"La base de datos se abrió correctamente"
 
@@ -20,7 +20,7 @@ cursor.execute(''' CREATE TABLE IF NOT EXISTS bitacora ( id INTEGER PRIMARY KEY,
 #cursor.execute("INSERT INTO usuario (username, pass) VALUES ('cristian', '1234')")
 #cursor.execute("INSERT INTO usuario (username, pass) VALUES ('nestor', 'ewerqwef')")
 #con.commit()
-con.close()
+conexion.close()
 
 #
 #		sql = ''' 
@@ -67,38 +67,70 @@ class empresas(tabla):
 		'''
 		lista = []
 		lista.append(rut)
-		print lista
 		lista = tuple(lista)
-		print lista
 		if (consulta.execute(exist, tuple(lista))):
 			count = consulta.fetchone()
-			print "count :", count
 			if count[0] == 0:
 				sql = ''' 
 				INSERT INTO empresas(rut, razonSocial)
 				VALUES (?,?)
 				'''
 				self.insertar([(rut, "rut"),(rs, "text")], sql)
+				conexion.commit()
 			else:
 				print "no se puede crear porque ya existe el rut en la base de datos"
+		else:
+			print "No se pudo guardar en la base de datos"
+		consulta.close()
+		conexion.close()
+		
+		
+		
 class bitacora(tabla):
-	print "holi"
-	
+	def __init__(self, fecha, tipo, evento, so, idUsuario):
+		conexion = sqlite3.connect('prueba.db')
+		consulta = conexion.cursor()
+		sql = ''' 
+		INSERT INTO bitacora(fecha, tipo, evento, so, idUsuario)
+		VALUES (?,?,?,?,?)
+		'''
+		self.insertar([(fecha,"text"),(tipo,"text"),(evento,"text"),(so,"text"),(idUsuario,"int")],sql)
+		consulta.close()
+		conexion.commit()
+		conexion.close()
+		
+		
+class facturas(tabla):
+	def __init__(self, venta, sucursal, TiopDocumento, numDocumento, nulo, correlativo, fecha,
+	 rutEmisor, nomEmisor, rutReceptor, nomReceptor, montoExento, montoAfecto, montoIVA, montoTotal,
+	 Glosa, cuentaProveedores, codigoEspecial, fechaVencimiento, contracuenta, centroResultados,
+	 activoFijo, sinDerechoaCredito, conCreditoFiscal, mImpuestoEspecifico1, mImpuestoEspecifico2,
+	 impuestoEspecificoFijo, impuestoEspecificoVariable, M3, montoImpuesto2, codImpuesto3, montoImpuesto3,
+	 contabilizado, idUsuario):
+		print "numDocumento, rutEmisor"
+		
 
-
-# Faltan agregar carias restriccione
+# Faltan agregar varias restricciones
 # ejemplos: la del rut		
 		
 def validarTipo(dato, tipo):
 	if tipo == "int":
 		try:
-			dato = int(dato)
+			if dato != None:
+				dato = int(dato)
+			else:
+				print "el dato fué nulo"
+				return True
 		except ValueError:
 			print (dato, " no es entero")
 			return False
 	elif tipo == "float":
 		try:
-			dato = float(dato) or int(dato)
+			if dato != None:
+				dato = float(dato) or int(dato)
+			else:
+				print "el dato no puede ser nulo"
+				return False
 		except ValueError:
 			print (dato, " no es flotante")
 			return False
@@ -109,10 +141,10 @@ def validarTipo(dato, tipo):
 				print "debe escribir el rut con este formato 17920814-8"
 				return False
 			if not (dato[1] == "k" or (int(dato[1])<10 and int(dato[1])>0)):
-				print (dato[1], " : el digito verificador no puede ser distinto de k ni mayot que 9 o menor que 0")
+				print (dato[1], " : el digito verificador no puede ser distinto de k ni mayor que 9 o menor que 0")
 				return False
 			if not validarTipo(dato[0], "int"):
-				print (dato[0], " : no puede introducir carteres que no sean numéricos")
+				print (dato[0], " : no puede introducir carteres que no sean numericos")
 				return False
 			verificador = (range(10) + ['k'])[
 				11 - sum(
@@ -121,7 +153,6 @@ def validarTipo(dato, tipo):
 				) % 11
 			]
 			if not verificador == int(dato[1]):
-				print type(verificador)," vs ", type(dato[1])
 				print (dato, " el rut no es correcto")
 				return False
 		except ValueError:
@@ -132,8 +163,8 @@ def validarTipo(dato, tipo):
 		
 
 
-var = empresas("17920814-8", "entero pollo lo oe zii")
-
+#var = empresas("17966491-7", "la vane")	
+bitacora = bitacora("27/12/1991","tipo1","evento","so?nose que es",None)
 
 
 
