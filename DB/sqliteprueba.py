@@ -10,7 +10,7 @@ cursor = conexion.cursor()
 
 print u"La base de datos se abrió correctamente"
 
-cursor.execute(''' CREATE TABLE IF NOT EXISTS facturas (   venta INTEGER  DEFAULT 0, sucursal INTEGER, TipoDocumento INTEGER, numDocumento INTEGER, nulo INTEGER DEFAULT 0, correlativo INTEGER, fecha TEXT, rutEmisor TEXT, nomEmisor TEXT, rutReceptor TEXT, nomReceptor TEXT, montoExento INTEGER , montoAfecto INTEGER, montoIVA INTEGER, montoTotal INTEGER, Glosa TEXT, cuentaProveedores TEXT, codigoEspecial TEXT, fechaVencimiento TEXT, contracuenta INTEGER, centroResultados TEXT, activoFijo INTEGER DEFAULT 0, sinDerechoaCredito INTEGER DEFAULT 0, conCreditoFiscal INTEGER DEFAULT 0, mImpuestoEspecifico1 INTEGER, mImpuestoEspecifico2 INTEGER, impuestoEspecificoFijo INTEGER, impuestoEspecificoVariable INTEGER, M3 TEXT, CodImpuesto2 TEXT, montoImpuesto2 INTEGER, codImpuesto3 TEXT, montoImpuesto3 INTEGER, contabilizado INTEGER DEFAULT 0, idUsuario INTEGER DEFAULT 0)''')
+cursor.execute(''' CREATE TABLE IF NOT EXISTS facturas (   id INTEGER PRIMARY KEY, venta INTEGER  DEFAULT 0, sucursal INTEGER, TipoDocumento INTEGER, numDocumento INTEGER, nulo INTEGER DEFAULT 0, correlativo INTEGER, fecha TEXT, rutEmisor TEXT, nomEmisor TEXT, rutReceptor TEXT, nomReceptor TEXT, montoExento INTEGER , montoAfecto INTEGER, montoIVA INTEGER, montoTotal INTEGER, Glosa TEXT, cuentaProveedores TEXT, codigoEspecial TEXT, fechaVencimiento TEXT, contracuenta INTEGER, centroResultados TEXT, activoFijo INTEGER DEFAULT 0, sinDerechoaCredito INTEGER DEFAULT 0, conCreditoFiscal INTEGER DEFAULT 0, mImpuestoEspecifico1 INTEGER, mImpuestoEspecifico2 INTEGER, impuestoEspecificoFijo INTEGER, impuestoEspecificoVariable INTEGER, M3 TEXT, CodImpuesto2 TEXT, montoImpuesto2 INTEGER, codImpuesto3 TEXT, montoImpuesto3 INTEGER, contabilizado INTEGER DEFAULT 0, idUsuario INTEGER DEFAULT 0)''')
 
 cursor.execute(''' CREATE TABLE IF NOT EXISTS usuario ( id INTEGER PRIMARY KEY, username TEXT, pass TEXT, activo INTEGER DEFAULT 1)  ''')
 
@@ -47,7 +47,7 @@ class tabla(object):
 			if validarTipo(datos[key][0], datos[key][1]):
 				argumentos.append(datos[key][0])
 				llaves.append(key)
-				print datos[key][0]
+				print key, " : ",datos[key][0]
 			else:
 				print ("error al escribir ", key)
 				raise Exception("Error al escribir el dato")
@@ -73,35 +73,38 @@ class tabla(object):
 		else: ("ha ocurrido un problema al guardar el registro")
 		
 	def update(self):
-		argumentos = []
-		llaves = []
-		for key in self._listaDeCambio.keys():
-			if validarTipo(self._listaDeCambio[key][0], self._listaDeCambio[key][1]):
-				argumentos.append(self._listaDeCambio[key][0])
-				llaves.append(key)
-				print self._listaDeCambio[key][0]
-			else:
-				print ("error al escribir ", key)
-				raise Exception("El dato : ", self._listaDeCambio[key][0], "no tiene el formato : ", self._listaDeCambio[key][1])
-		
 		self.conexion = sqlite3.connect('prueba.db')
 		self.consulta = self.conexion.cursor()
-		
-		ub = ""
-		for llave in llaves:
-			ub += llave+" = ? ,"
-		ub = ub.strip(",")
-		print "ub = ", ub
-		sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= '"+self._identValue+"'"
-		print sql
-		argumentos = tuple(argumentos)
-		print "args ", argumentos
-		
-		if (self.consulta.execute(sql, argumentos)):
-			self.conexion.commit()
-			print("Update realizado con exito")
-		else: 
-			print ("Se han econtrado problemas al realizar el Update")
+		if not self._listaDeCambio=={}:
+			argumentos = []
+			llaves = []
+			for key in self._listaDeCambio.keys():
+				if validarTipo(self._listaDeCambio[key][0], self._listaDeCambio[key][1]):
+					argumentos.append(self._listaDeCambio[key][0])
+					llaves.append(key)
+					print self._listaDeCambio[key][0]
+				else:
+					print ("error al escribir ", key)
+					raise Exception("El dato : ", self._listaDeCambio[key][0], "no tiene el formato : ", self._listaDeCambio[key][1])
+			
+			ub = ""
+			for llave in llaves:
+				ub += llave+" = ? ,"
+			ub = ub.strip(",")
+			print "ub = ", ub
+			if validarTipo(self._identValue, "text"):
+				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= '"+self._identValue+"'"
+			else:
+				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+str(self._identValue)+""
+			print sql
+			argumentos = tuple(argumentos)
+			print "args ", argumentos
+			
+			if (self.consulta.execute(sql, argumentos)):
+				self.conexion.commit()
+				print("Update realizado con exito")
+			else: 
+				print ("Se han econtrado problemas al realizar el Update")
 
 
 class empresas(tabla):
@@ -151,9 +154,10 @@ class empresas(tabla):
 		conexion.close()
 
 class facturas(tabla):
+	_id = None
 	_venta = None
 	_sucursal = None
-	_TiopDocumento = None
+	_TipoDocumento = None
 	_numDocumento = None
 	_nulo = None
 	_correlativo = None
@@ -162,10 +166,10 @@ class facturas(tabla):
 	_nomEmisor = None
 	_rutReceptor = None
 	_nomReceptor = None
-	_montoExento = None
-	_montoAfecto = None
+	_montoExento = 0
+	_montoAfecto = 0
 	_montoIVA = None
-	_montoTotal = None
+	_montoTotal = 0
 	_Glosa = None
 	_cuentaProveedores = None
 	_codigoEspecial = None
@@ -180,6 +184,7 @@ class facturas(tabla):
 	_impuestoEspecificoFijo = None
 	_impuestoEspecificoVariable = None
 	_M3 = None
+	_codImpuesto2 = None
 	_montoImpuesto2 = None
 	_codImpuesto3 = None
 	_montoImpuesto3 = None
@@ -188,26 +193,21 @@ class facturas(tabla):
 	@property
 	def venta(self):
 		return self._venta
-	@venta.setter
-	def venta(self, data):
-		self._venta = data
-		self._listaDeCambio['venta'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
 	@property
 	def sucursal(self):
 		return self._sucursal
 	@sucursal.setter
 	def sucursal(self, data):
 		self._sucursal = data
-		self._listaDeCambio['sucursal'] = (data, 'text')
+		self._listaDeCambio['sucursal'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
-	def TiopDocumento(self):
-		return self._TiopDocumento
-	@TiopDocumento.setter
-	def TiopDocumento(self, data):
-		self._TiopDocumento = data
-		self._listaDeCambio['TiopDocumento'] = (data, 'text')
+	def TipoDocumento(self):
+		return self._TipoDocumento
+	@TipoDocumento.setter
+	def TipoDocumento(self, data):
+		self._TipoDocumento = data
+		self._listaDeCambio['TipoDocumento'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def numDocumento(self):
@@ -218,7 +218,7 @@ class facturas(tabla):
 	@nulo.setter
 	def nulo(self, data):
 		self._nulo = data
-		self._listaDeCambio['nulo'] = (data, 'text')
+		self._listaDeCambio['nulo'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def correlativo(self):
@@ -226,7 +226,7 @@ class facturas(tabla):
 	@correlativo.setter
 	def correlativo(self, data):
 		self._correlativo = data
-		self._listaDeCambio['correlativo'] = (data, 'text')
+		self._listaDeCambio['correlativo'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def fecha(self):
@@ -234,7 +234,7 @@ class facturas(tabla):
 	@fecha.setter
 	def fecha(self, data):
 		self._fecha = data
-		self._listaDeCambio['fecha'] = (data, 'text')
+		self._listaDeCambio['fecha'] = (data, 'fecha')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def rutEmisor(self):
@@ -264,7 +264,10 @@ class facturas(tabla):
 	@montoExento.setter
 	def montoExento(self, data):
 		self._montoExento = data
-		self._listaDeCambio['montoExento'] = (data, 'text')
+		afecto = (self._montoTotal - data)/1.19
+		self.montoAfecto=(int(round(afecto, 2)))
+		self.montoIVA=(int(round(self._montoAfecto*.19)))
+		self._listaDeCambio['montoExento'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def montoAfecto(self):
@@ -272,7 +275,7 @@ class facturas(tabla):
 	@montoAfecto.setter
 	def montoAfecto(self, data):
 		self._montoAfecto = data
-		self._listaDeCambio['montoAfecto'] = (data, 'text')
+		self._listaDeCambio['montoAfecto'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def montoIVA(self):
@@ -280,7 +283,7 @@ class facturas(tabla):
 	@montoIVA.setter
 	def montoIVA(self, data):
 		self._montoIVA = data
-		self._listaDeCambio['montoIVA'] = (data, 'text')
+		self._listaDeCambio['montoIVA'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def montoTotal(self):
@@ -288,7 +291,10 @@ class facturas(tabla):
 	@montoTotal.setter
 	def montoTotal(self, data):
 		self._montoTotal = data
-		self._listaDeCambio['montoTotal'] = (data, 'text')
+		afecto = (data - self._montoExento)/1.19
+		self.montoAfecto=(int(round(afecto, 2)))
+		self.montoIVA=(int(round(self._montoAfecto*.19)))
+		self._listaDeCambio['montoTotal'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def Glosa(self):
@@ -320,7 +326,7 @@ class facturas(tabla):
 	@fechaVencimiento.setter
 	def fechaVencimiento(self, data):
 		self._fechaVencimiento = data
-		self._listaDeCambio['fechaVencimiento'] = (data, 'text')
+		self._listaDeCambio['fechaVencimiento'] = (data, 'fecha')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def contracuenta(self):
@@ -344,7 +350,7 @@ class facturas(tabla):
 	@activoFijo.setter
 	def activoFijo(self, data):
 		self._activoFijo = data
-		self._listaDeCambio['activoFijo'] = (data, 'text')
+		self._listaDeCambio['activoFijo'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def sinDerechoaCredito(self):
@@ -352,7 +358,7 @@ class facturas(tabla):
 	@sinDerechoaCredito.setter
 	def sinDerechoaCredito(self, data):
 		self._sinDerechoaCredito = data
-		self._listaDeCambio['sinDerechoaCredito'] = (data, 'text')
+		self._listaDeCambio['sinDerechoaCredito'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def conCreditoFiscal(self):
@@ -360,7 +366,7 @@ class facturas(tabla):
 	@conCreditoFiscal.setter
 	def conCreditoFiscal(self, data):
 		self._conCreditoFiscal = data
-		self._listaDeCambio['conCreditoFiscal'] = (data, 'text')
+		self._listaDeCambio['conCreditoFiscal'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def mImpuestoEspecifico1(self):
@@ -368,7 +374,7 @@ class facturas(tabla):
 	@mImpuestoEspecifico1.setter
 	def mImpuestoEspecifico1(self, data):
 		self._mImpuestoEspecifico1 = data
-		self._listaDeCambio['mImpuestoEspecifico1'] = (data, 'text')
+		self._listaDeCambio['mImpuestoEspecifico1'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def mImpuestoEspecifico2(self):
@@ -376,7 +382,7 @@ class facturas(tabla):
 	@mImpuestoEspecifico2.setter
 	def mImpuestoEspecifico2(self, data):
 		self._mImpuestoEspecifico2 = data
-		self._listaDeCambio['mImpuestoEspecifico2'] = (data, 'text')
+		self._listaDeCambio['mImpuestoEspecifico2'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def impuestoEspecificoFijo(self):
@@ -384,7 +390,7 @@ class facturas(tabla):
 	@impuestoEspecificoFijo.setter
 	def impuestoEspecificoFijo(self, data):
 		self._impuestoEspecificoFijo = data
-		self._listaDeCambio['impuestoEspecificoFijo'] = (data, 'text')
+		self._listaDeCambio['impuestoEspecificoFijo'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def impuestoEspecificoVariable(self):
@@ -392,7 +398,7 @@ class facturas(tabla):
 	@impuestoEspecificoVariable.setter
 	def impuestoEspecificoVariable(self, data):
 		self._impuestoEspecificoVariable = data
-		self._listaDeCambio['impuestoEspecificoVariable'] = (data, 'text')
+		self._listaDeCambio['impuestoEspecificoVariable'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def M3(self):
@@ -403,12 +409,20 @@ class facturas(tabla):
 		self._listaDeCambio['M3'] = (data, 'text')
 		print 'cambio: ',self._listaDeCambio
 	@property
+	def codImpuesto2(self):
+		return self._codImpuesto2
+	@codImpuesto2.setter
+	def codImpuesto2(self, data):
+		self._codImpuesto2 = data
+		self._listaDeCambio['codImpuesto2'] = (data, 'text')
+		print 'cambio: ',self._listaDeCambio
+	@property
 	def montoImpuesto2(self):
 		return self._montoImpuesto2
 	@montoImpuesto2.setter
 	def montoImpuesto2(self, data):
 		self._montoImpuesto2 = data
-		self._listaDeCambio['montoImpuesto2'] = (data, 'text')
+		self._listaDeCambio['montoImpuesto2'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def codImpuesto3(self):
@@ -424,7 +438,7 @@ class facturas(tabla):
 	@montoImpuesto3.setter
 	def montoImpuesto3(self, data):
 		self._montoImpuesto3 = data
-		self._listaDeCambio['montoImpuesto3'] = (data, 'text')
+		self._listaDeCambio['montoImpuesto3'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def contabilizado(self):
@@ -432,7 +446,7 @@ class facturas(tabla):
 	@contabilizado.setter
 	def contabilizado(self, data):
 		self._contabilizado = data
-		self._listaDeCambio['contabilizado'] = (data, 'text')
+		self._listaDeCambio['contabilizado'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def idUsuario(self):
@@ -440,71 +454,84 @@ class facturas(tabla):
 	@idUsuario.setter
 	def idUsuario(self, data):
 		self._idUsuario = data
-		self._listaDeCambio['idUsuario'] = (data, 'text')
+		self._listaDeCambio['idUsuario'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 		
-	def __init__(self, venta, sucursal, TiopDocumento, numDocumento, nulo, correlativo, fecha,
-	 rutEmisor, nomEmisor, rutReceptor, nomReceptor, montoExento, montoAfecto, montoIVA, montoTotal,
-	 Glosa, cuentaProveedores, codigoEspecial, fechaVencimiento, contracuenta, centroResultados,
-	 activoFijo, sinDerechoaCredito, conCreditoFiscal, mImpuestoEspecifico1, mImpuestoEspecifico2,
-	 impuestoEspecificoFijo, impuestoEspecificoVariable, M3, montoImpuesto2, codImpuesto3, montoImpuesto3,
-	 contabilizado, idUsuario):
+	def __init__(self, venta, numDocumento, rutReceptor, rutEmisor, sucursal=1, id=0,
+	 TipoDocumento=1, nulo=0, fecha="01/01/2015",
+	 nomEmisor="", nomReceptor="", montoExento=0, montoTotal=0,
+	 Glosa="", cuenta=0, contracuenta="", contabilizado=0, idUsuario=0):
+		print "entra al constructor"
+		
 		self._venta = venta
-		self._sucursal = sucursal
-		self._TiopDocumento = TiopDocumento
 		self._numDocumento = numDocumento
-		self._nulo = nulo
-		self._correlativo = correlativo
-		self._fecha = fecha
+		self._rutReceptor = rutReceptor	
 		self._rutEmisor = rutEmisor
-		self._nomEmisor = nomEmisor
-		self._rutReceptor = rutReceptor
-		self._nomReceptor = nomReceptor
-		self._montoExento = montoExento
-		self._montoAfecto = montoAfecto
-		self._montoIVA = montoIVA
-		self._montoTotal = montoTotal
-		self._Glosa = Glosa
-		self._cuentaProveedores = cuentaProveedores
-		self._codigoEspecial = codigoEspecial
-		self._fechaVencimiento = fechaVencimiento
-		self._contracuenta = contracuenta
-		self._centroResultados = centroResultados
-		self._activoFijo = activoFijo
-		self._sinDerechoaCredito = sinDerechoaCredito
-		self._conCreditoFiscal = conCreditoFiscal
-		self._mImpuestoEspecifico1 = mImpuestoEspecifico1
-		self._mImpuestoEspecifico2 = mImpuestoEspecifico2
-		self._impuestoEspecificoFijo = impuestoEspecificoFijo
-		self._impuestoEspecificoVariable = impuestoEspecificoVariable
-		self._M3 = M3
-		self._montoImpuesto2 = montoImpuesto2
-		self._codImpuesto3 = codImpuesto3
-		self._montoImpuesto3 = montoImpuesto3
-		self._contabilizado = contabilizado
-		self._idUsuario = idUsuario
+		
 		conexion = sqlite3.connect('prueba.db')
 		consulta = conexion.cursor()
 		exist = '''
 		SELECT COUNT(*) FROM facturas
-		WHERE venta = ?, numDocumento = ?, rutEmisor = ?, rutReceptor = ?
+		WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?
 		'''
-		lista = tuple([venta, numDocumento, rutEmisor, rutReceptor])
+		lista = tuple([venta, numDocumento, rutEmisor])
+		print exist
+		print lista
 		if (consulta.execute(exist, lista)):
 			count = consulta.fetchone()
+			self._ident = "id"
 			if count[0] == 0:
-				count = consulta.fetchone()
-				#self._ident = "rut"
-				#self._identValue = rut
-				if count[0] == 0:
-					#self._listaDeCambio={"rut":(rut, "rut"), "razonSocial":(rs,"text")}
-					#self._esNuevo = True
-				else:
-					#print "no se puede crear porque ya existe el rut en la base de datos"
-					#self._listaDeCambio = {}
-					#self._esNuevo = False
+				print "entra al if count 0"
+				self._sucursal = sucursal
+				self._id = id
+				self._TipoDocumento = TipoDocumento
+				self._nulo = nulo
+				self._fecha = fecha
+				self._nomEmisor = nomEmisor
+				self._nomReceptor = nomReceptor
+				self.montoExento = montoExento	#setter
+				self.montoTotal = montoTotal  	#setter
+				self._Glosa = Glosa
+				#revisar se llama solo cuenta, puede ser cliente o proveedores
+				self._cuentaProveedores = cuenta
+				#se calcula
+				self._fechaVencimiento = fecha
+				self._contracuenta = contracuenta
+				self._contabilizado = contabilizado
+				self._idUsuario = idUsuario
+				self._listaDeCambio={"venta":(self._venta, "int"),
+						"sucursal":(self._sucursal,"int"),
+						"TipoDocumento":(self._TipoDocumento, "int"),
+						"numDocumento":(self._numDocumento, "int"),
+						"nulo":(self._nulo, "int"),
+						"fecha":(self._fecha, "fecha"),
+						"rutEmisor":(self._rutEmisor, "rut"),
+						"nomEmisor":(self._nomEmisor, "text"),
+						"rutReceptor":(self._rutReceptor, "rut"),
+						"nomReceptor":(self._nomReceptor, "text"),
+						"montoExento":(self._montoExento, "int"),
+						"montoTotal":(self._montoTotal, "int"),
+						"Glosa":(self._Glosa, "text"),
+						"cuentaProveedores":(self._cuentaProveedores, "int"),
+						"fechaVencimiento":(self._fechaVencimiento, "fecha"),
+						"contracuenta":(self._contracuenta, "text"),
+						"contabilizado":(self._contabilizado, "int"),
+						"idUsuario":(self._idUsuario, "int")
+						}
+				print self._listaDeCambio
+				self._esNuevo = True
 			else:
 				print "no se puede crear porque ya existe el rut en la base de datos"
+				ident = "SELECT id FROM facturas WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?"
+				print ident
+				print lista
+				if(consulta.execute(ident, lista)):
+					valorid = consulta.fetchone()
+					print "valorid: ",valorid
+					self._identValue = valorid[0]
+					print "valorid: ", self._identValue
+					self._listaDeCambio = {}
+					self._esNuevo = False
 	
 
 class bitacora(tabla):
@@ -552,12 +579,32 @@ class bitacora(tabla):
 
 
 def validarTipo(dato, tipo):
+	if tipo == "bool":
+		try:
+			if type(dato) == bool:
+				return True
+			else:
+				print "el dato debe ser de tippo boolean"
+				return False
+		except:
+			print "el dato debe ser de tippo boolean"
+			return False
+	if tipo == "text":
+		try:
+			if type(dato) == str or type(dato) == unicode:
+				return True
+			else:
+				print "el dato debe ser de tippo String o Unicode"
+				return False
+		except:
+			print "el dato debe ser de tippo String o Unicode"
+			return False
 	if tipo == "int":
 		try:
 			if dato != None:
 				dato = int(dato)
 			else:
-				print "el dato fué nulo"
+				print "el dato fue nulo"
 				return True
 		except ValueError:
 			print (dato, " no es entero")
@@ -589,6 +636,7 @@ def validarTipo(dato, tipo):
 
 
 		
-prueba = empresas("18598138-k", "holi")
-prueba.rS="holi"
+prueba = facturas(venta = 1,numDocumento = 1,rutEmisor = "17920814-8", rutReceptor = "8953221-3")
+prueba.Glosa=1
 prueba.save()
+	
