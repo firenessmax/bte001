@@ -31,7 +31,7 @@ class tabla(object):
 	_ident = None
 	_identValue = None
 	def save(self):
-		print self._esNuevo	
+		print "es nuevo? : ", self._esNuevo	
 		if self._esNuevo:
 			self.insertar(self._listaDeCambio, self.__class__.__name__)
 		else:
@@ -43,14 +43,15 @@ class tabla(object):
 	def insertar(self, datos, nombre):
 		argumentos = []
 		llaves = []
+		print u"verificación de formato:"
 		for key in datos.keys():
 			if validarTipo(datos[key][0], datos[key][1]):
 				argumentos.append(datos[key][0])
 				llaves.append(key)
 				print key, " : ",datos[key][0]
 			else:
-				print ("error al escribir ", key)
-				raise Exception("Error al escribir el dato")
+				print ("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
+				raise Exception("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
 		
 		self.conexion = sqlite3.connect('prueba.db')
 		self.consulta = self.conexion.cursor()
@@ -82,23 +83,23 @@ class tabla(object):
 				if validarTipo(self._listaDeCambio[key][0], self._listaDeCambio[key][1]):
 					argumentos.append(self._listaDeCambio[key][0])
 					llaves.append(key)
-					print self._listaDeCambio[key][0]
+					print "Datos a updatear : ", self._listaDeCambio[key][0]
 				else:
-					print ("error al escribir ", key)
-					raise Exception("El dato : ", self._listaDeCambio[key][0], "no tiene el formato : ", self._listaDeCambio[key][1])
+					print ("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
+					raise Exception("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
 			
 			ub = ""
 			for llave in llaves:
 				ub += llave+" = ? ,"
 			ub = ub.strip(",")
 			print "ub = ", ub
-			if validarTipo(self._identValue, "text"):
+			if type(self._identValue) == str or type(self._identValue) == unicode:
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= '"+self._identValue+"'"
 			else:
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+str(self._identValue)+""
 			print sql
 			argumentos = tuple(argumentos)
-			print "args ", argumentos
+			print "args : ", argumentos
 			
 			if (self.consulta.execute(sql, argumentos)):
 				self.conexion.commit()
@@ -120,12 +121,12 @@ class empresas(tabla):
 	def rS(self, data):
 		self._rS = data
 		self._listaDeCambio["razonSocial"] = (data, "text")
-		print self._listaDeCambio
+		print "cambios : ", self._listaDeCambio
 	#@rut.setter
 	#def rut(self, data):
 	#	self._rut = data
 	#	super._dicc["rut"] = (data, "rut")
-	def __init__(self, rut, rs):
+	def __init__(self, rut, rs=""):
 		self._rut = rut
 		self._rS = rs
 		conexion = sqlite3.connect('prueba.db')
@@ -154,42 +155,42 @@ class empresas(tabla):
 		conexion.close()
 
 class facturas(tabla):
-	_id = None
-	_venta = None
-	_sucursal = None
-	_TipoDocumento = None
-	_numDocumento = None
-	_nulo = None
-	_correlativo = None
-	_fecha = None
-	_rutEmisor = None
-	_nomEmisor = None
-	_rutReceptor = None
-	_nomReceptor = None
+	_id = 0
+	_venta = 0				# obligatorio cuando se instancia
+	_sucursal = 0
+	_TipoDocumento = 0
+	_numDocumento = 0		# obligatorio cuando se instancia
+	_nulo = 0
+	_correlativo = 0
+	_fecha = ""
+	_rutEmisor = ""			# obligatorio cuando se instancia
+	_nomEmisor = ""
+	_rutReceptor = ""		# obligatorio cuando se instancia
+	_nomReceptor = ""
 	_montoExento = 0
 	_montoAfecto = 0
-	_montoIVA = None
+	_montoIVA = 0
 	_montoTotal = 0
-	_Glosa = None
-	_cuentaProveedores = None
-	_codigoEspecial = None
-	_fechaVencimiento = None
-	_contracuenta = None
-	_centroResultados = None
-	_activoFijo = None
-	_sinDerechoaCredito = None
-	_conCreditoFiscal = None
-	_mImpuestoEspecifico1 = None
-	_mImpuestoEspecifico2 = None
-	_impuestoEspecificoFijo = None
-	_impuestoEspecificoVariable = None
-	_M3 = None
-	_codImpuesto2 = None
-	_montoImpuesto2 = None
-	_codImpuesto3 = None
-	_montoImpuesto3 = None
-	_contabilizado = None
-	_idUsuario = None
+	_Glosa = ""
+	_cuentaProveedores = ""
+	_codigoEspecial = ""
+	_fechaVencimiento = ""
+	_contracuenta = 0
+	_centroResultados = ""
+	_activoFijo = 0
+	_sinDerechoaCredito = 0
+	_conCreditoFiscal = 0
+	_mImpuestoEspecifico1 = 0
+	_mImpuestoEspecifico2 = 0
+	_impuestoEspecificoFijo = 0
+	_impuestoEspecificoVariable = 0
+	_M3 = ""
+	_codImpuesto2 = ""
+	_montoImpuesto2 = 0
+	_codImpuesto3 = ""
+	_montoImpuesto3 = 0
+	_contabilizado = 0
+	_idUsuario = 0
 	@property
 	def venta(self):
 		return self._venta
@@ -460,8 +461,8 @@ class facturas(tabla):
 	def __init__(self, venta, numDocumento, rutReceptor, rutEmisor, sucursal=1, id=0,
 	 TipoDocumento=1, nulo=0, fecha="01/01/2015",
 	 nomEmisor="", nomReceptor="", montoExento=0, montoTotal=0,
-	 Glosa="", cuenta=0, contracuenta="", contabilizado=0, idUsuario=0):
-		print "entra al constructor"
+	 Glosa="", cuenta=0, contracuenta=0, contabilizado=0, idUsuario=0):
+		print "Creando nueva tabla en facturas..."
 		
 		self._venta = venta
 		self._numDocumento = numDocumento
@@ -475,13 +476,10 @@ class facturas(tabla):
 		WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?
 		'''
 		lista = tuple([venta, numDocumento, rutEmisor])
-		print exist
-		print lista
 		if (consulta.execute(exist, lista)):
 			count = consulta.fetchone()
 			self._ident = "id"
 			if count[0] == 0:
-				print "entra al if count 0"
 				self._sucursal = sucursal
 				self._id = id
 				self._TipoDocumento = TipoDocumento
@@ -504,21 +502,37 @@ class facturas(tabla):
 						"TipoDocumento":(self._TipoDocumento, "int"),
 						"numDocumento":(self._numDocumento, "int"),
 						"nulo":(self._nulo, "int"),
+						"correlativo":(self._correlativo, "int"),
 						"fecha":(self._fecha, "fecha"),
 						"rutEmisor":(self._rutEmisor, "rut"),
 						"nomEmisor":(self._nomEmisor, "text"),
 						"rutReceptor":(self._rutReceptor, "rut"),
 						"nomReceptor":(self._nomReceptor, "text"),
 						"montoExento":(self._montoExento, "int"),
+						"montoAfecto":(self._montoAfecto, "int"),
+						"montoIVA":(self._montoIVA, "int"),
 						"montoTotal":(self._montoTotal, "int"),
 						"Glosa":(self._Glosa, "text"),
 						"cuentaProveedores":(self._cuentaProveedores, "int"),
+						"codigoEspecial":(self._codigoEspecial,"text"),
 						"fechaVencimiento":(self._fechaVencimiento, "fecha"),
-						"contracuenta":(self._contracuenta, "text"),
+						"contracuenta":(self._contracuenta, "int"),
+						"centroResultados":(self._centroResultados, "text"),
+						"activoFijo":(self._activoFijo, "int"),
+						"sinDerechoaCredito":(self._sinDerechoaCredito, "int"),
+						"conCreditoFiscal":(self._conCreditoFiscal, "int"),
+						"mImpuestoEspecifico1":(self._mImpuestoEspecifico1, "int"),
+						"mImpuestoEspecifico2":(self._mImpuestoEspecifico2, "int"),
+						"impuestoEspecificoFijo":(self._impuestoEspecificoFijo, "int"),
+						"impuestoEspecificoVariable":(self._impuestoEspecificoVariable, "int"),
+						"M3":(self._M3, "text"),
+						"codImpuesto2":(self._codImpuesto2, "text"),
+						"montoImpuesto2":(self._montoImpuesto2, "int"),
+						"codImpuesto3":(self._codImpuesto3, "text"),
+						"montoImpuesto3":(self._montoImpuesto3, "int"),
 						"contabilizado":(self._contabilizado, "int"),
 						"idUsuario":(self._idUsuario, "int")
 						}
-				print self._listaDeCambio
 				self._esNuevo = True
 			else:
 				print "no se puede crear porque ya existe el rut en la base de datos"
@@ -527,9 +541,7 @@ class facturas(tabla):
 				print lista
 				if(consulta.execute(ident, lista)):
 					valorid = consulta.fetchone()
-					print "valorid: ",valorid
 					self._identValue = valorid[0]
-					print "valorid: ", self._identValue
 					self._listaDeCambio = {}
 					self._esNuevo = False
 	
@@ -635,8 +647,9 @@ def validarTipo(dato, tipo):
 	return True
 
 
-		
-prueba = facturas(venta = 1,numDocumento = 1,rutEmisor = "17920814-8", rutReceptor = "8953221-3")
-prueba.Glosa=1
+prueba = empresas("17920814-8")
+prueba.rS=u"la empresa del Cristián"		
+#prueba = facturas(venta = 0,numDocumento = 2,rutEmisor = "17920814-8", rutReceptor = "8953221-3")
+#prueba.Glosa=u"no sé que es esto"
 prueba.save()
 	
