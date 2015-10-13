@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>755</width>
+    <height>508</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SuperPrograma</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="images/images.qrc">
+    <normaloff>:/newPrefix/barcode.png</normaloff>:/newPrefix/barcode.png</iconset>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="top">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>110</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#top{
+	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);
+}
+
+
+/*
+QTabBar::tab:!selected {
+margin-top: 2px; /* make non-selected tabs look smaller 
+}*/</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QTabWidget" name="tabWidget_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">
+QTabWidget::pane { /* The tab widget frame */
+	border:0;
+    background-color:white;
+}
+QTabWidget::tab-bar {
+	left: 10px;
+}
+/* Style the tab using the tab sub-control. Note that it reads QTabBar _not_ QTabWidget */
+QTabBar::tab{
+	color:white;
+	background: rgba(255, 255, 255, 0);
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	min-width: 25ex;
+
+	padding: 5 20 5 20;
+	
+	margin-right:2px;
+	margin-left:2px;
+}
+QTabBar::tab {/*grin*/
+	border-bottom:5px solid qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #388e3c, stop: 0.7 #689f38);
+}
+QTabBar::tab:hover:!selected {/*grin*/
+	background:#388e3c;
+	border:1px solid #388e3c;
+	border-bottom:5px solid qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #388e3c, stop: 0.7 #689f38);
+}
+QTabBar::tab:first {
+	border-bottom:5px solid  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #1976d2, stop: 0.5 #0288d1);;
+}
+QTabBar::tab:first:hover:!selected {/*grin*/
+	background:#0288d1;
+	border:1px solid #0288d1;
+	border-bottom:5px solid qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #1976d2, stop: 0.7 #0288d1);
+}
+QTabBar::tab:last {
+border-bottom :5px solid qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9e9e9e, stop: 0.5 #AAAAAA);
+}
+QTabBar::tab:last:hover:!selected {/*grin*/
+	background:#ADADAD;
+	border:1px solid #9e9e9e;
+	border-bottom:5px solid qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9e9e9e, stop: 0.7 #AAAAAA);
+}
+QTabBar::tab:selected {
+	color:black;
+	background: #fafafa;
+	border:0;
+}</string>
+         </property>
+         <property name="tabPosition">
+          <enum>QTabWidget::North</enum>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <property name="usesScrollButtons">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="tab_escanear_3">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <attribute name="title">
+           <string>Escanear</string>
+          </attribute>
+          <layout class="QFormLayout" name="formLayout_5">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
+           <item row="0" column="0">
+            <widget class="QToolButton" name="escanearCompra">
+             <property name="text">
+              <string>Escanear Documentos Compra</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/newPrefix/barcode.png</normalon>
+              </iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>40</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QToolButton" name="escanearVenta">
+             <property name="text">
+              <string>Escanear Documentos Venta</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images/images.qrc">
+               <normaloff>:/newPrefix/barcode.png</normaloff>:/newPrefix/barcode.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>100</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_exportar_3">
+          <attribute name="title">
+           <string>Exportar Excel</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="1">
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QFormLayout" name="formLayout_6">
+               <item row="0" column="0">
+                <widget class="QLabel" name="correlativoLabel_3">
+                 <property name="text">
+                  <string>Correlativo</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QSpinBox" name="correlativoSpinBox">
+                 <property name="wrapping">
+                  <bool>false</bool>
+                 </property>
+                 <property name="frame">
+                  <bool>true</bool>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::PlusMinus</enum>
+                 </property>
+                 <property name="specialValueText">
+                  <string/>
+                 </property>
+                 <property name="suffix">
+                  <string/>
+                 </property>
+                 <property name="maximum">
+                  <number>999999999</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="contabilizarCheckBox">
+               <property name="text">
+                <string>Contabilizar al exportar</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="guardarCheckBox">
+               <property name="text">
+                <string>Guardar contabilizados</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="0">
+            <widget class="QToolButton" name="toolButton_5">
+             <property name="text">
+              <string>Exportar Excel</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/newPrefix/excel.png</normalon>
+              </iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>100</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_configurar_3">
+          <attribute name="title">
+           <string>Configurar</string>
+          </attribute>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="filtrarEmpresaComboBox">
+        <item>
+         <property name="text">
+          <string>Todas</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Empresa1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Empresa2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Empresa3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="filtrarEmpresaLabel">
+        <property name="text">
+         <string>Filtrar Empresa</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget_2">
+      <property name="tabPosition">
+       <enum>QTabWidget::South</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="usesScrollButtons">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Documentos Compra</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QTableWidget" name="tableWidget_Compras">
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="textElideMode">
+           <enum>Qt::ElideLeft</enum>
+          </property>
+          <property name="gridStyle">
+           <enum>Qt::SolidLine</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="rowCount">
+           <number>1</number>
+          </property>
+          <property name="columnCount">
+           <number>16</number>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>118</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>118</number>
+          </attribute>
+          <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderMinimumSectionSize">
+           <number>30</number>
+          </attribute>
+          <attribute name="verticalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <row>
+           <property name="text">
+            <string>1</string>
+           </property>
+          </row>
+          <column>
+           <property name="text">
+            <string>Contabilizado</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Sucursal</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tipo Documento</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Numero Documento</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Fecha</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Rut Emisor</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>RS Emisor</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Rut Receptor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>RS Receptor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto Exento</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto Afecto</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto IVA</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto Total</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Glosa</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Contracuenta</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>id</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Documentos Venta</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QTableWidget" name="tableWidget_Ventas">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <property name="rowCount">
+           <number>0</number>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>118</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>118</number>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>Contabilizado</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Sucursal</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tipo Documento</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Numero Documento</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Fecha</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Rut Emisor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>RS Emisor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Rut Receptor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>RS Receptor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto Exento</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto Afecto</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto IVA</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Monto Total</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Glosa</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Contracuenta</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>id</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>755</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="images/images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>tabWidget_4</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cambiarTab_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>70</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>escanearCompra</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>escanear_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>escanearVenta</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>escanear_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>283</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>exportar_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>55</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>6</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filtrarEmpresaComboBox</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>filtrar_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>135</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>747</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tabWidget_2</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>documentoCambiarTab_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>456</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>379</x>
+     <y>485</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>escanear_documento()</signal>
+  <slot>escanear_slot()</slot>
+  <slot>exportar_slot()</slot>
+  <slot>cambiarTab_slot()</slot>
+  <slot>filtrar_slot()</slot>
+  <slot>documentoCambiarTab_slot()</slot>
+ </slots>
+</ui>

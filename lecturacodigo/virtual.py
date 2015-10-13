@@ -32,3 +32,7 @@ print "agregado event listener"
 
 ser.open()
 print "conexion iniciada"
+#try 
+#	asjhdkaç
+#except Exception as e:
+#	print e.message

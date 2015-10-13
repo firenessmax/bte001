@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>alerta.png</file>
+    <file>barcode.png</file>
+    <file>bigBug.png</file>
+    <file>bug.png</file>
+    <file>document.png</file>
+    <file>Error.png</file>
+    <file>excel.png</file>
+    <file>pregunta.png</file>
+  </qresource>
+</RCC>
