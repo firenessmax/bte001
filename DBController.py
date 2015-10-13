@@ -10,19 +10,19 @@ def obtenerLista(tabla, empresa):
     
     if(tabla == "tableWidget_Compras"):
         # consulta Compras
-        pass
+        #DB.iniciarDB()
+        #prueba = F.facturas(1,1,"17920814-8","8953221-3", nomEmisor = "Mami")
+        #prueba.nomEmisor="mamaita ta ta"
+        #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
+        #obtenerVentas(prueba)
+        print F.obtenerCompras(None)
+        #prueba.save()
+        
     elif(tabla == "tableWidget_Ventas"):
         # consulta Ventas
         pass
     print "Filtro Empresa: %s"%empresa
     
-    DB.iniciarDB()
-    prueba = F.facturas(6,9,"17920814-8","8953221-3", nomEmisor = "Mami")
-    #prueba.nomEmisor="mamaita ta ta"
-    #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
-    #obtenerVentas(prueba)
-    
-    prueba.save()
     
     fac = [['Si', 'Maipu', 'Factura', '90182309', '2002-6-12', '1898123-k', 'Luchos','a', '2', '3', '4', '5', '6', '7', '8', '1'],
             ['No', 'Cerrillos', 'Boletita', '12383', '2011-11-12', '9281923-0', 'Pablos','a', '2', '3', '4', '5', '6', '7', '8', '2'],
