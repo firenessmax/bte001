@@ -5,17 +5,17 @@ import datetime
 import sqlite3
 import re
 
-conexion = sqlite3.connect('prueba1.db')
+conexion = sqlite3.connect('prueba.db')
 
 cursor = conexion.cursor()
 
 print u"La base de datos se abrió correctamente"
 
-cursor.execute(''' CREATE TABLE IF NOT EXISTS facturas ( id INTEGER PRIMARY KEY AUTOINCREMENT, venta INTEGER  DEFAULT 0, sucursal INTEGER, TipoDocumento INTEGER, numDocumento INTEGER, nulo INTEGER DEFAULT 0, correlativo INTEGER, fecha TEXT, emisor INTEGER, receptor INTEGER, FOREIGN KEY(emisor) REFERENCES empresas(id), FOREIGN KEY(receptor) REFERENCES empresas(id), montoExento INTEGER, montoAfecto INTEGER, montoIVA INTEGER, montoTotal INTEGER, Glosa TEXT, cuentaProveedores TEXT, codigoEspecial TEXT, fechaVencimiento TEXT, contracuenta INTEGER, centroResultados TEXT, activoFijo INTEGER DEFAULT 0, sinDerechoaCredito INTEGER DEFAULT 0, conCreditoFiscal INTEGER DEFAULT 0, mImpuestoEspecifico1 INTEGER, mImpuestoEspecifico2 INTEGER, impuestoEspecificoFijo INTEGER, impuestoEspecificoVariable INTEGER, M3 TEXT, CodImpuesto2 TEXT, montoImpuesto2 INTEGER, codImpuesto3 TEXT, montoImpuesto3 INTEGER, contabilizado INTEGER DEFAULT 0, idUsuario INTEGER DEFAULT 0)''')
+cursor.execute(''' CREATE TABLE IF NOT EXISTS facturas (   id INTEGER PRIMARY KEY, venta INTEGER  DEFAULT 0, sucursal INTEGER, TipoDocumento INTEGER, numDocumento INTEGER, nulo INTEGER DEFAULT 0, correlativo INTEGER, fecha TEXT, rutEmisor TEXT, nomEmisor TEXT, rutReceptor TEXT, nomReceptor TEXT, montoExento INTEGER , montoAfecto INTEGER, montoIVA INTEGER, montoTotal INTEGER, Glosa TEXT, cuentaProveedores TEXT, codigoEspecial TEXT, fechaVencimiento TEXT, contracuenta INTEGER, centroResultados TEXT, activoFijo INTEGER DEFAULT 0, sinDerechoaCredito INTEGER DEFAULT 0, conCreditoFiscal INTEGER DEFAULT 0, mImpuestoEspecifico1 INTEGER, mImpuestoEspecifico2 INTEGER, impuestoEspecificoFijo INTEGER, impuestoEspecificoVariable INTEGER, M3 TEXT, CodImpuesto2 TEXT, montoImpuesto2 INTEGER, codImpuesto3 TEXT, montoImpuesto3 INTEGER, contabilizado INTEGER DEFAULT 0, idUsuario INTEGER DEFAULT 0)''')
 
 cursor.execute(''' CREATE TABLE IF NOT EXISTS usuario ( id INTEGER PRIMARY KEY, username TEXT, pass TEXT, activo INTEGER DEFAULT 1)  ''')
 
-cursor.execute(''' CREATE TABLE IF NOT EXISTS empresas ( id INTEGER PRIMARY KEY AUTOINCREMENT, rut TEXT, razonSocial TEXT) ''')
+cursor.execute(''' CREATE TABLE IF NOT EXISTS empresas ( rut TEXT, razonSocial TEXT) ''')
 
 cursor.execute(''' CREATE TABLE IF NOT EXISTS bitacora ( id INTEGER PRIMARY KEY, fecha TEXT,tipo INTEGER, evento TEXT, so TEXT, idUsuario INTEGER DEFAULT 0) ''')
 
@@ -33,7 +33,7 @@ class tabla(object):
 	_identValue = None
 	def getId(self):pass
 	def save(self):
-		self.conexion = sqlite3.connect('prueba1.db')
+		self.conexion = sqlite3.connect('prueba.db')
 		self.consulta = self.conexion.cursor()
 		if self._esNuevo:
 			self.insertar(self._listaDeCambio, self.__class__.__name__)
@@ -107,12 +107,8 @@ class tabla(object):
 
 
 class empresas(tabla):
-	_id = 0
-	_rut = ""
-	_rS = ""
-	@property
-	def id(self):
-		return self._id
+	_rut = None
+	_rS = None
 	@property
 	def rut(self):
 		return self._rut
@@ -126,17 +122,15 @@ class empresas(tabla):
 		print "cambios : ", self._listaDeCambio
 	def getId(self):
 		return self._rut
-	def getId(self):
-		ident = "SELECT id FROM empresas WHERE rut = ?"
-		tupla = (self.rut,)
-		if(super.consulta.execute(ident, tupla)):
-			return super.consulta.fetchone()[0]
-			
-	def __init__(self, rut, id=0, rs="", esNuevo = True):
+	#@rut.setter
+	#def rut(self, data):
+	#	self._rut = data
+	#	super._dicc["rut"] = (data, "rut")
+	def __init__(self, rut, rs="", esNuevo = True):
 		self._rut = rut
 		self._rS = rs
 		if esNuevo:
-			conexion = sqlite3.connect('prueba1.db')
+			conexion = sqlite3.connect('prueba.db')
 			consulta = conexion.cursor()
 			exist = '''
 			SELECT COUNT(*) FROM empresas
@@ -145,7 +139,8 @@ class empresas(tabla):
 			tuplaRut = (rut,)
 			if (consulta.execute(exist, tuplaRut)):
 				count = consulta.fetchone()
-				self._ident = "id"
+				self._ident = "rut"
+				self._identValue = rut
 				if count[0] == 0:
 					self._listaDeCambio={"rut":(rut, "rut"), "razonSocial":(rs,"text")}
 					self._esNuevo = True
@@ -158,20 +153,10 @@ class empresas(tabla):
 			consulta.close()
 			conexion.close()
 		else:
-			conexion = sqlite3.connect('prueba1.db')
-			consulta = conexion.cursor()
-			sql = "SELECT * FROM empresas WHERE rut = ?"
-			tupla = (self.rut,)
-			if(super.consulta.execute(ident, tupla)):
-				row = consulta.fetchone()[0]
-				self._id = row[0]
-				self._rut = row[1]
-				self._rS = row[2]
-				self._ident = "id"
-				self._listaDeCambio = {}
-				self._esNuevo = False
-			consulta.close()
-			conexion.close()
+			self._ident = "rut"
+			self._identValue = rut
+			self._listaDeCambio = {}
+			self._esNuevo = False
 
 class facturas(tabla):
 	_id = 0
@@ -182,8 +167,10 @@ class facturas(tabla):
 	_nulo = 0
 	_correlativo = 0
 	_fecha = ""
-	_emisor = 0
-	_receptor = 0
+	_rutEmisor = ""			# obligatorio cuando se instancia
+	_nomEmisor = ""
+	_rutReceptor = ""		# obligatorio cuando se instancia
+	_nomReceptor = ""
 	_montoExento = 0
 	_montoAfecto = 0
 	_montoIVA = 0
@@ -267,11 +254,27 @@ class facturas(tabla):
 		self._listaDeCambio['fecha'] = (data, 'text')
 		print 'cambio: ',self._listaDeCambio
 	@property
-	def emisor(self):
+	def rutEmisor(self):
 		return self._rutEmisor
 	@property
-	def receptor(self):
+	def nomEmisor(self):
+		return self._nomEmisor
+	@nomEmisor.setter
+	def nomEmisor(self, data):
+		self._nomEmisor = data
+		self._listaDeCambio['nomEmisor'] = (data, 'text')
+		print 'cambio: ',self._listaDeCambio
+	@property
+	def rutReceptor(self):
 		return self._rutReceptor
+	@property
+	def nomReceptor(self):
+		return self._nomReceptor
+	@nomReceptor.setter
+	def nomReceptor(self, data):
+		self._nomReceptor = data
+		self._listaDeCambio['nomReceptor'] = (data, 'text')
+		print 'cambio: ',self._listaDeCambio
 	@property
 	def montoExento(self):
 		return self._montoExento
@@ -482,7 +485,7 @@ class facturas(tabla):
 	def getId(self):
 		ident = "SELECT id FROM facturas WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?"
 		tupla = (self._venta, self._numDocumento, self._rutEmisor)
-		if(super.consulta.execute(ident, tupla)):
+		if(super.consulta.execute(ident, lista)):
 			return super.consulta.fetchone()[0]
 		
 	def __init__(self, venta, numDocumento, rutReceptor, rutEmisor, sucursal=1, id=0,
@@ -493,17 +496,14 @@ class facturas(tabla):
 		
 		self._venta = venta
 		self._numDocumento = numDocumento
+		self._rutReceptor = rutReceptor	
+		self._rutEmisor = rutEmisor
 		if esNuevo:
-			conexion = sqlite3.connect('prueba1.db')
+			conexion = sqlite3.connect('prueba.db')
 			consulta = conexion.cursor()
-			try:
-				emisor = empresas(rut = rutEmisor, nombre = nomEmisor)
-				receptor = empresas(rut = rutReceptor, nombre = nomReceptor)
-			except:
-				raise Exception("Error al intentar crear emisor y receptor")
 			exist = '''
 			SELECT COUNT(*) FROM facturas
-			WHERE venta = ? AND numDocumento = ? AND emisor = ?
+			WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?
 			'''
 			lista = tuple([venta, numDocumento, rutEmisor])
 			if (consulta.execute(exist, lista)):
@@ -511,6 +511,7 @@ class facturas(tabla):
 				self._ident = "id"
 				if count[0] == 0:
 					self._sucursal = sucursal
+					self._id = id
 					self._TipoDocumento = TipoDocumento
 					self._nulo = nulo
 					self._fecha = fecha
@@ -573,7 +574,7 @@ class facturas(tabla):
 			consulta.close()
 			conexion.close()
 		else:
-			conexion = sqlite3.connect('prueba1.db')
+			conexion = sqlite3.connect('prueba.db')
 			consulta = conexion.cursor()
 			sql = "SELECT * FROM facturas WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?"
 			tupla = (venta, numDocumento, rutEmisor)
@@ -618,6 +619,7 @@ class facturas(tabla):
 				self._idUsuario =row[35] 
 			
 				self._ident = "id"
+				self._identVale = self._id
 					
 				self._listaDeCambio = {}
 				self._esNuevo = False
@@ -728,7 +730,7 @@ def validarTipo(dato, tipo):
 	return True
 
 def obtenerCompras(empresa):
-	conexion = sqlite3.connect('prueba1.db')
+	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	#consulta sql donde rutReceptor
@@ -779,7 +781,7 @@ def obtenerCompras(empresa):
 	
 
 def obtenerVentas(empresa):
-	conexion = sqlite3.connect('prueba1.db')
+	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	#consulta sql donde rutEmisor
@@ -794,7 +796,7 @@ def obtenerVentas(empresa):
 	
 
 prueba = empresas("17920814-8","mi mami")
-#obtenerVentas(prueba)
+obtenerVentas(prueba)
 #prueba.rS=u"la empresa del Cristián"		
 #prueba = facturas(venta = 0, numDocumento = 8,rutEmisor = "17849210-1", rutReceptor = "8953221-3", esNuevo = False)
 #prueba.fecha="2015-12-17"
