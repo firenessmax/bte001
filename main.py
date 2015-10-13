@@ -18,6 +18,8 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
+debug = True
+
 class AgregarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
@@ -148,10 +150,13 @@ class MainWindow(QtGui.QMainWindow):
         self.filtrar_slot = self.filtrar
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+
         self.ui.tableWidget_Compras.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Compras.customContextMenuRequested.connect(self.clicked)
         self.ui.tableWidget_Ventas.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Ventas.customContextMenuRequested.connect(self.clicked)
+        self.updateEmpresas()
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
         self.show()
@@ -193,6 +198,7 @@ class MainWindow(QtGui.QMainWindow):
         row = tabla.rowAt(position.y())
         allRows = tabla.columnCount()
         for i in range(0, allRows):
+            print "i: ",i
             print tabla.item(row,i).text()
         if action == editarAction:
             print "Editars"
@@ -246,11 +252,12 @@ class MainWindow(QtGui.QMainWindow):
         for i in range(tabla.verticalHeader().count()):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
+        
     def filtrar(self, data):
         tabla = self.ui.tableWidget_Compras
         if(self.ui.tabWidget_2.currentIndex()==1):
             tabla = self.ui.tableWidget_Ventas
-        documentos = DBController.obtenerLista(tabla.objectName(), data)
+        documentos = DBController.obtenerLista(tabla.objectName(), str(data))
         tabla.clearContents()
         tabla.setRowCount(len(documentos))
         for i in range(len(documentos)):
@@ -259,6 +266,11 @@ class MainWindow(QtGui.QMainWindow):
         
         print "filtrar!!!!!!!"
         print "data: %s"%data
+    def updateEmpresas(self):
+        self.ui.filtrarEmpresaComboBox.clear()
+        self.ui.filtrarEmpresaComboBox.addItem("Todas")
+        for e in DBController.getEmpresas():
+            self.ui.filtrarEmpresaComboBox.addItem(e)
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = MainWindow()

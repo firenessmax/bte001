@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(755, 508)
+        MainWindow.resize(760, 508)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/barcode.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -34,9 +34,10 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setMargin(0)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.top = QtGui.QFrame(self.centralwidget)
-        self.top.setMaximumSize(QtCore.QSize(16777215, 110))
+        self.top.setMaximumSize(QtCore.QSize(16777215, 130))
         self.top.setStyleSheet(_fromUtf8("#top{\n"
 "    background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);\n"
 "}\n"
@@ -48,7 +49,7 @@ class Ui_MainWindow(object):
 "}*/"))
         self.top.setObjectName(_fromUtf8("top"))
         self.gridLayout_3 = QtGui.QGridLayout(self.top)
-        self.gridLayout_3.setContentsMargins(0, 10, 0, 0)
+        self.gridLayout_3.setMargin(0)
         self.gridLayout_3.setSpacing(0)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.tabWidget_4 = QtGui.QTabWidget(self.top)
@@ -57,11 +58,12 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tabWidget_4.sizePolicy().hasHeightForWidth())
         self.tabWidget_4.setSizePolicy(sizePolicy)
+        self.tabWidget_4.setMinimumSize(QtCore.QSize(0, 100))
         self.tabWidget_4.setMaximumSize(QtCore.QSize(16777215, 100))
         self.tabWidget_4.setStyleSheet(_fromUtf8("\n"
 "QTabWidget::pane { /* The tab widget frame */\n"
 "    border:0;\n"
-"    background-color:white;\n"
+"    background-color: #fafafa;\n"
 "}\n"
 "QTabWidget::tab-bar {\n"
 "    left: 10px;\n"
@@ -177,24 +179,74 @@ class Ui_MainWindow(object):
         self.tab_configurar_3 = QtGui.QWidget()
         self.tab_configurar_3.setObjectName(_fromUtf8("tab_configurar_3"))
         self.tabWidget_4.addTab(self.tab_configurar_3, _fromUtf8(""))
-        self.gridLayout_3.addWidget(self.tabWidget_4, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.tabWidget_4, 1, 0, 1, 1)
+        self.frame = QtGui.QFrame(self.top)
+        self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame.setObjectName(_fromUtf8("frame"))
+        self.gridLayout_2 = QtGui.QGridLayout(self.frame)
+        self.gridLayout_2.setContentsMargins(-1, 2, -1, 0)
+        self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
+        self.toolButton = QtGui.QToolButton(self.frame)
+        self.toolButton.setObjectName(_fromUtf8("toolButton"))
+        self.gridLayout_2.addWidget(self.toolButton, 0, 1, 1, 1)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem1, 0, 0, 1, 1)
+        self.toolButton_2 = QtGui.QToolButton(self.frame)
+        self.toolButton_2.setObjectName(_fromUtf8("toolButton_2"))
+        self.gridLayout_2.addWidget(self.toolButton_2, 0, 2, 1, 1)
+        self.toolButton_3 = QtGui.QToolButton(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(-1)
+        self.toolButton_3.setFont(font)
+        self.toolButton_3.setStyleSheet(_fromUtf8("QToolButton{\n"
+"    background: #f44336;\n"
+"    padding: 0px 15px;\n"
+"    color: white;\n"
+"    font-size: 16px;\n"
+"}"))
+        self.toolButton_3.setAutoRaise(True)
+        self.toolButton_3.setObjectName(_fromUtf8("toolButton_3"))
+        self.gridLayout_2.addWidget(self.toolButton_3, 0, 3, 1, 1)
+        self.gridLayout_3.addWidget(self.frame, 0, 0, 1, 1)
         self.verticalLayout.addWidget(self.top)
-        self.gridLayout = QtGui.QGridLayout()
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setContentsMargins(11, -1, 0, -1)
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.filtrarEmpresaLabel = QtGui.QLabel(self.centralwidget)
+        self.filtrarEmpresaLabel.setObjectName(_fromUtf8("filtrarEmpresaLabel"))
+        self.horizontalLayout_3.addWidget(self.filtrarEmpresaLabel)
         self.filtrarEmpresaComboBox = QtGui.QComboBox(self.centralwidget)
         self.filtrarEmpresaComboBox.setObjectName(_fromUtf8("filtrarEmpresaComboBox"))
         self.filtrarEmpresaComboBox.addItem(_fromUtf8(""))
         self.filtrarEmpresaComboBox.addItem(_fromUtf8(""))
         self.filtrarEmpresaComboBox.addItem(_fromUtf8(""))
         self.filtrarEmpresaComboBox.addItem(_fromUtf8(""))
-        self.gridLayout.addWidget(self.filtrarEmpresaComboBox, 0, 1, 1, 1)
-        self.filtrarEmpresaLabel = QtGui.QLabel(self.centralwidget)
-        self.filtrarEmpresaLabel.setObjectName(_fromUtf8("filtrarEmpresaLabel"))
-        self.gridLayout.addWidget(self.filtrarEmpresaLabel, 0, 0, 1, 1)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem1, 0, 2, 1, 1)
-        self.verticalLayout.addLayout(self.gridLayout)
+        self.horizontalLayout_3.addWidget(self.filtrarEmpresaComboBox)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem2)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.tabWidget_2 = QtGui.QTabWidget(self.centralwidget)
+        self.tabWidget_2.setStyleSheet(_fromUtf8("QTabWidget::pane { /* The tab widget frame */\n"
+"    border:0;\n"
+"    background-color: #fafafa;\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    background: #fafafa;\n"
+"    border: 1px solid #777777;\n"
+"    border-top: 0;\n"
+"    padding: 4px 10px;\n"
+"    \n"
+"}\n"
+"\n"
+"QTabBar::tab{\n"
+"    min-width: 35ex;\n"
+"}\n"
+"\n"
+"QTabWidget::tab-bar {\n"
+"    left: 9px;\n"
+"}"))
         self.tabWidget_2.setTabPosition(QtGui.QTabWidget.South)
         self.tabWidget_2.setUsesScrollButtons(True)
         self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
@@ -319,7 +371,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.tabWidget_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 755, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 760, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -335,6 +387,9 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.toolButton_5, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.exportar_slot)
         QtCore.QObject.connect(self.filtrarEmpresaComboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(QString)")), MainWindow.filtrar_slot)
         QtCore.QObject.connect(self.tabWidget_2, QtCore.SIGNAL(_fromUtf8("currentChanged(int)")), MainWindow.documentoCambiarTab_slot)
+        QtCore.QObject.connect(self.toolButton_3, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.close)
+        QtCore.QObject.connect(self.toolButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.showFullScreen)
+        QtCore.QObject.connect(self.toolButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.showMinimized)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -348,11 +403,14 @@ class Ui_MainWindow(object):
         self.toolButton_5.setText(_translate("MainWindow", "Exportar Excel", None))
         self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_exportar_3), _translate("MainWindow", "Exportar Excel", None))
         self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_configurar_3), _translate("MainWindow", "Configurar", None))
+        self.toolButton.setText(_translate("MainWindow", "...", None))
+        self.toolButton_2.setText(_translate("MainWindow", "...", None))
+        self.toolButton_3.setText(_translate("MainWindow", "x", None))
+        self.filtrarEmpresaLabel.setText(_translate("MainWindow", "Filtrar Empresa", None))
         self.filtrarEmpresaComboBox.setItemText(0, _translate("MainWindow", "Todas", None))
         self.filtrarEmpresaComboBox.setItemText(1, _translate("MainWindow", "Empresa1", None))
         self.filtrarEmpresaComboBox.setItemText(2, _translate("MainWindow", "Empresa2", None))
         self.filtrarEmpresaComboBox.setItemText(3, _translate("MainWindow", "Empresa3", None))
-        self.filtrarEmpresaLabel.setText(_translate("MainWindow", "Filtrar Empresa", None))
         self.tableWidget_Compras.setSortingEnabled(True)
         item = self.tableWidget_Compras.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1", None))
