@@ -66,4 +66,3 @@ def iniciarDB():
 	
 	conexion.close()
 	
-iniciarDB()

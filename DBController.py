@@ -1,6 +1,7 @@
 from PyQt4 import QtCore
 import time
-
+import DB.tableCreate as DB
+import DB.facturas as F
 def obtenerLista(tabla, empresa):
     # Devolver lista de facturas con el formato
     # [Contabilizado, Sucursal, Tipo Documento, Numero Documento, Fecha, Emisor, RS Emisor, Receptor, RS Receptor', Monto Exento, Monto Afecto, Monto IVA, Monto Total, Glosa, Contracuenta, id]
@@ -14,6 +15,15 @@ def obtenerLista(tabla, empresa):
         # consulta Ventas
         pass
     print "Filtro Empresa: %s"%empresa
+    
+    DB.iniciarDB()
+    prueba = F.facturas(6,9,"17920814-8","8953221-3", nomEmisor = "Mami")
+    #prueba.nomEmisor="mamaita ta ta"
+    #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
+    #obtenerVentas(prueba)
+    
+    prueba.save()
+    
     fac = [['Si', 'Maipu', 'Factura', '90182309', '2002-6-12', '1898123-k', 'Luchos','a', '2', '3', '4', '5', '6', '7', '8', '1'],
             ['No', 'Cerrillos', 'Boletita', '12383', '2011-11-12', '9281923-0', 'Pablos','a', '2', '3', '4', '5', '6', '7', '8', '2'],
             ['Si', 'Estacion Central', 'Factura', '982389', '2014-12-12', '22929213-3', 'Nestors','a', '2', '3', '4', '5', '6', '7', '8', '3'],
