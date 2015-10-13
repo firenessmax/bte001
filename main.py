@@ -150,7 +150,8 @@ class MainWindow(QtGui.QMainWindow):
         self.filtrar_slot = self.filtrar
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint )
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
         self.ui.tableWidget_Compras.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Compras.customContextMenuRequested.connect(self.clicked)

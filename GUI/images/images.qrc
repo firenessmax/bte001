@@ -8,5 +8,7 @@
     <file>Error.png</file>
     <file>excel.png</file>
     <file>pregunta.png</file>
+    <file>maximize.png</file>
+    <file>resize.png</file>
   </qresource>
 </RCC>
