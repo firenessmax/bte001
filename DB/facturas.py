@@ -422,6 +422,7 @@ class facturas(tabla):
 							"idUsuario":(idUsuario, "int")
 							}
 					self._esNuevo = True
+				
 				else:
 					self._listaDeCambio = {}
 					self._esNuevo = False
@@ -475,7 +476,7 @@ class facturas(tabla):
 				self._idUsuario =row[35] 
 			
 				self._ident = "id"
-				self._identVale = self._id
+				self._identValue = self._id
 					
 				self._listaDeCambio = {}
 				self._esNuevo = False
@@ -483,7 +484,7 @@ class facturas(tabla):
 			conexion.close()
 			
 			
-prueba = facturas(0,9,"17920814-8","8953221-3", nomEmisor = "Mami")
+prueba = facturas(0,9,"17920814-8","8953221-3", nomEmisor = "Mami", esNuevo = False)
 prueba.nomEmisor="mamaita ta ta"
 #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
 #obtenerVentas(prueba)

@@ -77,6 +77,7 @@ class tabla(object):
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= '"+self._identValue+"'"
 			else:
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+str(self._identValue)+""
+			print "sql : ", sql
 			argumentos = tuple(argumentos)
 			print "args : ", argumentos
 			
