@@ -160,11 +160,21 @@ class MainWindow(QtGui.QMainWindow):
         self.updateEmpresas()
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
-        self.ui.label.mousePressEvent = self.botones
+        self.ui.labelClose.mousePressEvent = self.cerrar
+        self.ui.labelMinimize.mouseReleaseEvent = self.minimizar
+        self.moving = False
+        self.ui.frame.mousePressEvent = self._mousePressEvent
+        self.ui.frame.mouseMoveEvent = self._mouseMoveEvent
         self.show()
-    def botones(self, data):
+        
+    def cerrar(self, data):
         print "Cerrars"
         self.close()
+    def minimizar(self, data):
+        print "Minimize"
+        self.ui.labelMinimize.repaint()
+        
+        self.showMinimized()
     def cambiarTab(self, pos):
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #43a047  , stop:.2 #388e3c);",
@@ -276,6 +286,16 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.filtrarEmpresaComboBox.addItem("Todas")
         for e in DBController.getEmpresas():
             self.ui.filtrarEmpresaComboBox.addItem(e)
+    
+    def _mousePressEvent(self,event):
+
+        if event.button() == QtCore.Qt.LeftButton:
+            self.moving = True; self.offset = event.pos()
+
+    def _mouseMoveEvent(self,event):
+        if self.moving: self.move(event.globalPos()-self.offset)
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = MainWindow()

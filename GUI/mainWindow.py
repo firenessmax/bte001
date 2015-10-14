@@ -93,6 +93,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.toolButton = QtGui.QToolButton(self.frame)
+        self.toolButton.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setPointSize(-1)
         self.toolButton.setFont(font)
@@ -113,13 +114,14 @@ class Ui_MainWindow(object):
 "}"))
         self.toolButton.setAutoRaise(True)
         self.toolButton.setObjectName(_fromUtf8("toolButton"))
-        self.gridLayout_2.addWidget(self.toolButton, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.toolButton, 1, 2, 1, 1)
         self.toolButton_2 = QtGui.QToolButton(self.frame)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.toolButton_2.sizePolicy().hasHeightForWidth())
         self.toolButton_2.setSizePolicy(sizePolicy)
+        self.toolButton_2.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setPointSize(-1)
         self.toolButton_2.setFont(font)
@@ -144,8 +146,9 @@ class Ui_MainWindow(object):
         self.toolButton_2.setIconSize(QtCore.QSize(14, 14))
         self.toolButton_2.setAutoRaise(True)
         self.toolButton_2.setObjectName(_fromUtf8("toolButton_2"))
-        self.gridLayout_2.addWidget(self.toolButton_2, 1, 4, 1, 1)
+        self.gridLayout_2.addWidget(self.toolButton_2, 1, 5, 1, 1)
         self.toolButton_4 = QtGui.QToolButton(self.frame)
+        self.toolButton_4.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setPointSize(-1)
         self.toolButton_4.setFont(font)
@@ -170,7 +173,7 @@ class Ui_MainWindow(object):
         self.toolButton_4.setIconSize(QtCore.QSize(14, 14))
         self.toolButton_4.setAutoRaise(True)
         self.toolButton_4.setObjectName(_fromUtf8("toolButton_4"))
-        self.gridLayout_2.addWidget(self.toolButton_4, 1, 2, 1, 1)
+        self.gridLayout_2.addWidget(self.toolButton_4, 1, 3, 1, 1)
         self.toolButton_3 = QtGui.QToolButton(self.frame)
         self.toolButton_3.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
@@ -202,12 +205,51 @@ class Ui_MainWindow(object):
         self.toolButton_3.setAutoRaise(True)
         self.toolButton_3.setArrowType(QtCore.Qt.NoArrow)
         self.toolButton_3.setObjectName(_fromUtf8("toolButton_3"))
-        self.gridLayout_2.addWidget(self.toolButton_3, 1, 5, 1, 1)
-        self.label = QtGui.QLabel(self.frame)
-        self.label.setMinimumSize(QtCore.QSize(0, 24))
-        self.label.setStyleSheet(_fromUtf8("QLabel{\n"
+        self.gridLayout_2.addWidget(self.toolButton_3, 1, 6, 1, 1)
+        self.labelClose = QtGui.QLabel(self.frame)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.labelClose.sizePolicy().hasHeightForWidth())
+        self.labelClose.setSizePolicy(sizePolicy)
+        self.labelClose.setMinimumSize(QtCore.QSize(0, 25))
+        self.labelClose.setStyleSheet(_fromUtf8("QLabel{\n"
 "    background: none;\n"
 "    padding: 0px 15px;\n"
+"    margin:0;\n"
+"    color: #dddddd;\n"
+"\n"
+"    border-top-right-radius: 3px;\n"
+"    font-size:14px;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"QLabel:hover{\n"
+"\n"
+"    border-top-right-radius: 3px;\n"
+"    background: #f44336;\n"
+"    padding: 0px 15px;\n"
+"    color: white;\n"
+"    font-size: 14px;\n"
+"}"))
+        self.labelClose.setFrameShape(QtGui.QFrame.NoFrame)
+        self.labelClose.setFrameShadow(QtGui.QFrame.Raised)
+        self.labelClose.setLineWidth(0)
+        self.labelClose.setObjectName(_fromUtf8("labelClose"))
+        self.gridLayout_2.addWidget(self.labelClose, 1, 7, 1, 1)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem, 1, 0, 1, 1)
+        self.labelMinimize = QtGui.QLabel(self.frame)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.labelMinimize.sizePolicy().hasHeightForWidth())
+        self.labelMinimize.setSizePolicy(sizePolicy)
+        self.labelMinimize.setMinimumSize(QtCore.QSize(0, 25))
+        self.labelMinimize.setStyleSheet(_fromUtf8("QLabel{\n"
+"    background: none;\n"
+"    padding: 0px 10px;\n"
 "    margin:0;\n"
 "    color: #dddddd;\n"
 "    font-size:14px;\n"
@@ -216,18 +258,12 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "QLabel:hover{\n"
-"    background: #f44336;\n"
-"    padding: 0px 15px;\n"
+"    background: #cccccc;\n"
 "    color: white;\n"
 "    font-size: 14px;\n"
 "}"))
-        self.label.setFrameShape(QtGui.QFrame.NoFrame)
-        self.label.setFrameShadow(QtGui.QFrame.Raised)
-        self.label.setLineWidth(0)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.gridLayout_2.addWidget(self.label, 1, 6, 1, 1)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem, 1, 0, 1, 1)
+        self.labelMinimize.setObjectName(_fromUtf8("labelMinimize"))
+        self.gridLayout_2.addWidget(self.labelMinimize, 1, 1, 1, 1)
         self.gridLayout_3.addWidget(self.frame, 0, 0, 1, 1)
         self.tabWidget_4 = QtGui.QTabWidget(self.top)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -411,7 +447,7 @@ class Ui_MainWindow(object):
         self.tableWidget_Compras.setTextElideMode(QtCore.Qt.ElideLeft)
         self.tableWidget_Compras.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget_Compras.setWordWrap(True)
-        self.tableWidget_Compras.setCornerButtonEnabled(False)
+        self.tableWidget_Compras.setCornerButtonEnabled(True)
         self.tableWidget_Compras.setRowCount(1)
         self.tableWidget_Compras.setColumnCount(16)
         self.tableWidget_Compras.setObjectName(_fromUtf8("tableWidget_Compras"))
@@ -419,6 +455,9 @@ class Ui_MainWindow(object):
         self.tableWidget_Compras.setVerticalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
+        font = QtGui.QFont()
+        font.setKerning(True)
+        item.setFont(font)
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         item.setForeground(brush)
@@ -459,7 +498,7 @@ class Ui_MainWindow(object):
         self.tableWidget_Compras.setHorizontalHeaderItem(14, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_Compras.setHorizontalHeaderItem(15, item)
-        self.tableWidget_Compras.horizontalHeader().setVisible(False)
+        self.tableWidget_Compras.horizontalHeader().setVisible(True)
         self.tableWidget_Compras.horizontalHeader().setCascadingSectionResizes(True)
         self.tableWidget_Compras.horizontalHeader().setDefaultSectionSize(118)
         self.tableWidget_Compras.horizontalHeader().setMinimumSectionSize(118)
@@ -554,7 +593,8 @@ class Ui_MainWindow(object):
         self.toolButton_2.setText(_translate("MainWindow", "...", None))
         self.toolButton_4.setText(_translate("MainWindow", "...", None))
         self.toolButton_3.setText(_translate("MainWindow", "x", None))
-        self.label.setText(_translate("MainWindow", "x", None))
+        self.labelClose.setText(_translate("MainWindow", "x", None))
+        self.labelMinimize.setText(_translate("MainWindow", "_", None))
         self.escanearCompra.setText(_translate("MainWindow", "Escanear Documentos Compra", None))
         self.escanearVenta.setText(_translate("MainWindow", "Escanear Documentos Venta", None))
         self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_escanear_3), _translate("MainWindow", "Escanear", None))
