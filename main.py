@@ -160,7 +160,11 @@ class MainWindow(QtGui.QMainWindow):
         self.updateEmpresas()
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
+        self.ui.label.mousePressEvent = self.botones
         self.show()
+    def botones(self, data):
+        print "Cerrars"
+        self.close()
     def cambiarTab(self, pos):
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #43a047  , stop:.2 #388e3c);",
