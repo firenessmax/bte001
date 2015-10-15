@@ -58,15 +58,15 @@ class AgregarDocumentoModal(QtGui.QDialog):
         # Datos
         # Limitar a numeros o alfanumerico
         
-        self.datos["Numero Documento"] = self.ui.nDocumentoLineEdit.text()
-        self.datos["Emisor"] = self.ui.emisorLineEdit.text()
-        self.datos["Receptor"] = self.ui.receptorLineEdit.text()
-        self.datos["Fecha"] = self.ui.fechaDateEdit.text()
-        self.datos["Sucursal"] = self.ui.sucursalLineEdit.text()
-        self.datos["Glosa"] = self.ui.glosaLineEdit.text()
-        self.datos["Monto Exento"] = self.ui.montoExcentoSpinBox.value()
-        self.datos["Cuenta"] = self.ui.cuentaProveedoresClienteLineEdit.text()
-        self.datos["Contracuenta"] = self.ui.contracuentaLineEdit.text()
+        self.datos["Numero Documento"] = str(self.ui.nDocumentoLineEdit.text())
+        self.datos["Emisor"] = str(self.ui.emisorLineEdit.text())
+        self.datos["Receptor"] = str(self.ui.receptorLineEdit.text())
+        self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
+        self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
+        self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
+        self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
+        self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
+        self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
         
         # Si uno de los datos esta vacio
         # TODO: Cambiar color al encontrar error
@@ -81,6 +81,8 @@ class AgregarDocumentoModal(QtGui.QDialog):
         if(len(fallas)!=0):
             QtGui.QMessageBox.about(self, "Datos incompletos", "Faltan datos a ingresar en los siguientes campos:\n%s"%error)
         else:
+            # Guardando
+            DBController.guardarFactura(self.datos, self.tipo)
             self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
@@ -91,9 +93,9 @@ class AgregarDocumentoModal(QtGui.QDialog):
         
         if(self.datos == None):
             self.datos = {}
-            self.datos["Numero Documento"] = "912309123"
-            self.datos["Emisor"] = "9123123-k"
-            self.datos["Receptor"] = "9123123-2"
+            self.datos["Numero Documento"] = "31231231"
+            self.datos["Emisor"] = "12544959-k"
+            self.datos["Receptor"] = "18598138-k"
             self.datos["Fecha"] = "2013-12-12"
             
             self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
@@ -146,7 +148,7 @@ class EscanearModal(QtGui.QDialog):
     def encontrado(self):
         #Codigo encontrado, mostrar nuevo escanearDialog
         self.thread.parar = True
-        my_dialog = AgregarDocumentoModal(self.tipo, None) 
+        my_dialog = AgregarDocumentoModal(self.tipo, None)
         self.thread.start()
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
@@ -191,9 +193,9 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showMinimized()
     def cambiarTab(self, pos):
-        estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);",
-                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #43a047  , stop:.2 #388e3c);",
-                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #9e9e9e , stop:.2 #888888);"]
+        estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(2, 136, 209, 230) , stop:.2 rgba(25, 118, 210, 250));",
+                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(67, 160, 71, 230)  , stop:.2 rgba(56, 142, 60, 250));",
+                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(158, 158, 158, 230) , stop:.2 rgba(136, 136, 136, 250));"]
         resto = "#top{%s border-top-left-radius:3px; border-top-right-radius: 3px;}"
         self.ui.top.setStyleSheet(resto%(estilos[pos]))
         print pos

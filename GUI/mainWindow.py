@@ -48,14 +48,14 @@ class Ui_MainWindow(object):
 "    \n"
 "    border-top-left-radius: 4px;\n"
 "    border-top-right-radius: 4px;\n"
-"    background: #eaeaea;\n"
+"    /*background: #eaeaea;*/\n"
 "}"))
         self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.frame_2)
         self.verticalLayout_2.setMargin(0)
-        self.verticalLayout_2.setSpacing(6)
+        self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.top = QtGui.QFrame(self.frame_2)
         self.top.setMinimumSize(QtCore.QSize(0, 134))
@@ -64,7 +64,7 @@ class Ui_MainWindow(object):
         font.setStyleStrategy(QtGui.QFont.PreferAntialias)
         self.top.setFont(font)
         self.top.setStyleSheet(_fromUtf8("#top{\n"
-"    background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);\n"
+"    background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(2, 136, 209, 230) , stop:.2 rgba(25, 118, 210, 250));\n"
 "\n"
 "    border-top-left-radius:3px;\n"
 "    border-top-right-radius: 3px;\n"
@@ -91,7 +91,7 @@ class Ui_MainWindow(object):
         self.frame.setMidLineWidth(0)
         self.frame.setObjectName(_fromUtf8("frame"))
         self.gridLayout_2 = QtGui.QGridLayout(self.frame)
-        self.gridLayout_2.setMargin(0)
+        self.gridLayout_2.setContentsMargins(6, 0, 0, 0)
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.toolButton_2 = QtGui.QToolButton(self.frame)
@@ -115,17 +115,17 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "QToolButton:hover{\n"
-"    background: #cccccc;\n"
+"    background:  rgba(255, 255, 255, 153);\n"
 "    color: white;\n"
 "    font-size: 14px;\n"
 "}"))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/maximize.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_2.setIcon(icon1)
-        self.toolButton_2.setIconSize(QtCore.QSize(14, 14))
+        self.toolButton_2.setIconSize(QtCore.QSize(12, 12))
         self.toolButton_2.setAutoRaise(True)
         self.toolButton_2.setObjectName(_fromUtf8("toolButton_2"))
-        self.gridLayout_2.addWidget(self.toolButton_2, 1, 4, 1, 1)
+        self.gridLayout_2.addWidget(self.toolButton_2, 1, 7, 1, 1)
         self.toolButton_4 = QtGui.QToolButton(self.frame)
         self.toolButton_4.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
@@ -149,10 +149,10 @@ class Ui_MainWindow(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/resize.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_4.setIcon(icon2)
-        self.toolButton_4.setIconSize(QtCore.QSize(14, 14))
+        self.toolButton_4.setIconSize(QtCore.QSize(12, 12))
         self.toolButton_4.setAutoRaise(True)
         self.toolButton_4.setObjectName(_fromUtf8("toolButton_4"))
-        self.gridLayout_2.addWidget(self.toolButton_4, 1, 2, 1, 1)
+        self.gridLayout_2.addWidget(self.toolButton_4, 1, 5, 1, 1)
         self.labelClose = QtGui.QLabel(self.frame)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -167,7 +167,7 @@ class Ui_MainWindow(object):
 "    background: none;\n"
 "    padding: 0px 15px;\n"
 "    margin:0;\n"
-"    color: #dddddd;\n"
+"    color: #fafafa;\n"
 "\n"
 "    border-top-right-radius: 3px;\n"
 "    font-size:14px;\n"
@@ -187,9 +187,9 @@ class Ui_MainWindow(object):
         self.labelClose.setFrameShadow(QtGui.QFrame.Raised)
         self.labelClose.setLineWidth(0)
         self.labelClose.setObjectName(_fromUtf8("labelClose"))
-        self.gridLayout_2.addWidget(self.labelClose, 1, 5, 1, 1)
+        self.gridLayout_2.addWidget(self.labelClose, 1, 8, 1, 1)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem, 1, 0, 1, 1)
+        self.gridLayout_2.addItem(spacerItem, 1, 2, 1, 1)
         self.labelMinimize = QtGui.QLabel(self.frame)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -197,23 +197,40 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.labelMinimize.sizePolicy().hasHeightForWidth())
         self.labelMinimize.setSizePolicy(sizePolicy)
         self.labelMinimize.setMinimumSize(QtCore.QSize(0, 25))
+        font = QtGui.QFont()
+        font.setPointSize(-1)
+        font.setBold(False)
+        font.setWeight(50)
+        self.labelMinimize.setFont(font)
         self.labelMinimize.setStyleSheet(_fromUtf8("QLabel{\n"
 "    background: none;\n"
 "    padding: 0px 10px;\n"
 "    margin:0;\n"
-"    color: #dddddd;\n"
-"    font-size:14px;\n"
+"    color: #fafafa;\n"
+"    font-size:16px;\n"
 "}\n"
 "\n"
 "\n"
 "\n"
 "QLabel:hover{\n"
-"    background: #cccccc;\n"
+"    background:  rgba(255, 255, 255, 153);\n"
 "    color: white;\n"
 "    font-size: 14px;\n"
 "}"))
         self.labelMinimize.setObjectName(_fromUtf8("labelMinimize"))
-        self.gridLayout_2.addWidget(self.labelMinimize, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.labelMinimize, 1, 4, 1, 1)
+        self.toolButton = QtGui.QToolButton(self.frame)
+        self.toolButton.setIcon(icon)
+        self.toolButton.setAutoRaise(True)
+        self.toolButton.setObjectName(_fromUtf8("toolButton"))
+        self.gridLayout_2.addWidget(self.toolButton, 1, 0, 1, 1)
+        self.label = QtGui.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        self.label.setFont(font)
+        self.label.setStyleSheet(_fromUtf8("color:#fafafa;"))
+        self.label.setObjectName(_fromUtf8("label"))
+        self.gridLayout_2.addWidget(self.label, 1, 1, 1, 1)
         self.verticalLayout_4.addWidget(self.frame)
         self.tabWidget_4 = QtGui.QTabWidget(self.top)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -227,6 +244,9 @@ class Ui_MainWindow(object):
 "QTabWidget::pane { /* The tab widget frame */\n"
 "    border:0;\n"
 "    background-color: #fafafa;\n"
+"    \n"
+"    border-left:1px solid #aaaaaa;\n"
+"    border-right:1px solid #aaaaaa;\n"
 "}\n"
 "QTabWidget::tab-bar {\n"
 "    left: 10px;\n"
@@ -292,7 +312,7 @@ class Ui_MainWindow(object):
         self.escanearCompra.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.escanearCompra.setAutoRaise(False)
         self.escanearCompra.setObjectName(_fromUtf8("escanearCompra"))
-        self.formLayout_5.setWidget(0, QtGui.QFormLayout.LabelRole, self.escanearCompra)
+        self.formLayout_5.setWidget(1, QtGui.QFormLayout.LabelRole, self.escanearCompra)
         self.escanearVenta = QtGui.QToolButton(self.tab_escanear_3)
         self.escanearVenta.setMinimumSize(QtCore.QSize(0, 65))
         self.escanearVenta.setIcon(icon)
@@ -300,7 +320,7 @@ class Ui_MainWindow(object):
         self.escanearVenta.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.escanearVenta.setAutoRaise(False)
         self.escanearVenta.setObjectName(_fromUtf8("escanearVenta"))
-        self.formLayout_5.setWidget(0, QtGui.QFormLayout.FieldRole, self.escanearVenta)
+        self.formLayout_5.setWidget(1, QtGui.QFormLayout.FieldRole, self.escanearVenta)
         self.tabWidget_4.addTab(self.tab_escanear_3, _fromUtf8(""))
         self.tab_exportar_3 = QtGui.QWidget()
         self.tab_exportar_3.setObjectName(_fromUtf8("tab_exportar_3"))
@@ -360,13 +380,23 @@ class Ui_MainWindow(object):
         self.tabWidget_4.addTab(self.tab_configurar_3, _fromUtf8(""))
         self.verticalLayout_4.addWidget(self.tabWidget_4)
         self.verticalLayout_2.addWidget(self.top)
+        self.frame_3 = QtGui.QFrame(self.frame_2)
+        self.frame_3.setStyleSheet(_fromUtf8("#frame_3{ \n"
+"    background-color: #dddddd;\n"
+"    border-left:1px solid #aaaaaa;\n"
+"    border-right:1px solid #aaaaaa;\n"
+"}"))
+        self.frame_3.setObjectName(_fromUtf8("frame_3"))
+        self.verticalLayout_5 = QtGui.QVBoxLayout(self.frame_3)
+        self.verticalLayout_5.setContentsMargins(9, 6, 9, 4)
+        self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setContentsMargins(11, -1, 0, -1)
+        self.horizontalLayout_3.setContentsMargins(0, -1, 0, -1)
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.filtrarEmpresaLabel = QtGui.QLabel(self.frame_2)
+        self.filtrarEmpresaLabel = QtGui.QLabel(self.frame_3)
         self.filtrarEmpresaLabel.setObjectName(_fromUtf8("filtrarEmpresaLabel"))
         self.horizontalLayout_3.addWidget(self.filtrarEmpresaLabel)
-        self.filtrarEmpresaComboBox = QtGui.QComboBox(self.frame_2)
+        self.filtrarEmpresaComboBox = QtGui.QComboBox(self.frame_3)
         self.filtrarEmpresaComboBox.setObjectName(_fromUtf8("filtrarEmpresaComboBox"))
         self.filtrarEmpresaComboBox.addItem(_fromUtf8(""))
         self.filtrarEmpresaComboBox.addItem(_fromUtf8(""))
@@ -375,30 +405,63 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.filtrarEmpresaComboBox)
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
-        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
-        self.tabWidget_2 = QtGui.QTabWidget(self.frame_2)
+        self.toolButton_3 = QtGui.QToolButton(self.frame_3)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/pregunta.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButton_3.setIcon(icon6)
+        self.toolButton_3.setAutoRaise(True)
+        self.toolButton_3.setObjectName(_fromUtf8("toolButton_3"))
+        self.horizontalLayout_3.addWidget(self.toolButton_3)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_3)
+        self.tabWidget_2 = QtGui.QTabWidget(self.frame_3)
         self.tabWidget_2.setStyleSheet(_fromUtf8("QTabWidget::pane { /* The tab widget frame */\n"
+"   background: #fafafa;\n"
 "    border:0;\n"
-"    background-color: #fafafa;\n"
+"    border-left:1px solid qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #666666, stop:1 #dddddd)\n"
 "}\n"
 "\n"
 "QTabBar::tab:selected {\n"
 "    background: #fafafa;\n"
 "    border: 1px solid #777777;\n"
 "    border-top: 0;\n"
-"    padding: 4px 10px;\n"
-"    \n"
+"    padding: 4px 15px;\n"
+"    height:16px;\n"
+"    border-top-left-radius: 0;\n"
 "}\n"
 "\n"
+"\n"
 "QTabBar::tab{\n"
-"    min-width: 35ex;\n"
+"    height:10px;\n"
+"    padding: 4px 5px;\n"
+"    background: #dddddd;\n"
+"    border: 1px solid #666666;\n"
+"    border-top:3px solid qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #dddddd, stop:1 #999999);\n"
+"    min-width: 40ex;\n"
+"    border-top-left-radius: 1px;\n"
+"    border-bottom-left-radius: 2px;\n"
+"    border-bottom-right-radius: 2px;\n"
+"}\n"
+"QTabBar::tab:first:!selected {\n"
+"    border-right:0;\n"
+"    border-bottom-right-radius: 0px;\n"
+"}\n"
+"QTabBar::tab:last:!selected {\n"
+"    border-left:0;\n"
+"    border-bottom-left-radius: 0px;\n"
+"}\n"
+"\n"
+"QTabBar::tab:hover:!selected {\n"
+"    background: #dfdfee;\n"
 "}\n"
 "\n"
 "QTabWidget::tab-bar {\n"
-"    left: 9px;\n"
-"}"))
+"    left: 0px;\n"
+"}\n"
+""))
         self.tabWidget_2.setTabPosition(QtGui.QTabWidget.South)
         self.tabWidget_2.setUsesScrollButtons(True)
+        self.tabWidget_2.setDocumentMode(False)
+        self.tabWidget_2.setTabsClosable(False)
         self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
@@ -464,7 +527,7 @@ class Ui_MainWindow(object):
         self.tableWidget_Compras.setHorizontalHeaderItem(14, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_Compras.setHorizontalHeaderItem(15, item)
-        self.tableWidget_Compras.horizontalHeader().setVisible(True)
+        self.tableWidget_Compras.horizontalHeader().setVisible(False)
         self.tableWidget_Compras.horizontalHeader().setCascadingSectionResizes(True)
         self.tableWidget_Compras.horizontalHeader().setDefaultSectionSize(118)
         self.tableWidget_Compras.horizontalHeader().setMinimumSectionSize(118)
@@ -521,9 +584,8 @@ class Ui_MainWindow(object):
         self.tableWidget_Ventas.horizontalHeader().setMinimumSectionSize(118)
         self.horizontalLayout_2.addWidget(self.tableWidget_Ventas)
         self.tabWidget_2.addTab(self.tab_2, _fromUtf8(""))
-        self.verticalLayout_2.addWidget(self.tabWidget_2)
-        self.tabWidget_2.raise_()
-        self.top.raise_()
+        self.verticalLayout_5.addWidget(self.tabWidget_2)
+        self.verticalLayout_2.addWidget(self.frame_3)
         self.verticalLayout.addWidget(self.frame_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -531,10 +593,13 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setMaximumSize(QtCore.QSize(16777215, 6))
-        self.statusbar.setStyleSheet(_fromUtf8("    background:#eaeaea;\n"
+        self.statusbar.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.statusbar.setStyleSheet(_fromUtf8("QStatusBar{    background:#dddddd;\n"
 "    border-bottom-left-radius: 3px;\n"
-"    border-bottom-right-radius: 3px;"))
+"    border-bottom-right-radius: 3px;\n"
+"    border:1px solid #aaaaaa;\n"
+"    border-top:1px solid #cccccc;\n"
+"}"))
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
 
@@ -558,6 +623,8 @@ class Ui_MainWindow(object):
         self.toolButton_4.setText(_translate("MainWindow", "...", None))
         self.labelClose.setText(_translate("MainWindow", "x", None))
         self.labelMinimize.setText(_translate("MainWindow", "_", None))
+        self.toolButton.setText(_translate("MainWindow", "...", None))
+        self.label.setText(_translate("MainWindow", "Capturador CAMDE 0.9", None))
         self.escanearCompra.setText(_translate("MainWindow", "Escanear Documentos Compra", None))
         self.escanearVenta.setText(_translate("MainWindow", "Escanear Documentos Venta", None))
         self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_escanear_3), _translate("MainWindow", "Escanear", None))
@@ -573,6 +640,7 @@ class Ui_MainWindow(object):
         self.filtrarEmpresaComboBox.setItemText(1, _translate("MainWindow", "Empresa1", None))
         self.filtrarEmpresaComboBox.setItemText(2, _translate("MainWindow", "Empresa2", None))
         self.filtrarEmpresaComboBox.setItemText(3, _translate("MainWindow", "Empresa3", None))
+        self.toolButton_3.setText(_translate("MainWindow", "...", None))
         self.tableWidget_Compras.setSortingEnabled(True)
         item = self.tableWidget_Compras.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1", None))
