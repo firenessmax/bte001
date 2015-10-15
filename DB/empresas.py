@@ -13,8 +13,12 @@ from table import *
 # funciones y metodos:
 # e.save()
 class empresas(tabla):
-	_rut = None
-	_rS = None
+	_id = 0
+	_rut = ""
+	_rS = ""
+	@property
+	def id(self):
+		return self._id
 	@property
 	def rut(self):
 		return self._rut
@@ -27,8 +31,9 @@ class empresas(tabla):
 		self._listaDeCambio["razonSocial"] = (data, "text")
 		print "cambios : ", self._listaDeCambio
 	def getId(self):
-		return self._rut
-	def __init__(self, rut, rs="", esNuevo = True):
+		if(self.consulta.execute("SELECT id FROM empresas WHERE rut = ?", (self._rut,))):
+			return self.consulta.fetchone()[0]
+	def __init__(self, rut, rs="", esNuevo = True, id = 0):
 		self._rut = rut
 		self._rS = rs
 		if esNuevo:
@@ -41,7 +46,7 @@ class empresas(tabla):
 			tuplaRut = (rut,)
 			if (consulta.execute(exist, tuplaRut)):
 				count = consulta.fetchone()
-				self._ident = "rut"
+				self._ident = "id"
 				self._identValue = rut
 				if count[0] == 0:
 					self._listaDeCambio={"rut":(rut, "rut"), "razonSocial":(rs,"text")}
@@ -55,7 +60,31 @@ class empresas(tabla):
 			consulta.close()
 			conexion.close()
 		else:
-			self._ident = "rut"
-			self._identValue = rut
-			self._listaDeCambio = {}
-			self._esNuevo = False
+			conexion = sqlite3.connect('prueba.db')
+			consulta = conexion.cursor()
+			if(consulta.execute("SELECT * FROM empresas WHERE rut = ?", (self.rut,))): 	
+				row = consulta.fetchone()
+				self._id = row[0]
+				self._rut = row[1]
+				self._rS = row[2]
+				
+				
+				self._ident = "id"
+				self._identValue = self._id
+				self._listaDeCambio = {}
+				self._esNuevo = False
+
+			consulta.close()
+			conexion.close()
+			
+
+def obtenerEmpresas():
+	conexion = sqlite3.connect('prueba.db')
+	consulta = conexion.cursor()
+	listaEmpresas = []
+	for row in consulta.execute("SELECT * FROM empresas"):
+		listaEmpresas.append(empresas(row[1], esNuevo = False))
+	consulta.close()
+	conexion.close()
+	return listaEmpresas
+	

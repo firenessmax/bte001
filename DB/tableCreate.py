@@ -16,10 +16,9 @@ def iniciarDB():
 								nulo INTEGER DEFAULT 0, 
 								correlativo INTEGER, 
 								fecha TEXT, 
-								rutEmisor TEXT, 
-								nomEmisor TEXT, 
-								rutReceptor TEXT, 
-								nomReceptor TEXT, 
+								idEmisor INTEGER,
+								
+								idReceptor INTEGER,
 								montoExento INTEGER, 
 								montoAfecto INTEGER, 
 								montoIVA INTEGER, 
@@ -43,7 +42,9 @@ def iniciarDB():
 								codImpuesto3 TEXT, 
 								montoImpuesto3 INTEGER, 
 								contabilizado INTEGER DEFAULT 0, 
-								idUsuario INTEGER DEFAULT 0
+								idUsuario INTEGER DEFAULT 0,
+								FOREIGN KEY(idEmisor) REFERENCES empresas(id),
+								FOREIGN KEY(idReceptor) REFERENCES empresas(id)
 								)''')
 	
 	cursor.execute(''' CREATE TABLE IF NOT EXISTS usuario(id INTEGER PRIMARY KEY, 
@@ -52,7 +53,8 @@ def iniciarDB():
 								activo INTEGER DEFAULT 1
 								)''')
 	
-	cursor.execute(''' CREATE TABLE IF NOT EXISTS empresas(rut TEXT, 
+	cursor.execute(''' CREATE TABLE IF NOT EXISTS empresas(id INTEGER PRIMARY KEY,
+								rut TEXT, 
 								razonSocial TEXT
 								)''')
 	
@@ -65,4 +67,5 @@ def iniciarDB():
 								) ''')
 	
 	conexion.close()
-	
+
+iniciarDB()

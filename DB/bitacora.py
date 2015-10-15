@@ -66,6 +66,13 @@ class bitacora(tabla):
 		self._listaDeCambio['idUsuario'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	
+	def getId(self):
+		ident = "SELECT id FROM bitacora WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
+		tupla = (self._venta, self._numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
+		if(self.consulta.execute(ident, tupla)):
+			return self.consulta.fetchone()[0]
+		
+	
 	def __init__(self, fecha = "2015-12-10", tipo = "", evento = "", 
 					so = "win", idUsuario = 0, id = 0, esNuevo = True):
 		self._fecha = fecha
