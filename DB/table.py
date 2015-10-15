@@ -21,11 +21,12 @@ class tabla(object):
 		if self._esNuevo:
 			self.insertar(self._listaDeCambio, self.__class__.__name__)
 			self.conexion.commit()
-			self._identValue = self.getId()
+			#self._identValue = self.getId()
 		elif self._esNuevo == False and self._listaDeCambio != {}:
 			print u"Se realizará un Update ..."
 			self.update()
 			self.conexion.commit()
+		self._identValue = self.getId()
 		self.consulta.close()
 		self.conexion.close()
 		
