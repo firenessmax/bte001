@@ -430,6 +430,7 @@ class Ui_MainWindow(object):
         self.filtrarEmpresaLabel.setObjectName(_fromUtf8("filtrarEmpresaLabel"))
         self.horizontalLayout_3.addWidget(self.filtrarEmpresaLabel)
         self.filtrarEmpresaComboBox = QtGui.QComboBox(self.frame_3)
+        self.filtrarEmpresaComboBox.setMinimumSize(QtCore.QSize(85, 0))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Segoe UI"))
         self.filtrarEmpresaComboBox.setFont(font)

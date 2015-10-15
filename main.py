@@ -54,22 +54,19 @@ class EditarDocumentoModal(QtGui.QDialog):
         
         self.datos = datos
         self.llenarDatos()
+        self.resultado = False
         self.exec_()
     def accept(self):
         print "Guardando documento"
-        # Datos
-        # Limitar a numeros o alfanumerico
-        
         self.datos["Numero Documento"] = str(self.ui.nDocumentoLineEdit.text())
-        self.datos["Emisor"] = str(self.ui.emisorLineEdit.text())
-        self.datos["Receptor"] = str(self.ui.receptorLineEdit.text())
+        self.datos["RS Emisor"] = str(self.ui.emisorLineEdit.text())
+        self.datos["RS Receptor"] = str(self.ui.receptorLineEdit.text())
         self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
         self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
         self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
         self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
         self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
         self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
-        
         # Si uno de los datos esta vacio
         # TODO: Cambiar color al encontrar error
         fallas = []
@@ -84,7 +81,8 @@ class EditarDocumentoModal(QtGui.QDialog):
             QtGui.QMessageBox.about(self, "Datos incompletos", "Faltan datos a ingresar en los siguientes campos:\n%s"%error)
         else:
             # Guardando
-            DBController.guardarFactura(self.datos, self.tipo)
+            DBController.modificarFactura(self.datos, self.tipo)
+            self.resultado = True
             self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
@@ -96,12 +94,12 @@ class EditarDocumentoModal(QtGui.QDialog):
         for key, value in self.datos.items():
             print key," : ", value
         self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
-        self.ui.emisorLineEdit.setText(self.datos["Emisor"])
-        self.ui.receptorLineEdit.setText(self.datos["Receptor"])
+        self.ui.emisorLineEdit.setText(self.datos["RS Emisor"])
+        self.ui.receptorLineEdit.setText(self.datos["RS Receptor"])
         self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         self.ui.sucursalLineEdit.setText(self.datos["Sucursal"])
         self.ui.glosaLineEdit.setText(self.datos["Glosa"])
-        self.ui.montoExcentoSpinBox.setValue(int(self.datos["Monto Exento"]))
+        self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Exento"]))
         
         '''
         11070100 "proveedores"->"Compra"
@@ -115,7 +113,8 @@ class EditarDocumentoModal(QtGui.QDialog):
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
-        self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
+        #TODO: Descomentar esta linea
+        #self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 
 
 class AgregarDocumentoModal(QtGui.QDialog):
@@ -143,15 +142,17 @@ class AgregarDocumentoModal(QtGui.QDialog):
         
         self.datos = datos
         self.llenarDatos()
+        self.resultado = False
         self.exec_()
+        
     def accept(self):
         print "Guardando documento"
         # Datos
         # Limitar a numeros o alfanumerico
         
         self.datos["Numero Documento"] = str(self.ui.labelNDocumento.text())
-        self.datos["Emisor"] = str(self.ui.labelEmisor.text())
-        self.datos["Receptor"] = str(self.ui.labelReceptor.text())
+        self.datos["RS Emisor"] = str(self.ui.labelEmisor.text())
+        self.datos["RS Receptor"] = str(self.ui.labelReceptor.text())
         self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
         self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
         self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
@@ -173,7 +174,9 @@ class AgregarDocumentoModal(QtGui.QDialog):
             QtGui.QMessageBox.about(self, "Datos incompletos", "Faltan datos a ingresar en los siguientes campos:\n%s"%error)
         else:
             # Guardando
+            
             DBController.guardarFactura(self.datos, self.tipo)
+            self.resultado = True
             self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
@@ -185,8 +188,8 @@ class AgregarDocumentoModal(QtGui.QDialog):
         for key, value in self.datos.items():
             print key," : ", value
         self.ui.labelNDocumento.setText(self.datos["Numero Documento"])
-        self.ui.labelEmisor.setText(self.datos["Emisor"])
-        self.ui.labelReceptor.setText(self.datos["Receptor"])
+        self.ui.labelEmisor.setText(self.datos["RS Emisor"])
+        self.ui.labelReceptor.setText(self.datos["RS Receptor"])
         self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         
         '''
@@ -226,8 +229,10 @@ class EscanearModal(QtGui.QDialog):
         self.thread.parar = True
         datos = {}
         datos["Numero Documento"] = str(randint(11231231,91231231)) #"31231231"
-        datos["Emisor"] = "12544959-k"
-        datos["Receptor"] = "18598138-k"
+        datos["Rut Emisor"] = "12544959-k"
+        datos["Rut Receptor"] = "18598138-k"
+        datos["RS Emisor"] = "Pepito"
+        datos["RS Receptor"] = "Lucho"
         datos["Fecha"] = "2013-12-12"
         datos["Monto Total"] = 1000
         if(DBController.existeFactura(self.tipo, datos)):
@@ -244,9 +249,10 @@ class EscanearModal(QtGui.QDialog):
                 # Eliminar de la base de datos
                 print "Editar Dilog!!!"
         else:
-            my_dialog = AgregarDocumentoModal(self.tipo, datos)
-            self.window.updateTablas()
-            self.thread.start()
+            agregar = AgregarDocumentoModal(self.tipo, datos)
+            if(agregar.resultado):
+                self.window.updateTablas()
+                self.thread.start()
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self):
@@ -344,12 +350,20 @@ class MainWindow(QtGui.QMainWindow):
             datos = {}
             
             for i in range(tabla.horizontalHeader().count()):
-                datos[ str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "")] =  tabla.item(row,i).text()
+                datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(row,i).text())
                 print "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(row,i).text())
+            
+            
             if(self.sender().objectName()=="tableWidget_Ventas"):
                 my_dialog = EditarDocumentoModal(1, datos ) 
+                print "RESULTAOD::", my_dialog.resultado
+                if(my_dialog.resultado):
+                    self.updateTablas()
             else:
-                y_dialog = EditarDocumentoModal(0, datos ) 
+                my_dialog = EditarDocumentoModal(0, datos ) 
+                print "RESULTAOD::", my_dialog.resultado
+                if(my_dialog.resultado):
+                    self.updateTablas()
         if action == eliminarAction:
             # TODO: Si se seleccionan varias columnas, eliminarlas todas
             # TODO: lanzar evento al oprimir suprimir,
@@ -394,6 +408,7 @@ class MainWindow(QtGui.QMainWindow):
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
     def updateTablas(self):
         self.filtrar(self.ui.filtrarEmpresaComboBox.currentText())
+        self.updateEmpresas()
         
     def filtrar(self, data):
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]

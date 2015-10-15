@@ -140,7 +140,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
         </font>
        </property>
        <property name="text">
-        <string>Nuevo Documento Electrónico</string>
+        <string>Editar Documento Electrónico</string>
        </property>
       </widget>
      </item>
@@ -493,8 +493,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>249</y>
+     <x>369</x>
+     <y>389</y>
     </hint>
     <hint type="destinationlabel">
      <x>37</x>
@@ -509,8 +509,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>277</x>
-     <y>253</y>
+     <x>288</x>
+     <y>389</y>
     </hint>
     <hint type="destinationlabel">
      <x>72</x>

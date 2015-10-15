@@ -282,7 +282,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Nuevo Documento", None))
         self.pushButton.setText(_translate("Dialog", "Guardar", None))
         self.pushButton_2.setText(_translate("Dialog", "Cancelar", None))
-        self.labelTitulo.setText(_translate("Dialog", "Nuevo Documento Electrónico", None))
+        self.labelTitulo.setText(_translate("Dialog", "Editar Documento Electrónico", None))
         self.nDocumentoLabel.setText(_translate("Dialog", "Nº Documento", None))
         self.emisorLabel.setText(_translate("Dialog", "Emisor", None))
         self.receptorLabel.setText(_translate("Dialog", "Receptor", None))

@@ -807,6 +807,12 @@ QTabBar::tab:selected {
             </item>
             <item>
              <widget class="QComboBox" name="filtrarEmpresaComboBox">
+              <property name="minimumSize">
+               <size>
+                <width>85</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Segoe UI</family>

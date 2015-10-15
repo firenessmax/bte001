@@ -29,6 +29,7 @@ def obtenerLista(tabla, empresa):
                     else:
                         listaDeCompras[i][j] = "Si"
                 listaDeCompras[i][j] = str(listaDeCompras[i][j])                
+        print "Lista de comrpas:",listaDeCompras
         return listaDeCompras
         #prueba.save()
         
@@ -57,11 +58,32 @@ def getEmpresas():
     return empresas
 
 def guardarFactura(datos, venta):
-    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Receptor"], rutEmisor = datos["Emisor"],
-    nomReceptor="PePe", nomEmisor="Lucho")
+    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
+    nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"])
     f.save()
-    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Receptor"], rutEmisor = datos["Emisor"],
-    nomReceptor="PePe", nomEmisor="Lucho", esNuevo = False)
+    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
+    nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+    f.empresaEmisor.rS = datos["RS Emisor"]
+    f.empresaReceptor.rS = datos["RS Receptor"]
+    f.empresaEmisor.save()
+    f.empresaReceptor.save()
+    f.fecha = datos["Fecha"]
+    f.sucursal = datos["Sucursal"]
+    f.Glosa = datos["Glosa"]
+    f.montoExento = int(float(datos["Monto Exento"]))
+    f.cuentaProveedores = datos["Cuenta"]
+    f.contracuenta = datos["Contracuenta"]
+    f.save()
+    
+    print datos
+def modificarFactura(datos, venta):
+    print "MODIFICAR::", datos
+    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
+    nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+    f.empresaEmisor.rS = datos["RS Emisor"]
+    f.empresaReceptor.rS = datos["RS Receptor"]
+    f.empresaEmisor.save()
+    f.empresaReceptor.save()
     f.fecha = datos["Fecha"]
     f.sucursal = datos["Sucursal"]
     f.Glosa = datos["Glosa"]
@@ -73,7 +95,7 @@ def guardarFactura(datos, venta):
     print datos
 def existeFactura(venta, datos):
     try:
-        f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Receptor"], rutEmisor = datos["Emisor"])
+        f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"])
         return False
     except:
         return True
