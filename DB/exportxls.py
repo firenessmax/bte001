@@ -4,7 +4,7 @@
 import xlwt
 from facturas import *
 
-def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False):
+def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False): #false, las no contabilizadas, True todas
 	libro = xlwt.Workbook()
 	paginaVenta = libro.add_sheet("Ventas")
 	for num, obj in enumerate(fVentas):
@@ -13,8 +13,13 @@ def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
-		for index, dato in enumerate(datos):
-			fila.write(index, dato)
+		if guardarContabilizados:
+			for index, dato in enumerate(datos):
+				fila.write(index, dato)
+		elif not guardarContabilizados and obj.contabilizado == 0:
+			for index, dato in enumerate(datos):
+				fila.write(index, dato)
+		
 	paginaCompra = libro.add_sheet("Compras")
 	for num, obj in enumerate(fCompras):
 		fila = paginaCompra.row(num)
@@ -22,10 +27,14 @@ def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
-		for index, dato in enumerate(datos):
-			fila.write(index, dato)
+		if guardarContabilizados:
+			for index, dato in enumerate(datos):
+				fila.write(index, dato)
+		elif not guardarContabilizados and obj.contabilizado == 0:
+			for index, dato in enumerate(datos):
+				fila.write(index, dato)
 	print path+"prueba.xls"
-	libro.save(path+"prueba.xls")
+	libro.save(path)
 	
 
 
@@ -96,4 +105,4 @@ ventas = obtenerVentas()
 print "ventas : ", ventas
 compras = obtenerCompras()
 print "compras : ", compras
-exportarxls(ventas, compras, path = "C:/proyectos BTE/", contabilizar = True)
+exportarxls(ventas, compras, path = "prueba.xls", contabilizar = True, guardarContabilizados = True)

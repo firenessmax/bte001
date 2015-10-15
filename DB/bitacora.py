@@ -4,6 +4,7 @@
 import datetime
 import sqlite3
 import re
+import sys
 from table import *
 
 
@@ -47,7 +48,7 @@ class bitacora(tabla):
 	@evento.setter
 	def evento(self, data):
 		self._evento = data
-		self._listaDeCambio['evento'] = (data, 'text')}
+		self._listaDeCambio['evento'] = (data, 'text')
 		print 'cambio: ',self._listaDeCambio
 	@property
 	def so(self):
@@ -66,32 +67,27 @@ class bitacora(tabla):
 		self._listaDeCambio['idUsuario'] = (data, 'int')
 		print 'cambio: ',self._listaDeCambio
 	
-	def getId(self):
-		ident = "SELECT id FROM bitacora WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
-		tupla = (self._venta, self._numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
-		if(self.consulta.execute(ident, tupla)):
-			return self.consulta.fetchone()[0]
 		
 	
-	def __init__(self, fecha = "2015-12-10", tipo = "", evento = "", 
-					so = "win", idUsuario = 0, id = 0, esNuevo = True):
-		self._fecha = fecha
+	def __init__(self, tipo = "", evento = "", idUsuario = 0, id = 0, esNuevo = True):
+		fecha = datetime.datetime.now()
+		print fecha
+		self._fecha = fecha.strftime("%d-%m-%Y %H:%M:%S")
+		print self._fecha
 		self._tipo = tipo
 		self._evento = evento
-		self._so = so
+		self._so = sys.platform
 		self._idUsuario = idUsuario
 		self._ident = "id"
-		
-		if esNuevo:
-			self._listaDeCambio = {
-				"fecha":(self._fecha, "fecha"),
-				"tipo":(self._tipo, "text"),
-				"evento":(self._evento, "text"),
-				"so":(self._so, "text"),
-				"idUsuario":(self._idUsuario, "text")
-			}
-			self._esNuevo = True
-		else:
-			self._listaDeCambio = {}
-			self._esNuevo = False
-			raise Exception(u'')
+		self._listaDeCambio = {
+			"fecha":(self._fecha, "fecha"),
+			"tipo":(self._tipo, "text"),
+			"evento":(self._evento, "text"),
+			"so":(self._so, "text"),
+			"idUsuario":(self._idUsuario, "int")
+		}
+		print self._listaDeCambio
+		self._esNuevo = True
+			
+#prueba = bitacora(tipo = "insertar", evento = "creo una factura")
+#prueba.save()
