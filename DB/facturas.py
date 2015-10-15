@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import datetime
+from datetime import *
 import sqlite3
 import re
 from table import *
@@ -27,10 +27,8 @@ class facturas(tabla):
 	_nulo = 0
 	_correlativo = 0
 	_fecha = ""
-	_rutEmisor = ""			# obligatorio cuando se instancia
-	_nomEmisor = ""
-	_rutReceptor = ""		# obligatorio cuando se instancia
-	_nomReceptor = ""
+	_empresaEmisor = None
+	_empresaReceptor = None
 	_montoExento = 0
 	_montoAfecto = 0
 	_montoIVA = 0
@@ -100,11 +98,11 @@ class facturas(tabla):
 	def fecha(self):
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
-		
-		fecha = datetime.strptime(self._fecha, formato1)
+		fecha = datetime.datetime.strptime(str(self._fecha), formato1)
+		print fecha
 		print "fehca : ", fecha
 		fechaFromateada = fecha.strftime(formato2)
-		print "fechaFromateada : ", fechaFromateada
+		print "fechaFormateada : ", fechaFromateada
 		
 		self.fechaVencimiento = (fecha + timedelta(days=30)).strftime(formato1)
 		return fechaFromateada
@@ -114,27 +112,21 @@ class facturas(tabla):
 		self._listaDeCambio['fecha'] = (data, 'text')
 		print 'cambio: ',self._listaDeCambio
 	@property
-	def rutEmisor(self):
-		return self._rutEmisor
+	def empresaEmisor(self):
+		return self._empresaEmisor
+	@empresaEmisor.setter
+	def empresaEmisor(self, data):
+		self._empresaEmisor.rS=data
+		self._empresaEmisor.save()
+		print 'cambio id: ', self._empresaEmisor._id, " , rut: ", self._empresaEmisor._rut, " , razonSocial: ", self._empresaEmisor._rS
 	@property
-	def nomEmisor(self):
-		return self._nomEmisor
-	@nomEmisor.setter
-	def nomEmisor(self, data):
-		self._nomEmisor = data
-		self._listaDeCambio['nomEmisor'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
-	@property
-	def rutReceptor(self):
-		return self._rutReceptor
-	@property
-	def nomReceptor(self):
-		return self._nomReceptor
-	@nomReceptor.setter
-	def nomReceptor(self, data):
-		self._nomReceptor = data
-		self._listaDeCambio['nomReceptor'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+	def empresaReceptor(self):
+		return self._empresaReceptor
+	@empresaReceptor.setter
+	def empresaReceptor(self, data):
+		self._empresaReceptor.rS=data
+		self._empresaReceptor.save()
+		print 'cambio id: ', self._empresaReceptor._id, " , rut: ", self._empresaReceptor._rut, " , razonSocial: ", self._empresaReceptor._rS
 	@property
 	def montoExento(self):
 		return self._montoExento
@@ -202,10 +194,10 @@ class facturas(tabla):
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
 		
-		fecha = datetime.strptime(self._fecha, formato1)
+		fecha = datetime.datetime.strptime(self._fecha, formato1)
 		print "fehcaVencimiento : ", fecha
 		fechaFromateada = fecha.strftime(formato2)
-		print "fechaVencimientoFromateada : ", fechaFromateada
+		print "fechaVencimientoFormateada : ", fechaFromateada
 		
 		return self._fechaVencimiento
 	@fechaVencimiento.setter
@@ -343,12 +335,21 @@ class facturas(tabla):
 		print 'cambio: ',self._listaDeCambio
 	
 	def getId(self):
-		ident = "SELECT id FROM facturas WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?"
-		tupla = (self._venta, self._numDocumento, self._rutEmisor)
+		ident = "SELECT id FROM facturas WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
+		tupla = (self._venta, self._numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
 		if(self.consulta.execute(ident, tupla)):
 			return self.consulta.fetchone()[0]
+			
+	def borrar(self):
+		conexion = sqlite3.connect('prueba.db')
+		consulta = conexion.cursor()
+		if(consulta.execute("DELETE FROM facturas WHERE id = ?", (self._id, ))):
+			print u"se ha eliminado la factura id :", self._id
+		conexion.commit()
+		consulta.close()
+		conexion.close()
 		
-	def __init__(self, venta, numDocumento, rutReceptor, rutEmisor, sucursal=1, id=0,
+	def __init__(self, venta, numDocumento, rutEmisor, rutReceptor, sucursal=1, id=0,
 	 TipoDocumento=1, nulo=0, fecha="2015-10-02",
 	 nomEmisor="", nomReceptor="", montoExento=0, montoTotal=0,
 	 Glosa="", cuentaProveedores=0, contracuenta=0, contabilizado=0, idUsuario=0, esNuevo = True):
@@ -359,25 +360,29 @@ class facturas(tabla):
 		self._rutReceptor = rutReceptor	
 		self._rutEmisor = rutEmisor
 		try:
-			empresaEmisor = empresas(rutEmisor, nomEmisor)
-			empresaEmisor.save()
+			self._empresaEmisor = empresas(rutEmisor, nomEmisor)
+			self._empresaEmisor.save()
 			print u'Se creo la empresa : ', rutEmisor, ' razonSocial : ', nomEmisor
 		except:
+			self._empresaEmisor = empresas(rutEmisor, esNuevo = False)
 			print u'La empresa con el rut : ', rutEmisor, u' ya existe en la base de datos'
 		try:
-			empresaReceptor = empresas(rutReceptor, nomReceptor)
-			empresaReceptor.save()
+			self._empresaReceptor = empresas(rutReceptor, nomReceptor)
+			self._empresaReceptor.save()
 			print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
 		except:
+			self._empresaReceptor = empresas(rutReceptor, esNuevo = False)
 			print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
 		if esNuevo:
 			conexion = sqlite3.connect('prueba.db')
 			consulta = conexion.cursor()
 			exist = '''
 			SELECT COUNT(*) FROM facturas
-			WHERE venta = ? AND numDocumento = ? AND rutEmisor = ? AND rutReceptor = ?
+			WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?
 			'''
-			tupla = tuple([venta, numDocumento, rutEmisor, rutReceptor])
+			tupla = tuple([venta, numDocumento, self._empresaEmisor._id, self._empresaReceptor._id])
+			#print "sql : ", exist
+			#print "args : ",tupla
 			if (consulta.execute(exist, tupla)):
 				count = consulta.fetchone()
 				self._ident = "id"
@@ -392,10 +397,8 @@ class facturas(tabla):
 							"nulo":(nulo, "int"),
 							"correlativo":(self._correlativo, "int"),
 							"fecha":(self._fecha, "fecha"),
-							"rutEmisor":(self._rutEmisor, "rut"),
-							"nomEmisor":(nomEmisor, "text"),
-							"rutReceptor":(self._rutReceptor, "rut"),
-							"nomReceptor":(nomReceptor, "text"),
+							"idEmisor":(self._empresaEmisor._id, "obj"),
+							"idReceptor":(self._empresaReceptor._id, "obj"),
 							"montoExento":(montoExento, "int"),
 							"montoAfecto":(self._montoAfecto, "int"),
 							"montoIVA":(self._montoIVA, "int"),
@@ -433,8 +436,8 @@ class facturas(tabla):
 		else:
 			conexion = sqlite3.connect('prueba.db')
 			consulta = conexion.cursor()
-			sql = "SELECT * FROM facturas WHERE venta = ? AND numDocumento = ? AND rutEmisor = ?"
-			tupla = (venta, numDocumento, rutEmisor)
+			sql = "SELECT * FROM facturas WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
+			tupla = (venta, numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
 			if (consulta.execute(sql, tupla)):
 				row = consulta.fetchone()
 				print row
@@ -446,63 +449,83 @@ class facturas(tabla):
 				self._nulo = row[5]
 				self._correlativo = row[6]
 				self._fecha = row[7]
-				self._rutEmisor =row[8] 
-				self._nomEmisor =row[9] 
-				self._rutReceptor =row[10]
-				self._nomReceptor =row[11]
-				self._montoExento =row[12] 
-				self._montoAfecto =row[13]
-				self._montoIVA =row[14]
-				self._montoTotal =row[15]
-				self._Glosa =row[16]
-				self._cuentaProveedores =row[17] 
-				self._codigoEspecial =row[18] 
-				self._fechaVencimiento = row[19] 
-				self._contracuenta =row[20]
-				self._centroResultados =row[21] 
-				self._activoFijo =row[22] 
-				self._sinDerechoaCredito =row[23]
-				self._conCreditoFiscal =row[24]
-				self._mImpuestoEspecifico1 =row[25]
-				self._mImpuestoEspecifico2 =row[26] 
-				self._impuestoEspecificoFijo =row[27] 
-				self._impuestoEspecificoVariable =row[28] 
-				self._M3 =row[29] 
-				self._codImpuesto2 =row[30] 
-				self._montoImpuesto2 =row[31]
-				self._codImpuesto3 =row[32]
-				self._montoImpuesto3 =row[33]
-				self._contabilizado =row[34] 
-				self._idUsuario =row[35] 
+				self._montoExento =row[10] 
+				self._montoAfecto =row[11]
+				self._montoIVA =row[12]
+				self._montoTotal =row[13]
+				self._Glosa =row[14]
+				self._cuentaProveedores =row[15] 
+				self._codigoEspecial =row[16] 
+				self._fechaVencimiento = row[17] 
+				self._contracuenta =row[18]
+				self._centroResultados =row[19] 
+				self._activoFijo =row[20] 
+				self._sinDerechoaCredito =row[21]
+				self._conCreditoFiscal =row[22]
+				self._mImpuestoEspecifico1 =row[23]
+				self._mImpuestoEspecifico2 =row[24] 
+				self._impuestoEspecificoFijo =row[25] 
+				self._impuestoEspecificoVariable =row[26] 
+				self._M3 =row[27] 
+				self._codImpuesto2 =row[28] 
+				self._montoImpuesto2 =row[29]
+				self._codImpuesto3 =row[30]
+				self._montoImpuesto3 =row[31]
+				self._contabilizado =row[32] 
+				self._idUsuario =row[33] 
+				
+				# objetos para empresas
+				if (consulta.execute("SELECT * FROM empresas WHERE id = ?", (row[8], ))):
+					emp1 = consulta.fetchone()
+					self._empresaEmisor = empresas(emp1[1], esNuevo = False)
+				if (consulta.execute("SELECT * FROM empresas WHERE id = ?", (row[9], ))):
+					emp2 = consulta.fetchone()
+					self._empresaReceptor = empresas(emp2[1], esNuevo = False) 
 			
-				self._ident = "id"
-				self._identValue = self._id
-					
-				self._listaDeCambio = {}
-				self._esNuevo = False
+			self._ident = "id"
+			self._identValue = self._id
+				
+			self._listaDeCambio = {}
+			self._esNuevo = False
 			consulta.close()
 			conexion.close()
 			
-			
-#prueba = facturas(0,9,"17920814-8","8953221-3", nomEmisor = "Mami", esNuevo = False)
-#prueba.nomEmisor="mamaita ta ta"
-#prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
-#obtenerVentas(prueba)
-
-#prueba.save()
 
 
-def obtenerCompras(rutReceptor):
+def obtenerIdEmpresa(rut):
+	conexion = sqlite3.connect('prueba.db')
+	consulta = conexion.cursor()
+	if (consulta.execute("SELECT id FROM empresas WHERE rut = ?", (rut, ))):
+		id = consulta.fetchone()
+		return id[0]
+	else:
+		return 0
+	consulta.close()
+	conexion.close()
+	
+def obtenerRutEmpresa(id):
+	conexion = sqlite3.connect('prueba.db')
+	consulta = conexion.cursor()
+	if (consulta.execute("SELECT rut FROM empresas WHERE id = ?", (id, ))):
+		rut = consulta.fetchone()
+		return rut[0]
+	else:
+		return "1-9"
+	consulta.close()
+	conexion.close()
+
+def obtenerCompras(rutReceptor = None):
+	print "llamada a obtener Compras"
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	if rutReceptor == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 0"):
-			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = row[10],
-											rutEmisor = row[8], esNuevo = False))
+			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 	else:
 		#consulta sql donde rutReceptor
-		for row in consulta.execute("SELECT * FROM facturas WHERE rutReceptor = ? AND venta = 0", (rutReceptor,)):
+		for row in consulta.execute("SELECT * FROM facturas WHERE idReceptor = ? AND venta = 0", (obtenerIdEmpresa(rutReceptor),)):
 			#row[0] = id
 			#row[1] = venta
 			#row[2] = sucursal
@@ -511,37 +534,36 @@ def obtenerCompras(rutReceptor):
 			#row[5] = nulo
 			#row[6] = correlativo
 			#row[7] = fecha
-			#row[8] = rutEmisor
-			#row[9] = nomEmisor
-			#row[10] = rutReceptor
-			#row[11] = nomReceptor
-			#row[12] = montoExento
-			#row[13] = montoAfecto
-			#row[14] = montoIVA
-			#row[15] = montoTotal
-			#row[16] = Glosa
-			#row[17] = cuentaProveedores
-			#row[18] = codigoEspecial
-			#row[19] = fechaVencimiento
-			#row[20] = contracuenta
-			#row[21] = centroResultados
-			#row[22] = activoFijo
-			#row[23] = sinDerechoaCredito
-			#row[24] = conCreditoFiscal
-			#row[25] = mImpuestoEspecifico1
-			#row[26] = mImpuestoEspecifico2
-			#row[27] = impuestoEspecificoFijo
-			#row[28] = impuestoEspecificoVariable
-			#row[29] = M3
-			#row[30] = codImpuesto2
-			#row[31] = montoImpuesto2
-			#row[32] = codImpuesto3
-			#row[33] = montoImpuesto3
-			#row[34] = contabilizado
-			#row[35] = idUsuario
+			#row[8] = idEmisor
+			#row[9] = idReceptor
+			
+			#row[10] = montoExento
+			#row[11] = montoAfecto
+			#row[12] = montoIVA
+			#row[13] = montoTotal
+			#row[14] = Glosa
+			#row[15] = cuentaProveedores
+			#row[16] = codigoEspecial
+			#row[17] = fechaVencimiento
+			#row[18] = contracuenta
+			#row[19] = centroResultados
+			#row[20] = activoFijo
+			#row[21] = sinDerechoaCredito
+			#row[22] = conCreditoFiscal
+			#row[23] = mImpuestoEspecifico1
+			#row[24] = mImpuestoEspecifico2
+			#row[25] = impuestoEspecificoFijo
+			#row[26] = impuestoEspecificoVariable
+			#row[27] = M3
+			#row[28] = codImpuesto2
+			#row[29] = montoImpuesto2
+			#row[30] = codImpuesto3
+			#row[31] = montoImpuesto3
+			#row[32] = contabilizado
+			#row[33] = idUsuario
 			#factura(venta, numDocumento, rutReceptor, esNuevo)
-			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = row[10],
-											rutEmisor = row[8], esNuevo = False))
+			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 		#f = factura(..., evNuevo = False)-> lista de facturas
 	consulta.close()
 	conexion.close()
@@ -549,24 +571,44 @@ def obtenerCompras(rutReceptor):
 	
 	
 
-def obtenerVentas(rutEmisor):
+def obtenerVentas(rutEmisor = None):
+	print "llamada a obtener Ventas"
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	if rutEmisor == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 1"):
-			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = row[10],
-											rutEmisor = row[8], esNuevo = False))
+			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 	else:
 		#consulta sql donde rutEmisor
-		for row in consulta.execute("SELECT * FROM facturas WHERE rutEmisor = ? AND venta = 1", (rutEmisor,)):
-			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = row[10],
-											rutEmisor = row[8], esNuevo = False))
+		for row in consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? AND venta = 1", (obtenerIdEmpresa(rutEmisor),)):
+			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 		#f = factura(..., evNuevo = False)-> lista de facturas
 	consulta.close()
 	conexion.close()
 	return listaFacturas
+	
+def deleteFactura(id):
+	conexion = sqlite3.connect('prueba.db')
+	consulta = conexion.cursor()
+	if(consulta.execute("DELETE FROM facturas WHERE id = ?", (id, ))):
+		print u"se ha eliminado la factura id :", id
+	conexion.commit()
+	consulta.close()
+	conexion.close()
 
 #fac = obtenerCompras("17920814-8")
 #for e in fac:
 #	print e.rutEmisor
+
+
+
+			
+#prueba = facturas(0,9,"18598138-k","17966491-7")
+#prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
+#obtenerVentas(prueba)
+#prueba.borrar()
+#deleteFactura(2)
+#prueba.save()

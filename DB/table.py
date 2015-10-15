@@ -14,6 +14,7 @@ class tabla(object):
 	_ident = None
 	_identValue = None
 	def getId(self):pass
+	def borrar(self):pass
 	def save(self):
 		self.conexion = sqlite3.connect('prueba.db')
 		self.consulta = self.conexion.cursor()
@@ -49,7 +50,8 @@ class tabla(object):
 		ub = ub.strip(",")
 		preg = preg.strip(",")
 		sql ="INSERT INTO " +nombre+"("+ub+") VALUES ("+preg+")"
-		
+		#print "slq : ", sql
+		#print "args : ", argumentos 
 		argumentos = tuple(argumentos)
 		
 		if (self.consulta.execute(sql, argumentos)):
@@ -79,7 +81,7 @@ class tabla(object):
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+str(self._identValue)+""
 			print "sql : ", sql
 			argumentos = tuple(argumentos)
-			print "args : ", argumentos
+			#print "args : ", argumentos
 			
 			if (self.consulta.execute(sql, argumentos)):
 				self.conexion.commit()
