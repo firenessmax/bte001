@@ -128,12 +128,13 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 # Modal para escanear codigo
 class EscanearModal(QtGui.QDialog):
-    def __init__(self, tipo):
+    def __init__(self, tipo, window):
         super(EscanearModal, self).__init__()
         self.ui=Ui_Dialog()
         self.encontrado_slot = self.encontrado
         self.reject = self.terminar
         self.tipo = tipo
+        self.window = window
         self.ui.setupUi(self)
         self.thread = LecturaController.EscanerThread()
         self.thread.finished.connect(self.terminado)
@@ -149,6 +150,7 @@ class EscanearModal(QtGui.QDialog):
         #Codigo encontrado, mostrar nuevo escanearDialog
         self.thread.parar = True
         my_dialog = AgregarDocumentoModal(self.tipo, None)
+        self.window.updateTablas()
         self.thread.start()
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
@@ -164,7 +166,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint )
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-
+        
         self.ui.tableWidget_Compras.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Compras.customContextMenuRequested.connect(self.clicked)
         self.ui.tableWidget_Ventas.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -200,14 +202,15 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.top.setStyleSheet(resto%(estilos[pos]))
         print pos
     def resetFiltro(self, data):
-        self.ui.filtrarEmpresaComboBox.setCurrentIndex(0)
+        
         print data
     def escanear(self):
 
         if( self.sender().objectName()  == "escanearCompra"):
-            my_dialog = EscanearModal(0) 
+            my_dialog = EscanearModal(0, self) 
         elif( self.sender().objectName()  == "escanearVenta"):
-            my_dialog = EscanearModal(1) 
+            my_dialog = EscanearModal(1, self) 
+    
     def exportar(self):
 
         # Opciones
@@ -292,17 +295,18 @@ class MainWindow(QtGui.QMainWindow):
         for i in range(tabla.verticalHeader().count()):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
+    def updateTablas(self):
+        self.filtrar(self.ui.filtrarEmpresaComboBox.currentText())
         
     def filtrar(self, data):
-        tabla = self.ui.tableWidget_Compras
-        if(self.ui.tabWidget_2.currentIndex()==1):
-            tabla = self.ui.tableWidget_Ventas
-        documentos = DBController.obtenerLista(tabla.objectName(), str(data))
-        tabla.clearContents()
-        tabla.setRowCount(len(documentos))
-        for i in range(len(documentos)):
-            for j in range(len(documentos[i])):
-                tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
+        tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
+        for tabla in tablas:
+            documentos = DBController.obtenerLista(tabla.objectName(), str(data))
+            tabla.clearContents()
+            tabla.setRowCount(len(documentos))
+            for i in range(len(documentos)):
+                for j in range(len(documentos[i])):
+                    tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
         
         print "filtrar!!!!!!!"
         print "data: %s"%data

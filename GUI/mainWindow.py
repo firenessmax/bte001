@@ -199,8 +199,6 @@ class Ui_MainWindow(object):
         self.labelMinimize.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setPointSize(-1)
-        font.setBold(False)
-        font.setWeight(50)
         self.labelMinimize.setFont(font)
         self.labelMinimize.setStyleSheet(_fromUtf8("QLabel{\n"
 "    background: none;\n"
@@ -527,7 +525,7 @@ class Ui_MainWindow(object):
         self.tableWidget_Compras.setHorizontalHeaderItem(14, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_Compras.setHorizontalHeaderItem(15, item)
-        self.tableWidget_Compras.horizontalHeader().setVisible(False)
+        self.tableWidget_Compras.horizontalHeader().setVisible(True)
         self.tableWidget_Compras.horizontalHeader().setCascadingSectionResizes(True)
         self.tableWidget_Compras.horizontalHeader().setDefaultSectionSize(118)
         self.tableWidget_Compras.horizontalHeader().setMinimumSectionSize(118)
