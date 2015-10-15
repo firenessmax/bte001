@@ -382,6 +382,7 @@ QLabel:hover{
               <widget class="QLabel" name="label">
                <property name="font">
                 <font>
+                 <family>Segoe UI</family>
                  <pointsize>9</pointsize>
                 </font>
                </property>
@@ -415,6 +416,12 @@ QLabel:hover{
               <width>16777215</width>
               <height>100</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>9</pointsize>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true">
@@ -502,6 +509,11 @@ QTabBar::tab:selected {
                   <height>65</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Escanear Documentos Compra</string>
                 </property>
@@ -531,6 +543,11 @@ QTabBar::tab:selected {
                   <width>0</width>
                   <height>65</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Escanear Documentos Venta</string>
@@ -567,8 +584,16 @@ QTabBar::tab:selected {
                <layout class="QVBoxLayout" name="verticalLayout_3">
                 <item>
                  <layout class="QFormLayout" name="formLayout_6">
+                  <property name="fieldGrowthPolicy">
+                   <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                  </property>
                   <item row="0" column="0">
                    <widget class="QLabel" name="correlativoLabel_3">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>Correlativo</string>
                     </property>
@@ -576,6 +601,14 @@ QTabBar::tab:selected {
                   </item>
                   <item row="0" column="1">
                    <widget class="QSpinBox" name="correlativoSpinBox">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">padding:4px</string>
+                    </property>
                     <property name="wrapping">
                      <bool>false</bool>
                     </property>
@@ -583,13 +616,16 @@ QTabBar::tab:selected {
                      <bool>true</bool>
                     </property>
                     <property name="buttonSymbols">
-                     <enum>QAbstractSpinBox::PlusMinus</enum>
+                     <enum>QAbstractSpinBox::NoButtons</enum>
                     </property>
                     <property name="specialValueText">
                      <string/>
                     </property>
                     <property name="suffix">
                      <string/>
+                    </property>
+                    <property name="minimum">
+                     <number>1</number>
                     </property>
                     <property name="maximum">
                      <number>999999999</number>
@@ -600,6 +636,11 @@ QTabBar::tab:selected {
                 </item>
                 <item>
                  <widget class="QCheckBox" name="contabilizarCheckBox">
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Contabilizar al exportar</string>
                   </property>
@@ -610,6 +651,11 @@ QTabBar::tab:selected {
                 </item>
                 <item>
                  <widget class="QCheckBox" name="guardarCheckBox">
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Guardar contabilizados</string>
                   </property>
@@ -631,6 +677,11 @@ QTabBar::tab:selected {
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Exportar Excel</string>
                 </property>
@@ -638,6 +689,43 @@ QTabBar::tab:selected {
                  <iconset>
                   <normalon>:/newPrefix/excel.png</normalon>
                  </iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>100</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextUnderIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QToolButton" name="toolButtonPlano">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>65</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Exportar Texto Plano</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="images/images.qrc">
+                  <normaloff>:/newPrefix/document.png</normaloff>:/newPrefix/document.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -662,38 +750,6 @@ QTabBar::tab:selected {
                  </size>
                 </property>
                </spacer>
-              </item>
-              <item row="0" column="1">
-               <widget class="QToolButton" name="toolButtonPlano">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>65</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Exportar Texto Plano</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="images/images.qrc">
-                  <normaloff>:/newPrefix/document.png</normaloff>:/newPrefix/document.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>100</width>
-                  <height>35</height>
-                 </size>
-                </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextUnderIcon</enum>
-                </property>
-               </widget>
               </item>
              </layout>
             </widget>
@@ -739,6 +795,11 @@ QTabBar::tab:selected {
             </property>
             <item>
              <widget class="QLabel" name="filtrarEmpresaLabel">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+               </font>
+              </property>
               <property name="text">
                <string>Filtrar Empresa</string>
               </property>
@@ -746,6 +807,11 @@ QTabBar::tab:selected {
             </item>
             <item>
              <widget class="QComboBox" name="filtrarEmpresaComboBox">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+               </font>
+              </property>
               <item>
                <property name="text">
                 <string>Todas</string>
@@ -799,6 +865,11 @@ QTabBar::tab:selected {
           </item>
           <item>
            <widget class="QTabWidget" name="tabWidget_2">
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true">QTabWidget::pane { /* The tab widget frame */
    background: #fafafa;
