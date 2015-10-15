@@ -440,7 +440,6 @@ class facturas(tabla):
 			tupla = (venta, numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
 			if (consulta.execute(sql, tupla)):
 				row = consulta.fetchone()
-				print row
 				self._id = row[0]
 				self._venta = row[1]
 				self._sucursal = row[2]
@@ -604,9 +603,9 @@ def deleteFactura(id):
 #	print e.rutEmisor
 
 
-prueba = facturas(0,9,"17920814-8","17966491-7")
+#prueba = facturas(0,8,"17920814-8","17966491-7")
 #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
 #obtenerVentas(prueba)
 #prueba.borrar()
 #deleteFactura(2)
-prueba.save()
+#prueba.save()

@@ -47,7 +47,6 @@ class empresas(tabla):
 			tuplaRut = (rut,)
 			if (consulta.execute(exist, tuplaRut)):
 				count = consulta.fetchone()
-				print "contador <<<<<<<<<<<: ", count[0]
 				self._ident = "id"
 				if count[0] == 0:
 					self._listaDeCambio={"rut":(rut, "rut"), "razonSocial":(rs,"text")}
