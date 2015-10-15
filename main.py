@@ -35,14 +35,21 @@ class AgregarDocumentoModal(QtGui.QDialog):
         if(tipo==0):
             titulo = "Nuevo Documento Compra"
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Proveedor")
+            self.ui.labelTitulo.setText("Nuevo Documento")
         elif(tipo==1):
             titulo =  "Nuevo Documento Venta"
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
         if(datos != None):
             titulo = titulo.replace("Nuevo", "Editar")
+            self.ui.labelTitulo.setText(titulo.replace("Compra", "Electronico").replace("Venta", "Electronico"))
         self.setWindowTitle(titulo)
         #Fecha actual
         self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+
+        self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        self.ui.contracuentaLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        
         self.datos = datos
         self.llenarDatos()
         self.exec_()
@@ -168,6 +175,11 @@ class MainWindow(QtGui.QMainWindow):
         self.moving = False
         self.ui.frame.mousePressEvent = self._mousePressEvent
         self.ui.frame.mouseMoveEvent = self._mouseMoveEvent
+        self.ui.tabWidget_4.tabBar().mousePressEvent = self._mousePressEvent
+        self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
+        
+        
+        
         self.show()
         
     def cerrar(self, data):
@@ -182,28 +194,36 @@ class MainWindow(QtGui.QMainWindow):
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #43a047  , stop:.2 #388e3c);",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #9e9e9e , stop:.2 #888888);"]
-        resto = "#top{%s}"
+        resto = "#top{%s border-top-left-radius:3px; border-top-right-radius: 3px;}"
         self.ui.top.setStyleSheet(resto%(estilos[pos]))
         print pos
     def resetFiltro(self, data):
         self.ui.filtrarEmpresaComboBox.setCurrentIndex(0)
         print data
     def escanear(self):
-        self.statusBar().showMessage(self.sender().text() + ' was pressed')
+
         if( self.sender().objectName()  == "escanearCompra"):
             my_dialog = EscanearModal(0) 
         elif( self.sender().objectName()  == "escanearVenta"):
             my_dialog = EscanearModal(1) 
     def exportar(self):
-        self.statusBar().showMessage(self.sender().text() + ' was pressed')
+
         # Opciones
         correlativo = self.ui.correlativoSpinBox.value()
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         print "Corr: %d cont: %s Guardar: %s"%(correlativo, contabilizar, guardar)
-        archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xlsx"), filter="Microsoft Excel (*.xlsx)")
-        print "Guardando archivo %s"%archivo
-        self.statusBar().showMessage("Archivo exportado en %s"%archivo)
+        archivo = None
+        print "LKSDLKASDN: ", self.sender().objectName()
+        if(self.sender().objectName() == "toolButtonPlano"):
+            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.txt"), filter="Texto plano (*.txt)")
+        else:    
+            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xlsx"), filter="Microsoft Excel (*.xlsx)")
+        if(archivo == ""):
+            print "Cancelado!!"
+        else:
+            print "Guardando archivo",archivo
+
     def clicked(self, position):
         if(self.sender().rowCount()==0): # Ninguna fila en la tabla
             return

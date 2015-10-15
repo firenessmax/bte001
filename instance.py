@@ -27,3 +27,4 @@ class Instance(object):
 				print i
 				win32gui.ShowWindow(i[0],win32con.SW_RESTORE)#9
 				win32gui.SetForegroundWindow(i[0])
+				break
