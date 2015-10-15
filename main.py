@@ -10,6 +10,8 @@ import LecturaController
 import DBController
 from instance import *#para el manejo de multiples instancias
 import os
+from random import randint
+
 # Para que no use el icono de python
 import ctypes
 myappid = 'BTE.lector.gui.estable' # arbitrary string
@@ -91,18 +93,6 @@ class EditarDocumentoModal(QtGui.QDialog):
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         
-        if(self.datos == None):
-            self.datos = {}
-            self.datos["Numero Documento"] = "31231231"
-            self.datos["Emisor"] = "12544959-k"
-            self.datos["Receptor"] = "18598138-k"
-            self.datos["Fecha"] = "2013-12-12"
-            
-            self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
-            self.ui.emisorLineEdit.setText(self.datos["Emisor"])
-            self.ui.receptorLineEdit.setText(self.datos["Receptor"])
-            self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"]))
-            return
         for key, value in self.datos.items():
             print key," : ", value
         self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
@@ -235,7 +225,7 @@ class EscanearModal(QtGui.QDialog):
         #Codigo encontrado, mostrar nuevo escanearDialog
         self.thread.parar = True
         datos = {}
-        datos["Numero Documento"] = "31231231"
+        datos["Numero Documento"] = str(randint(11231231,91231231)) #"31231231"
         datos["Emisor"] = "12544959-k"
         datos["Receptor"] = "18598138-k"
         datos["Fecha"] = "2013-12-12"
