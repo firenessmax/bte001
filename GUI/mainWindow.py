@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/maximize.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_2.setIcon(icon1)
-        self.toolButton_2.setIconSize(QtCore.QSize(14, 14))
+        self.toolButton_2.setIconSize(QtCore.QSize(12, 12))
         self.toolButton_2.setAutoRaise(True)
         self.toolButton_2.setObjectName(_fromUtf8("toolButton_2"))
         self.gridLayout_2.addWidget(self.toolButton_2, 1, 7, 1, 1)
@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/resize.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_4.setIcon(icon2)
-        self.toolButton_4.setIconSize(QtCore.QSize(14, 14))
+        self.toolButton_4.setIconSize(QtCore.QSize(12, 12))
         self.toolButton_4.setAutoRaise(True)
         self.toolButton_4.setObjectName(_fromUtf8("toolButton_4"))
         self.gridLayout_2.addWidget(self.toolButton_4, 1, 5, 1, 1)
@@ -199,6 +199,8 @@ class Ui_MainWindow(object):
         self.labelMinimize.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setPointSize(-1)
+        font.setBold(False)
+        font.setWeight(50)
         self.labelMinimize.setFont(font)
         self.labelMinimize.setStyleSheet(_fromUtf8("QLabel{\n"
 "    background: none;\n"
