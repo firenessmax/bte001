@@ -3,39 +3,57 @@
 
 import xlwt
 from facturas import *
+TITLES = ["Sucursal", "Tipo de Documento", u"Nº  de Documento", "Documento Nulo", "Correlativo	Fecha", "Rut Nacional",
+			"Rut", "Nombre Proveedor", "Nombre Cliente", "Monto Exento", "Monto Neto", "Monto Iva", "Monto Total",	
+			"Glosa General de Detalle",	"Cuenta de Proveedores", "Codigo Especial",	"Fecha de Venciemiento",	
+			"Contracuenta",	"Centro de Resultado", "Glosa de Contracuenta",	"Monto de Contracuenta", "Codigo especial Contracuenta",	
+			"Rut Nacional Contracuenta", "Rut de Contracuenta",	"Nombre Rut Contracuenta", "Es Compra de Activo Fijo ",	
+			"Documento sin Derecho a Credito",	"Documento con Credito Fiscal",	"Monto impuesto Especifico",	
+			"Monto Impuesto Especifico", "Impuesto Especifico Fijo", "Impuesto Especifico Variable", "M3",	
+			"Codigo impuesto 2", "Monto Impuesto 2", "Codigo Impuesto 3", "Monto Impuesto 3"]
 
-def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False): #false, las no contabilizadas, True todas
+
+def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False, correlativo = 0): #false, las no contabilizadas, True todas
 	libro = xlwt.Workbook()
 	paginaVenta = libro.add_sheet("Ventas")
+	for i, e in enumerate(TITLES):
+		paginaVenta.row(0).write(i, e)
 	for num, obj in enumerate(fVentas):
-		fila = paginaVenta.row(num)
+		fila = paginaVenta.row(num+1)
 		datos = formatoFacturaXls(obj)
-		if contabilizar:
-			obj.contabilizado=1
-			obj.save()
 		if guardarContabilizados:
 			for index, dato in enumerate(datos):
 				fila.write(index, dato)
 		elif not guardarContabilizados and obj.contabilizado == 0:
 			for index, dato in enumerate(datos):
 				fila.write(index, dato)
+		if contabilizar:
+			obj.contabilizado=1
+			obj.save()
 		
 	paginaCompra = libro.add_sheet("Compras")
+	for i, e in enumerate(TITLES):
+		paginaCompra.row(0).write(i, e)
 	for num, obj in enumerate(fCompras):
-		fila = paginaCompra.row(num)
-		datos = formatoFacturaXls(obj)
+		fila = paginaCompra.row(num+1)
+		if guardarContabilizados:
+			obj.correlativo = correlativo
+			obj.save()
+			datos = formatoFacturaXls(obj)
+			for index, dato in enumerate(datos):
+				fila.write(index, dato)
+			correlativo+=1
+		elif not guardarContabilizados and obj.contabilizado == 0:
+			obj.correlativo = correlativo
+			obj.save()
+			datos = formatoFacturaXls(obj)
+			for index, dato in enumerate(datos):
+				fila.write(index, dato)
+			correlativo+=1
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
-		if guardarContabilizados:
-			for index, dato in enumerate(datos):
-				fila.write(index, dato)
-		elif not guardarContabilizados and obj.contabilizado == 0:
-			for index, dato in enumerate(datos):
-				fila.write(index, dato)
-	print path+"prueba.xls"
 	libro.save(path)
-	
 
 
 def formatoFacturaXls(factura):
@@ -94,7 +112,6 @@ def formatoFacturaXls(factura):
 	datos.append(factura.montoImpuesto2)
 	datos.append(factura.codImpuesto3)
 	datos.append(factura.montoImpuesto3)
-	print datos
 	return datos
 	
 #ob = obtenerCompras("18598138-k")
@@ -102,7 +119,5 @@ def formatoFacturaXls(factura):
 #	print formatoFacturaXls(e)
 
 ventas = obtenerVentas()
-print "ventas : ", ventas
 compras = obtenerCompras()
-print "compras : ", compras
-exportarxls(ventas, compras, path = "prueba.xls", contabilizar = True, guardarContabilizados = True)
+exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False, correlativo = 620)
