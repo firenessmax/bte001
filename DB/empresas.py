@@ -32,7 +32,8 @@ class empresas(tabla):
 		print "cambios : ", self._listaDeCambio
 	def getId(self):
 		if(self.consulta.execute("SELECT id FROM empresas WHERE rut = ?", (self._rut,))):
-			return self.consulta.fetchone()[0]
+			self._id = self.consulta.fetchone()[0]
+			return self._id
 	def __init__(self, rut, rs="", esNuevo = True, id = 0):
 		self._rut = rut
 		self._rS = rs
@@ -46,8 +47,8 @@ class empresas(tabla):
 			tuplaRut = (rut,)
 			if (consulta.execute(exist, tuplaRut)):
 				count = consulta.fetchone()
+				print "contador <<<<<<<<<<<: ", count[0]
 				self._ident = "id"
-				self._identValue = rut
 				if count[0] == 0:
 					self._listaDeCambio={"rut":(rut, "rut"), "razonSocial":(rs,"text")}
 					self._esNuevo = True

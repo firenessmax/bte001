@@ -4,14 +4,13 @@
 from datetime import *
 import sqlite3
 import re
-from table import *
 from empresas import *
 
 
 # esta clase sirve para insertar, updatear y deletear(no esta lista)
 # para facturas
 # instanciamiento:
-# f = facturas(venta, numDocumento, rutReceptor, rutEmisor, sucursal=1, id=0,
+# f = facturas(venta, numDocumento, rutEmisor, rutReceptor, sucursal=1, id=0,
 #	 TipoDocumento=1, nulo=0, fecha="2015-10-02",
 #	 nomEmisor="", nomReceptor="", montoExento=0, montoTotal=0,
 #	 Glosa="", cuentaProveedores=0, contracuenta=0, contabilizado=0, idUsuario=0, esNuevo = True)
@@ -116,6 +115,8 @@ class facturas(tabla):
 		return self._empresaEmisor
 	@empresaEmisor.setter
 	def empresaEmisor(self, data):
+		print self._empresaEmisor.id
+		print self._empresaEmisor.rut
 		self._empresaEmisor.rS=data
 		self._empresaEmisor.save()
 		print 'cambio id: ', self._empresaEmisor._id, " , rut: ", self._empresaEmisor._rut, " , razonSocial: ", self._empresaEmisor._rS
@@ -338,7 +339,8 @@ class facturas(tabla):
 		ident = "SELECT id FROM facturas WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
 		tupla = (self._venta, self._numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
 		if(self.consulta.execute(ident, tupla)):
-			return self.consulta.fetchone()[0]
+			self._id = self.consulta.fetchone()[0]
+			return self._id
 			
 	def borrar(self):
 		conexion = sqlite3.connect('prueba.db')
@@ -357,8 +359,6 @@ class facturas(tabla):
 		
 		self._venta = venta
 		self._numDocumento = numDocumento
-		self._rutReceptor = rutReceptor	
-		self._rutEmisor = rutEmisor
 		try:
 			self._empresaEmisor = empresas(rutEmisor, nomEmisor)
 			self._empresaEmisor.save()
@@ -604,11 +604,9 @@ def deleteFactura(id):
 #	print e.rutEmisor
 
 
-
-			
-#prueba = facturas(0,9,"18598138-k","17966491-7")
+prueba = facturas(0,9,"17920814-8","17966491-7")
 #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
 #obtenerVentas(prueba)
 #prueba.borrar()
 #deleteFactura(2)
-#prueba.save()
+prueba.save()
