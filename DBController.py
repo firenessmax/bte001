@@ -1,7 +1,8 @@
 from PyQt4 import QtCore
 import time
 import DB.tableCreate as DB
-import DB.facturas as F
+import DB.facturas as Facturas
+import DB.empresas as Empresas
 def obtenerLista(tabla, empresa):
     # Devolver lista de facturas con el formato
     # [Contabilizado, Sucursal, Tipo Documento, Numero Documento, Fecha, Emisor, RS Emisor, Receptor, RS Receptor', Monto Exento, Monto Afecto, Monto IVA, Monto Total, Glosa, Contracuenta, id]
@@ -15,10 +16,10 @@ def obtenerLista(tabla, empresa):
     if(tabla == "tableWidget_Compras"):
         # Consulta Compras
         
-        compras = F.obtenerCompras(empresa)
+        compras = Facturas.obtenerCompras(empresa)
         
         listaDeCompras = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
-                            c._fecha, c._rutEmisor, c._nomEmisor,  c._rutReceptor, c._nomReceptor, c._montoExento,
+                            c._fecha, c.empresaEmisor.rut, c.empresaEmisor.rS,  c.empresaReceptor.rut, c.empresaReceptor.rS, c._montoExento,
                             c._montoAfecto,c._montoIVA ,c._montoTotal, c._Glosa, c._contracuenta, c._id] for c in compras]
         for i in range(0, len(listaDeCompras)):
             for j in range(0, len(listaDeCompras[i])):
@@ -33,10 +34,10 @@ def obtenerLista(tabla, empresa):
         
     elif(tabla == "tableWidget_Ventas"):
         # consulta Ventas
-        ventas = F.obtenerVentas(empresa)
+        ventas = Facturas.obtenerVentas(empresa)
         
         listaDeVentas = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
-                            c._fecha, c._rutEmisor, c._nomEmisor,  c._rutReceptor, c._nomReceptor, c._montoExento,
+                            c._fecha, c.empresaEmisor.rut, c.empresaEmisor.rS,  c.empresaReceptor.rut, c.empresaReceptor.rS, c._montoExento,
                             c._montoAfecto,c._montoIVA ,c._montoTotal, c._Glosa, c._contracuenta, c._id] for c in ventas]
         for i in range(0, len(listaDeVentas)):
             for j in range(0, len(listaDeVentas[i])):
@@ -51,5 +52,21 @@ def obtenerLista(tabla, empresa):
     return fac
     
 def getEmpresas():
-    empresas = ["17920814-8"]
+    emp = Empresas.obtenerEmpresas()
+    empresas = [e.rut for e in emp]
     return empresas
+
+def guardarFactura(datos, venta):
+    Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Receptor"], rutEmisor = datos["Emisor"],
+    nomReceptor="PePe", nomEmisor="Lucho")
+    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Receptor"], rutEmisor = datos["Emisor"],
+    nomReceptor="PePe", nomEmisor="Lucho", esNuevo = False)
+    f.fecha = datos["Fecha"]
+    f.sucursal = datos["Sucursal"]
+    f.Glosa = datos["Glosa"]
+    f.montoExento = int(float(datos["Monto Exento"]))
+    f.cuentaProveedores = datos["Cuenta"]
+    f.contracuenta = datos["Contracuenta"]
+    f.save()
+    
+    print datos

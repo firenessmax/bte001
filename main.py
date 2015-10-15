@@ -58,15 +58,15 @@ class AgregarDocumentoModal(QtGui.QDialog):
         # Datos
         # Limitar a numeros o alfanumerico
         
-        self.datos["Numero Documento"] = self.ui.nDocumentoLineEdit.text()
-        self.datos["Emisor"] = self.ui.emisorLineEdit.text()
-        self.datos["Receptor"] = self.ui.receptorLineEdit.text()
-        self.datos["Fecha"] = self.ui.fechaDateEdit.text()
-        self.datos["Sucursal"] = self.ui.sucursalLineEdit.text()
-        self.datos["Glosa"] = self.ui.glosaLineEdit.text()
-        self.datos["Monto Exento"] = self.ui.montoExcentoSpinBox.value()
-        self.datos["Cuenta"] = self.ui.cuentaProveedoresClienteLineEdit.text()
-        self.datos["Contracuenta"] = self.ui.contracuentaLineEdit.text()
+        self.datos["Numero Documento"] = str(self.ui.nDocumentoLineEdit.text())
+        self.datos["Emisor"] = str(self.ui.emisorLineEdit.text())
+        self.datos["Receptor"] = str(self.ui.receptorLineEdit.text())
+        self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
+        self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
+        self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
+        self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
+        self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
+        self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
         
         # Si uno de los datos esta vacio
         # TODO: Cambiar color al encontrar error
@@ -81,7 +81,9 @@ class AgregarDocumentoModal(QtGui.QDialog):
         if(len(fallas)!=0):
             QtGui.QMessageBox.about(self, "Datos incompletos", "Faltan datos a ingresar en los siguientes campos:\n%s"%error)
         else:
-            self.close()
+            # Guardando
+            DBController.guardarFactura(self.datos, self.tipo)
+            self.accept()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
         if(self.tipo == 0):
@@ -91,9 +93,9 @@ class AgregarDocumentoModal(QtGui.QDialog):
         
         if(self.datos == None):
             self.datos = {}
-            self.datos["Numero Documento"] = "912309123"
-            self.datos["Emisor"] = "9123123-k"
-            self.datos["Receptor"] = "9123123-2"
+            self.datos["Numero Documento"] = "31231231"
+            self.datos["Emisor"] = "12544959-k"
+            self.datos["Receptor"] = "18598138-k"
             self.datos["Fecha"] = "2013-12-12"
             
             self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
@@ -146,7 +148,7 @@ class EscanearModal(QtGui.QDialog):
     def encontrado(self):
         #Codigo encontrado, mostrar nuevo escanearDialog
         self.thread.parar = True
-        my_dialog = AgregarDocumentoModal(self.tipo, None) 
+        my_dialog = AgregarDocumentoModal(self.tipo, None)
         self.thread.start()
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
