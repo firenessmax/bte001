@@ -213,8 +213,16 @@ class MainWindow(QtGui.QMainWindow):
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         print "Corr: %d cont: %s Guardar: %s"%(correlativo, contabilizar, guardar)
-        archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xlsx"), filter="Microsoft Excel (*.xlsx)")
-        print "Guardando archivo %s"%archivo
+        archivo = None
+        print "LKSDLKASDN: ", self.sender().objectName()
+        if(self.sender().objectName() == "toolButtonPlano"):
+            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.txt"), filter="Texto plano (*.txt)")
+        else:    
+            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xlsx"), filter="Microsoft Excel (*.xlsx)")
+        if(archivo == ""):
+            print "Cancelado!!"
+        else:
+            print "Guardando archivo",archivo
 
     def clicked(self, position):
         if(self.sender().rowCount()==0): # Ninguna fila en la tabla
