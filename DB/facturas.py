@@ -603,11 +603,8 @@ def deleteFactura(id):
 #	print e.rutEmisor
 
 
-<<<<<<< HEAD
 #prueba = facturas(0,8,"17920814-8","17966491-7")
-=======
 #prueba = facturas(0,9,"17920814-8","17966491-7")
->>>>>>> 83e6650e04cc6dbbea8b2da497d2eb98eca97aee
 #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
 #obtenerVentas(prueba)
 #prueba.borrar()
