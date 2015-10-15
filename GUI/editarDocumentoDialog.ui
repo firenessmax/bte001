@@ -123,7 +123,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Nuevo Documento Electronico</string>
+        <string>Editar Documento Electronico</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -151,7 +151,17 @@
           </font>
          </property>
          <property name="text">
-          <string>Nº Documento:</string>
+          <string>Nº Documento</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="nDocumentoLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Numero de documento</string>
          </property>
         </widget>
        </item>
@@ -164,7 +174,23 @@
           </font>
          </property>
          <property name="text">
-          <string>Emisor:</string>
+          <string>Emisor</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="emisorLineEdit">
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Emisor</string>
          </property>
         </widget>
        </item>
@@ -177,7 +203,17 @@
           </font>
          </property>
          <property name="text">
-          <string>Receptor:</string>
+          <string>Receptor</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="receptorLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Receptor</string>
          </property>
         </widget>
        </item>
@@ -190,7 +226,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Fecha:</string>
+          <string>Fecha</string>
          </property>
         </widget>
        </item>
@@ -201,60 +237,6 @@
          </property>
          <property name="displayFormat">
           <string>yyyy-MM-dd</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="labelNDocumento">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Numero documento</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <property name="indent">
-          <number>4</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="labelEmisor">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Emisor</string>
-         </property>
-         <property name="indent">
-          <number>4</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="labelReceptor">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Receptor</string>
-         </property>
-         <property name="indent">
-          <number>4</number>
          </property>
         </widget>
        </item>
@@ -403,6 +385,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>nDocumentoLineEdit</tabstop>
+  <tabstop>emisorLineEdit</tabstop>
+  <tabstop>receptorLineEdit</tabstop>
   <tabstop>fechaDateEdit</tabstop>
   <tabstop>sucursalLineEdit</tabstop>
   <tabstop>cuentaProveedoresClienteLineEdit</tabstop>

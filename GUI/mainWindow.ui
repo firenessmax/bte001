@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SuperPrograma</string>
+   <string>Capturador CAMDE 0.9</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images/images.qrc">

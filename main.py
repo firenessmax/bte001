@@ -4,6 +4,8 @@ from sys import exit
 from GUI.mainWindow import *
 from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
+from GUI.editarDocumentoDialog import Ui_Dialog as Ui_Dialog_editarDocumento
+
 import LecturaController
 import DBController
 from instance import *#para el manejo de multiples instancias
@@ -23,25 +25,23 @@ debug = True
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
     exit(0) # Existe la instancia
-class AgregarDocumentoModal(QtGui.QDialog):
+
+
+class EditarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
-        super(AgregarDocumentoModal, self).__init__()
-        self.ui=Ui_Dialog_nuevoDocumento()
+        super(EditarDocumentoModal, self).__init__()
+        self.ui=Ui_Dialog_editarDocumento()
         self.ui.setupUi(self)
         # Tipo de documento
         self.tipo = tipo
         titulo = ""
         if(tipo==0):
-            titulo = "Nuevo Documento Compra"
+            titulo = "Editar Documento Compra"
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Proveedor")
-            self.ui.labelTitulo.setText("Nuevo Documento")
         elif(tipo==1):
-            titulo =  "Nuevo Documento Venta"
+            titulo =  "Editar Documento Venta"
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
-        if(datos != None):
-            titulo = titulo.replace("Nuevo", "Editar")
-            self.ui.labelTitulo.setText(titulo.replace("Compra", "Electronico").replace("Venta", "Electronico"))
         self.setWindowTitle(titulo)
         #Fecha actual
         self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
@@ -126,6 +126,91 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
+
+
+class AgregarDocumentoModal(QtGui.QDialog):
+    
+    def __init__(self, tipo, datos):
+        super(AgregarDocumentoModal, self).__init__()
+        self.ui=Ui_Dialog_nuevoDocumento()
+        self.ui.setupUi(self)
+        # Tipo de documento
+        self.tipo = tipo
+        titulo = ""
+        if(tipo==0):
+            titulo = "Nuevo Documento Compra"
+            self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Proveedor")
+        elif(tipo==1):
+            titulo =  "Nuevo Documento Venta"
+            self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
+        self.setWindowTitle(titulo)
+        #Fecha actual
+        self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+
+        self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        self.ui.contracuentaLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        
+        self.datos = datos
+        self.llenarDatos()
+        self.exec_()
+    def accept(self):
+        print "Guardando documento"
+        # Datos
+        # Limitar a numeros o alfanumerico
+        
+        self.datos["Numero Documento"] = str(self.ui.labelNDocumento.text())
+        self.datos["Emisor"] = str(self.ui.labelEmisor.text())
+        self.datos["Receptor"] = str(self.ui.labelReceptor.text())
+        self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
+        self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
+        self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
+        self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
+        self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
+        self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
+        
+        # Si uno de los datos esta vacio
+        # TODO: Cambiar color al encontrar error
+        fallas = []
+        for key, value in self.datos.items():
+            print key," : ", value
+            if(not ("%s"%value)):
+                fallas.append(key)
+        error = ""
+        for i in fallas:
+            error = error+"%s\n"%i
+        if(len(fallas)!=0):
+            QtGui.QMessageBox.about(self, "Datos incompletos", "Faltan datos a ingresar en los siguientes campos:\n%s"%error)
+        else:
+            # Guardando
+            DBController.guardarFactura(self.datos, self.tipo)
+            self.close()
+    def llenarDatos(self):
+        self.ui.montoExcentoSpinBox.setMaximum(2**53)
+        if(self.tipo == 0):
+            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
+        elif(self.tipo == 1):
+            self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
+        
+        for key, value in self.datos.items():
+            print key," : ", value
+        self.ui.labelNDocumento.setText(self.datos["Numero Documento"])
+        self.ui.labelEmisor.setText(self.datos["Emisor"])
+        self.ui.labelReceptor.setText(self.datos["Receptor"])
+        self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
+        
+        '''
+        11070100 "proveedores"->"Compra"
+        11040100 "cliente"->"Venta"
+        if(xmlp.TD == 34):
+            montoExcento = Total
+        self.ui.montoExcentoSpinBox.setMax(montoTotal)
+        '''
+        if(self.tipo == 0):
+            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
+        elif(self.tipo == 1):
+            self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
+        self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 # Modal para escanear codigo
 class EscanearModal(QtGui.QDialog):
     def __init__(self, tipo, window):
@@ -149,9 +234,29 @@ class EscanearModal(QtGui.QDialog):
     def encontrado(self):
         #Codigo encontrado, mostrar nuevo escanearDialog
         self.thread.parar = True
-        my_dialog = AgregarDocumentoModal(self.tipo, None)
-        self.window.updateTablas()
-        self.thread.start()
+        datos = {}
+        datos["Numero Documento"] = "31231231"
+        datos["Emisor"] = "12544959-k"
+        datos["Receptor"] = "18598138-k"
+        datos["Fecha"] = "2013-12-12"
+        datos["Monto Total"] = 1000
+        if(DBController.existeFactura(self.tipo, datos)):
+            print "La factura ya existe!!!"
+            qm = QtGui.QMessageBox(self)
+            qm.setWindowTitle('Advertencia')
+            qm.setText('''Esta factura ya ha sido ingresada.\nDesea editarla?''')
+            qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
+            qm.addButton(QtGui.QMessageBox.No).setText("No")
+            qm.setIcon(QtGui.QMessageBox.Warning)
+            reply = qm.exec_()
+            
+            if reply == QtGui.QMessageBox.Yes:
+                # Eliminar de la base de datos
+                print "Editar Dilog!!!"
+        else:
+            my_dialog = AgregarDocumentoModal(self.tipo, datos)
+            self.window.updateTablas()
+            self.thread.start()
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self):
@@ -252,9 +357,9 @@ class MainWindow(QtGui.QMainWindow):
                 datos[ str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "")] =  tabla.item(row,i).text()
                 print "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(row,i).text())
             if(self.sender().objectName()=="tableWidget_Ventas"):
-                my_dialog = AgregarDocumentoModal(1, datos ) 
+                my_dialog = EditarDocumentoModal(1, datos ) 
             else:
-                y_dialog = AgregarDocumentoModal(0, datos ) 
+                y_dialog = EditarDocumentoModal(0, datos ) 
         if action == eliminarAction:
             # TODO: Si se seleccionan varias columnas, eliminarlas todas
             # TODO: lanzar evento al oprimir suprimir,
@@ -275,7 +380,9 @@ class MainWindow(QtGui.QMainWindow):
                     #QtGui.QMessageBox.critical(self, "Error", "Error al eliminar en la base de datos")
                 print "Eliminarlo"
                 for idx in reversed(tabla.selectionModel().selectedRows()):
-                    print [ "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(idx.row(),i).text()) for i in range(tabla.horizontalHeader().count())]
+                    #print [ "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(idx.row(),i).text()) for i in range(tabla.horizontalHeader().count())]
+                    print "ID: ",tabla.item(idx.row(),15).text()
+                    DBController.eliminarFactura(tabla.item(idx.row(),15).text())
                     tabla.removeRow(idx.row())
                 #tabla.removeRow(row)
             else:

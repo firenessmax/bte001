@@ -616,7 +616,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "SuperPrograma", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Capturador CAMDE 0.9", None))
         self.toolButton_2.setText(_translate("MainWindow", "...", None))
         self.toolButton_4.setText(_translate("MainWindow", "...", None))
         self.labelClose.setText(_translate("MainWindow", "x", None))

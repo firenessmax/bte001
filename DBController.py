@@ -71,3 +71,12 @@ def guardarFactura(datos, venta):
     f.save()
     
     print datos
+def existeFactura(venta, datos):
+    try:
+        f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Receptor"], rutEmisor = datos["Emisor"])
+        return False
+    except:
+        return True
+def eliminarFactura(id):
+    Facturas.deleteFactura(int(id))
+    print "Eliminando Factura ",id
