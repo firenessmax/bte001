@@ -1,11 +1,12 @@
 import sys
 from PyQt4 import QtGui, QtCore
-
+from sys import exit
 from GUI.mainWindow import *
 from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
 import LecturaController
 import DBController
+from instance import *#para el manejo de multiples instancias
 import os
 # Para que no use el icono de python
 import ctypes
@@ -18,6 +19,10 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
+debug = True
+if not Instance.verificar('main'):#cambiar 
+    Instance.traeralfrente()
+    exit(0) # Existe la instancia
 class AgregarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
@@ -148,13 +153,31 @@ class MainWindow(QtGui.QMainWindow):
         self.filtrar_slot = self.filtrar
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint )
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
         self.ui.tableWidget_Compras.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Compras.customContextMenuRequested.connect(self.clicked)
         self.ui.tableWidget_Ventas.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Ventas.customContextMenuRequested.connect(self.clicked)
+        self.updateEmpresas()
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
+        self.ui.labelClose.mousePressEvent = self.cerrar
+        self.ui.labelMinimize.mouseReleaseEvent = self.minimizar
+        self.moving = False
+        self.ui.frame.mousePressEvent = self._mousePressEvent
+        self.ui.frame.mouseMoveEvent = self._mouseMoveEvent
         self.show()
+        
+    def cerrar(self, data):
+        print "Cerrars"
+        self.close()
+    def minimizar(self, data):
+        print "Minimize"
+        self.ui.labelMinimize.repaint()
+        
+        self.showMinimized()
     def cambiarTab(self, pos):
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #43a047  , stop:.2 #388e3c);",
@@ -193,6 +216,7 @@ class MainWindow(QtGui.QMainWindow):
         row = tabla.rowAt(position.y())
         allRows = tabla.columnCount()
         for i in range(0, allRows):
+            print "i: ",i
             print tabla.item(row,i).text()
         if action == editarAction:
             print "Editars"
@@ -246,11 +270,12 @@ class MainWindow(QtGui.QMainWindow):
         for i in range(tabla.verticalHeader().count()):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
+        
     def filtrar(self, data):
         tabla = self.ui.tableWidget_Compras
         if(self.ui.tabWidget_2.currentIndex()==1):
             tabla = self.ui.tableWidget_Ventas
-        documentos = DBController.obtenerLista(tabla.objectName(), data)
+        documentos = DBController.obtenerLista(tabla.objectName(), str(data))
         tabla.clearContents()
         tabla.setRowCount(len(documentos))
         for i in range(len(documentos)):
@@ -259,6 +284,21 @@ class MainWindow(QtGui.QMainWindow):
         
         print "filtrar!!!!!!!"
         print "data: %s"%data
+    def updateEmpresas(self):
+        self.ui.filtrarEmpresaComboBox.clear()
+        self.ui.filtrarEmpresaComboBox.addItem("Todas")
+        for e in DBController.getEmpresas():
+            self.ui.filtrarEmpresaComboBox.addItem(e)
+    
+    def _mousePressEvent(self,event):
+
+        if event.button() == QtCore.Qt.LeftButton:
+            self.moving = True; self.offset = event.pos()
+
+    def _mouseMoveEvent(self,event):
+        if self.moving: self.move(event.globalPos()-self.offset)
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = MainWindow()
