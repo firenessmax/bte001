@@ -193,9 +193,9 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showMinimized()
     def cambiarTab(self, pos):
-        estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #0288d1 , stop:.2 #1976d2);",
-                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #43a047  , stop:.2 #388e3c);",
-                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #9e9e9e , stop:.2 #888888);"]
+        estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(2, 136, 209, 230) , stop:.2 rgba(25, 118, 210, 250));",
+                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(67, 160, 71, 230)  , stop:.2 rgba(56, 142, 60, 250));",
+                    "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(158, 158, 158, 230) , stop:.2 rgba(136, 136, 136, 250));"]
         resto = "#top{%s border-top-left-radius:3px; border-top-right-radius: 3px;}"
         self.ui.top.setStyleSheet(resto%(estilos[pos]))
         print pos
