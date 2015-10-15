@@ -604,9 +604,9 @@ def deleteFactura(id):
 #	print e.rutEmisor
 
 
-prueba = facturas(0,9,"17920814-8","17966491-7")
+#prueba = facturas(0,9,"17920814-8","17966491-7")
 #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")
 #obtenerVentas(prueba)
 #prueba.borrar()
 #deleteFactura(2)
-prueba.save()
+#prueba.save()

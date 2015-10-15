@@ -83,7 +83,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         else:
             # Guardando
             DBController.guardarFactura(self.datos, self.tipo)
-            self.accept()
+            self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
         if(self.tipo == 0):
