@@ -198,8 +198,8 @@ QToolButton:hover{
                </property>
                <property name="iconSize">
                 <size>
-                 <width>14</width>
-                 <height>14</height>
+                 <width>12</width>
+                 <height>12</height>
                 </size>
                </property>
                <property name="autoRaise">
@@ -246,8 +246,8 @@ QToolButton:hover{
                </property>
                <property name="iconSize">
                 <size>
-                 <width>14</width>
-                 <height>14</height>
+                 <width>12</width>
+                 <height>12</height>
                 </size>
                </property>
                <property name="autoRaise">
@@ -340,6 +340,8 @@ QLabel:hover{
                <property name="font">
                 <font>
                  <pointsize>-1</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
                 </font>
                </property>
                <property name="styleSheet">
