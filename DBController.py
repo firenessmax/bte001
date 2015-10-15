@@ -12,10 +12,7 @@ def obtenerLista(tabla, empresa):
         empresa = None
     if(tabla == "tableWidget_Compras"):
         # consulta Compras
-        try:
-            DB.iniciarDB()
-        except:
-            pass
+        DB.iniciarDB()
         #prueba = F.facturas(1,1,"17920814-8","8953221-3", nomEmisor = "Mami")
         #prueba.nomEmisor="mamaita ta ta"
         #prueba = facturas(0,9,"19144519-8","17920814-8", nomEmisor = "Rodri", nomReceptor = "cris")

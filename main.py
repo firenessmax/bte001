@@ -1,11 +1,12 @@
 import sys
 from PyQt4 import QtGui, QtCore
-
+from sys import exit
 from GUI.mainWindow import *
 from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
 import LecturaController
 import DBController
+from instance import *#para el manejo de multiples instancias
 import os
 # Para que no use el icono de python
 import ctypes
@@ -19,7 +20,9 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 #       asdasd
 # Modal para Agregar documento
 debug = True
-
+if not Instance.verificar('main'):#cambiar 
+    Instance.traeralfrente()
+    exit(0) # Existe la instancia
 class AgregarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
