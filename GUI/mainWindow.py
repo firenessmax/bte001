@@ -83,8 +83,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
         self.frame = QtGui.QFrame(self.top)
+        self.frame.setEnabled(True)
         self.frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.frame.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
+        self.frame.setStyleSheet(_fromUtf8(""))
         self.frame.setFrameShape(QtGui.QFrame.NoFrame)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setLineWidth(0)
@@ -94,65 +96,6 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(6, 0, 0, 0)
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.toolButton_2 = QtGui.QToolButton(self.frame)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.toolButton_2.sizePolicy().hasHeightForWidth())
-        self.toolButton_2.setSizePolicy(sizePolicy)
-        self.toolButton_2.setMinimumSize(QtCore.QSize(0, 25))
-        font = QtGui.QFont()
-        font.setPointSize(-1)
-        self.toolButton_2.setFont(font)
-        self.toolButton_2.setStyleSheet(_fromUtf8("QToolButton{\n"
-"    background: none;\n"
-"    padding: 0px 10px;\n"
-"    margin:0;\n"
-"    color: #dddddd;\n"
-"    font-size:14px;\n"
-"}\n"
-"\n"
-"\n"
-"\n"
-"QToolButton:hover{\n"
-"    background:  rgba(255, 255, 255, 153);\n"
-"    color: white;\n"
-"    font-size: 14px;\n"
-"}"))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/maximize.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton_2.setIcon(icon1)
-        self.toolButton_2.setIconSize(QtCore.QSize(12, 12))
-        self.toolButton_2.setAutoRaise(True)
-        self.toolButton_2.setObjectName(_fromUtf8("toolButton_2"))
-        self.gridLayout_2.addWidget(self.toolButton_2, 1, 7, 1, 1)
-        self.toolButton_4 = QtGui.QToolButton(self.frame)
-        self.toolButton_4.setMinimumSize(QtCore.QSize(0, 25))
-        font = QtGui.QFont()
-        font.setPointSize(-1)
-        self.toolButton_4.setFont(font)
-        self.toolButton_4.setStyleSheet(_fromUtf8("QToolButton{\n"
-"    background: none;\n"
-"    padding: 0px 10px;\n"
-"    margin:0;\n"
-"    color: #dddddd;\n"
-"    font-size:14px;\n"
-"}\n"
-"\n"
-"\n"
-"\n"
-"QToolButton:hover{\n"
-"    background: rgba(255, 255, 255, 153);\n"
-"    color: white;\n"
-"    font-size: 14px;\n"
-"}"))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/resize.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton_4.setIcon(icon2)
-        self.toolButton_4.setIconSize(QtCore.QSize(12, 12))
-        self.toolButton_4.setAutoRaise(True)
-        self.toolButton_4.setObjectName(_fromUtf8("toolButton_4"))
-        self.gridLayout_2.addWidget(self.toolButton_4, 1, 5, 1, 1)
         self.labelClose = QtGui.QLabel(self.frame)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -187,7 +130,7 @@ class Ui_MainWindow(object):
         self.labelClose.setFrameShadow(QtGui.QFrame.Raised)
         self.labelClose.setLineWidth(0)
         self.labelClose.setObjectName(_fromUtf8("labelClose"))
-        self.gridLayout_2.addWidget(self.labelClose, 1, 8, 1, 1)
+        self.gridLayout_2.addWidget(self.labelClose, 1, 7, 1, 1)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem, 1, 2, 1, 1)
         self.labelMinimize = QtGui.QLabel(self.frame)
@@ -230,6 +173,65 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet(_fromUtf8("color:#fafafa;"))
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_2.addWidget(self.label, 1, 1, 1, 1)
+        self.maximize_btn = QtGui.QWidget(self.frame)
+        self.maximize_btn.setMinimumSize(QtCore.QSize(0, 0))
+        self.maximize_btn.setStyleSheet(_fromUtf8("#maximize_btn{\n"
+"    background: none;\n"
+"    padding: 0px 10px;\n"
+"    margin:0;\n"
+"    color: #fafafa;\n"
+"    font-size:16px;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"#maximize_btn:hover{\n"
+"    background:  rgba(255, 255, 255, 153);\n"
+"    color: white;\n"
+"    font-size: 14px;\n"
+"}"))
+        self.maximize_btn.setObjectName(_fromUtf8("maximize_btn"))
+        self.verticalLayout_6 = QtGui.QVBoxLayout(self.maximize_btn)
+        self.verticalLayout_6.setContentsMargins(12, -1, 12, 8)
+        self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
+        self.label_2 = QtGui.QLabel(self.maximize_btn)
+        self.label_2.setMaximumSize(QtCore.QSize(13, 10))
+        self.label_2.setText(_fromUtf8(""))
+        self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/maximize.png")))
+        self.label_2.setScaledContents(True)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.verticalLayout_6.addWidget(self.label_2)
+        self.gridLayout_2.addWidget(self.maximize_btn, 1, 6, 1, 1)
+        self.resize_btn = QtGui.QFrame(self.frame)
+        self.resize_btn.setStyleSheet(_fromUtf8("#resize_btn{\n"
+"    background: none;\n"
+"    margin:0;\n"
+"    color: #fafafa;\n"
+"    font-size:16px;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"#resize_btn:hover{\n"
+"    background:  rgba(255, 255, 255, 153);\n"
+"    color: white;\n"
+"    font-size: 14px;\n"
+"}"))
+        self.resize_btn.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.resize_btn.setFrameShadow(QtGui.QFrame.Raised)
+        self.resize_btn.setObjectName(_fromUtf8("resize_btn"))
+        self.verticalLayout_7 = QtGui.QVBoxLayout(self.resize_btn)
+        self.verticalLayout_7.setContentsMargins(12, -1, 12, 8)
+        self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
+        self.label_3 = QtGui.QLabel(self.resize_btn)
+        self.label_3.setMinimumSize(QtCore.QSize(0, 12))
+        self.label_3.setMaximumSize(QtCore.QSize(12, 12))
+        self.label_3.setText(_fromUtf8(""))
+        self.label_3.setPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/resize.png")))
+        self.label_3.setScaledContents(True)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.verticalLayout_7.addWidget(self.label_3)
+        self.gridLayout_2.addWidget(self.resize_btn, 1, 5, 1, 1)
         self.verticalLayout_4.addWidget(self.frame)
         self.tabWidget_4 = QtGui.QTabWidget(self.top)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -307,13 +309,14 @@ class Ui_MainWindow(object):
         self.formLayout_5.setContentsMargins(-1, 7, -1, -1)
         self.formLayout_5.setObjectName(_fromUtf8("formLayout_5"))
         self.escanearCompra = QtGui.QToolButton(self.tab_escanear_3)
+        self.escanearCompra.setEnabled(True)
         self.escanearCompra.setMinimumSize(QtCore.QSize(0, 65))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Segoe UI"))
         self.escanearCompra.setFont(font)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/barcode.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.escanearCompra.setIcon(icon3)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/barcode.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.escanearCompra.setIcon(icon1)
         self.escanearCompra.setIconSize(QtCore.QSize(100, 35))
         self.escanearCompra.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.escanearCompra.setAutoRaise(False)
@@ -382,9 +385,9 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Segoe UI"))
         self.toolButtonExcel.setFont(font)
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/excel.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.toolButtonExcel.setIcon(icon4)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/excel.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.toolButtonExcel.setIcon(icon2)
         self.toolButtonExcel.setIconSize(QtCore.QSize(100, 35))
         self.toolButtonExcel.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolButtonExcel.setObjectName(_fromUtf8("toolButtonExcel"))
@@ -395,9 +398,9 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Segoe UI"))
         self.toolButtonPlano.setFont(font)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/document.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButtonPlano.setIcon(icon5)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/document.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButtonPlano.setIcon(icon3)
         self.toolButtonPlano.setIconSize(QtCore.QSize(100, 35))
         self.toolButtonPlano.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolButtonPlano.setObjectName(_fromUtf8("toolButtonPlano"))
@@ -443,9 +446,9 @@ class Ui_MainWindow(object):
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
         self.toolButton_3 = QtGui.QToolButton(self.frame_3)
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/pregunta.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton_3.setIcon(icon6)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/pregunta.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButton_3.setIcon(icon4)
         self.toolButton_3.setAutoRaise(True)
         self.toolButton_3.setObjectName(_fromUtf8("toolButton_3"))
         self.horizontalLayout_3.addWidget(self.toolButton_3)
@@ -652,15 +655,24 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.toolButtonExcel, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.exportar_slot)
         QtCore.QObject.connect(self.filtrarEmpresaComboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(QString)")), MainWindow.filtrar_slot)
         QtCore.QObject.connect(self.tabWidget_2, QtCore.SIGNAL(_fromUtf8("currentChanged(int)")), MainWindow.documentoCambiarTab_slot)
-        QtCore.QObject.connect(self.toolButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.showMaximized)
-        QtCore.QObject.connect(self.toolButton_4, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.showNormal)
         QtCore.QObject.connect(self.toolButtonPlano, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.exportar_slot)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        MainWindow.setTabOrder(self.escanearCompra, self.escanearVenta)
+        MainWindow.setTabOrder(self.escanearVenta, self.correlativoSpinBox)
+        MainWindow.setTabOrder(self.correlativoSpinBox, self.contabilizarCheckBox)
+        MainWindow.setTabOrder(self.contabilizarCheckBox, self.guardarCheckBox)
+        MainWindow.setTabOrder(self.guardarCheckBox, self.toolButtonExcel)
+        MainWindow.setTabOrder(self.toolButtonExcel, self.toolButtonPlano)
+        MainWindow.setTabOrder(self.toolButtonPlano, self.filtrarEmpresaComboBox)
+        MainWindow.setTabOrder(self.filtrarEmpresaComboBox, self.toolButton_3)
+        MainWindow.setTabOrder(self.toolButton_3, self.tabWidget_2)
+        MainWindow.setTabOrder(self.tabWidget_2, self.tableWidget_Compras)
+        MainWindow.setTabOrder(self.tableWidget_Compras, self.tableWidget_Ventas)
+        MainWindow.setTabOrder(self.tableWidget_Ventas, self.tabWidget_4)
+        MainWindow.setTabOrder(self.tabWidget_4, self.toolButton)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Capturador CAMDE 0.9", None))
-        self.toolButton_2.setText(_translate("MainWindow", "...", None))
-        self.toolButton_4.setText(_translate("MainWindow", "...", None))
         self.labelClose.setText(_translate("MainWindow", "x", None))
         self.labelMinimize.setText(_translate("MainWindow", "_", None))
         self.toolButton.setText(_translate("MainWindow", "...", None))

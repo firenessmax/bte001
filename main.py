@@ -278,6 +278,7 @@ class MainWindow(QtGui.QMainWindow):
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
         self.ui.maximize_btn.mouseReleaseEvent = self.maximizar
+        self.ui.resize_btn.mouseReleaseEvent = self.restaurar
         self.ui.labelClose.mousePressEvent = self.cerrar
         self.ui.labelMinimize.mouseReleaseEvent = self.minimizar
         self.moving = False
@@ -286,7 +287,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.frame.mouseReleaseEvent = self._mouseReleaseEvent
         self.ui.tabWidget_4.tabBar().mousePressEvent = self._mousePressEvent
         self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
-        
+        self.ui.resize_btn.hide()
         
         
         self.show()
@@ -294,11 +295,16 @@ class MainWindow(QtGui.QMainWindow):
     def cerrar(self, data):
         print "Cerrars"
         self.close()
+    def restaurar(self, data):
+        print "Maximize"
+        self.ui.maximize_btn.show();self.ui.resize_btn.hide()#toggle
+        self.showNormal()
     def maximizar(self, data):
         print "Maximize"
         height = QtGui.QDesktopWidget().availableGeometry().bottom()
         width = QtGui.QDesktopWidget().availableGeometry().right()
         self._prev_width=self.width()
+        self.ui.maximize_btn.hide();self.ui.resize_btn.show()#toggle
         self.showMaximized()
         self.resize(width, height)
         self.showMaximized()
