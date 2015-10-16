@@ -347,9 +347,6 @@ class MainWindow(QtGui.QMainWindow):
         if(archivo == ""):
             print "Cancelado!!"
         else:
-            #TODO: try permiso de escritura 
-            DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
-            self.updateTablas()
             print "Guardando archivo",archivo
 
     def clicked(self, position):
@@ -359,7 +356,6 @@ class MainWindow(QtGui.QMainWindow):
         menu = QtGui.QMenu()
         editarAction = menu.addAction("Editar")
         eliminarAction = menu.addAction("Eliminar")
-        contabilizarAction = menu.addAction("Contabilizar")
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
         print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
@@ -367,7 +363,6 @@ class MainWindow(QtGui.QMainWindow):
         for i in range(0, allRows):
             print "i: ",i
             print tabla.item(row,i).text()
-        
         if action == editarAction:
             print "Editars"
             # Pasar los chorrocientos datos
@@ -474,6 +469,7 @@ class MainWindow(QtGui.QMainWindow):
                 self._drop_left=False
                 self._drop_right=False
                 self._resized=False
+                self.ui.maximize_btn.show();self.ui.resize_btn.hide()#toggle
             elif self._resized:
                 self.resize(self._prev_width, self._prev_height)
                 self._resized=False
@@ -507,6 +503,7 @@ class MainWindow(QtGui.QMainWindow):
             self.showMaximized()
             self.resize(width, height)
             self.move(QtCore.QPoint(0,0))
+            self.ui.maximize_btn.hide();self.ui.resize_btn.show()#toggle
             self._drop_top=False
         elif self._drop_left:
             height = QtGui.QDesktopWidget().availableGeometry().bottom()
