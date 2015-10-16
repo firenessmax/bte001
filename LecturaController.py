@@ -6,7 +6,10 @@ from lecturacodigo.reader import *
 
 def iniciarReader(s):
 	d = lectorDevice()
-	d.autoset()
+	try:
+		d.autoset()
+	except: 
+		d.list_update()
 	print d.device['frendly_name'],d.device['name']
 	ser = serialReader()
 	ser.setup(d,.01)

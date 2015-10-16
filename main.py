@@ -49,7 +49,7 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
         self.setWindowTitle(titulo)
         #Fecha actual
-        self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+
         self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
 
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
@@ -99,7 +99,10 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
         self.ui.emisorLineEdit.setText(self.datos["RS Emisor"])
         self.ui.receptorLineEdit.setText(self.datos["RS Receptor"])
-        self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
+        if(self.datos["Fecha"] == None):
+            self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        else:
+            self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         self.ui.sucursalLineEdit.setText(self.datos["Sucursal"])
         self.ui.glosaLineEdit.setText(self.datos["Glosa"])
         self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Exento"]))
@@ -117,7 +120,9 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
         #TODO: Descomentar esta linea
-        #self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
+        if(self.datos["Tipo Documento"] == "34"):
+            self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
+        self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 
 
 class AgregarDocumentoModal(QtGui.QDialog):
@@ -137,7 +142,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
         self.setWindowTitle(titulo)
         #Fecha actual
-        self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+
         self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
 
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
@@ -195,13 +200,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.ui.labelReceptor.setText(self.datos["RS Receptor"])
         self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         
-        '''
-        11070100 "proveedores"->"Compra"
-        11040100 "cliente"->"Venta"
-        if(xmlp.TD == 34):
-            montoExcento = Total
-        self.ui.montoExcentoSpinBox.setMax(montoTotal)
-        '''
+        
         if(self.tipo == 0):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
@@ -343,7 +342,7 @@ class MainWindow(QtGui.QMainWindow):
         
         print data
     def escanear(self):
-
+        print "ESCANEAR", self.sender().objectName() 
         if( self.sender().objectName()  == "escanearCompra"):
             my_dialog = EscanearModal(0, self) 
         elif( self.sender().objectName()  == "escanearVenta"):
