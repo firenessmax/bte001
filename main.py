@@ -347,6 +347,10 @@ class MainWindow(QtGui.QMainWindow):
         if(archivo == ""):
             print "Cancelado!!"
         else:
+            #TODO: try permiso de escritura 
+            DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
+            self.updateTablas()
+
             print "Guardando archivo",archivo
 
     def clicked(self, position):
@@ -356,6 +360,8 @@ class MainWindow(QtGui.QMainWindow):
         menu = QtGui.QMenu()
         editarAction = menu.addAction("Editar")
         eliminarAction = menu.addAction("Eliminar")
+        contabilizarAction = menu.addAction("Contabilizar")
+        
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
         print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
