@@ -4,7 +4,7 @@
 from facturas import *
 
 def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False,  correlativo = 0):
-	compra = open(path.strip("/")+"/compras.txt", 'w')
+	compra = open(path.strip(".txt")+"Compras.txt", 'w')
 	for obj in fCompras:
 		if guardarContabilizados:
 			obj.correlativo = correlativo
@@ -18,7 +18,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 		elif not guardarContabilizados and obj.contabilizado == 0:
 			obj.correlativo = correlativo
 			obj.save()
-			datos = formatoFacturaXlsCompras(obj)
+			datos = formatoFacturaTxtCompras(obj)
 			linea = ""
 			for dato in datos:
 				linea += str(dato)+","
@@ -29,13 +29,26 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 			obj.save() 
 	compra.close()
 	
-	venta = open(path.strip("/")+"/compras.txt", 'w')
-	#
-	#
-	#Terminar
-	#
-	#
-exportarTxt([], [])
+	venta = open(path.strip(".txt")+"Ventas.txt", 'w')
+	for obj in fVentas:
+		if guardarContabilizados:
+			obj.correlativo = correlativo
+			obj.save()
+			datos = formatoFacturaTxtVentas(obj)
+			linea = ""
+			for dato in datos:
+				linea += str(dato)+","
+			venta.write(linea.strip(",")+"\n")
+		elif not guardarContabilizados and obj.contabilizado:
+			obj.correlativo = correlativo
+			print obj.correlativo
+			obj.save()
+			datos = formatoFacturaTxtVentas(obj)
+			linea = ""
+			for dato in datos:
+				linea += str(dato)+","
+			venta.write(linea.strip(",")+"\n")
+	venta.close()
 
 
 def formatoFacturaTxtCompras(factura):
@@ -182,3 +195,9 @@ def switch(tipoDocumento, montoExento):
 	elif tipoDocumento == 56:return "ND"
 	elif tipoDocumento == 61:return "NE"
 	else:return "N/A"
+	
+ventas = obtenerVentas()
+print "ventas : ", ventas
+compras = obtenerCompras()
+print "compras : ", compras
+exportarTxt(ventas, compras, path = "prueba.txt", contabilizar = False, guardarContabilizados = False, correlativo = 620)

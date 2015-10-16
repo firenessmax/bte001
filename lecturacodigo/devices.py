@@ -27,12 +27,13 @@ class lectorDevice(object):
 				if i == 4:
 					raise Exception("Se agotaron los intentos, no se encontraron lectores conectados")
 				time.sleep(1)
-		self._device=self._device_list[1]
+		self._device=self._device_list[0]
 	def list_update(self):
 		#primero reseteamos en caso de que lo cambie de puerto
 		self._device_list=[]
 		#luego agregamos los lectores validos
 		for p in list(lp.comports()):
+			print p
 			if self.lector_valido(p[1]):
 				self._device_list.append({'frendly_name':p[1],'name':p[0]})
 		if len(self._device_list)==0:

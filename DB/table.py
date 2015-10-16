@@ -134,6 +134,7 @@ def validarTipo(dato, tipo):
 			print (dato, " no es flotante")
 			return False
 	elif tipo == "rut":
+		if dato == "0-0":return True
 		if not re.match("\d{1,8}-[0-9k]", dato):
 			print (dato, " : no coincide con el formato de rut")
 			return False
