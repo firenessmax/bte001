@@ -255,6 +255,8 @@ class EscanearModal(QtGui.QDialog):
                 self.thread.start()
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
+    _resized=False
+    _prev_width=670
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui=Ui_MainWindow()
@@ -275,11 +277,13 @@ class MainWindow(QtGui.QMainWindow):
         self.updateEmpresas()
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
+        self.ui.maximize_btn.mouseReleaseEvent = self.maximizar
         self.ui.labelClose.mousePressEvent = self.cerrar
         self.ui.labelMinimize.mouseReleaseEvent = self.minimizar
         self.moving = False
         self.ui.frame.mousePressEvent = self._mousePressEvent
         self.ui.frame.mouseMoveEvent = self._mouseMoveEvent
+        self.ui.frame.mouseReleaseEvent = self._mouseReleaseEvent
         self.ui.tabWidget_4.tabBar().mousePressEvent = self._mousePressEvent
         self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
         
@@ -290,6 +294,15 @@ class MainWindow(QtGui.QMainWindow):
     def cerrar(self, data):
         print "Cerrars"
         self.close()
+    def maximizar(self, data):
+        print "Maximize"
+        height = QtGui.QDesktopWidget().availableGeometry().bottom()
+        width = QtGui.QDesktopWidget().availableGeometry().right()
+        self._prev_width=self.width()
+        self.showMaximized()
+        self.resize(width, height)
+        self.showMaximized()
+        self.resize(self.width(), height)
     def minimizar(self, data):
         print "Minimize"
         self.ui.labelMinimize.repaint()
@@ -434,7 +447,74 @@ class MainWindow(QtGui.QMainWindow):
             self.moving = True; self.offset = event.pos()
 
     def _mouseMoveEvent(self,event):
-        if self.moving: self.move(event.globalPos()-self.offset)
+        if self.moving: 
+            if self.isMaximized():
+                print 'event.globalPos().x : %d'%event.globalPos().x()
+                print '>offset.x : %d'%(self._prev_width/2)
+                if (self._prev_width/2)<self.offset.x():
+                    diferencia = 0 
+                    if (event.globalPos().x()+self._prev_width/2)>QtGui.QDesktopWidget().availableGeometry().right():
+                        diferencia = (event.globalPos().x()+self._prev_width/2-QtGui.QDesktopWidget().availableGeometry().right())
+                    self.offset = QtCore.QPoint(self._prev_width/2+diferencia,self.offset.y())
+                #self.x = event.globalPos().x() - self._prev_width/2
+                self.showNormal()
+                print 'W : %d '%(event.globalPos().x() - self.width()/2)
+                self._drop_top=False
+                self._drop_left=False
+                self._drop_right=False
+                self._resized=False
+            elif self._resized:
+                self.resize(self._prev_width, self._prev_height)
+                self._resized=False
+            elif event.globalPos().y()==0:#caso ventana a top
+                self._drop_top=True
+                self._drop_left=False
+                self._drop_right=False
+            elif event.globalPos().x()==0:#caso ventana a la izquierda
+                self._drop_top=False
+                self._drop_left=True
+                self._drop_right=False
+            elif event.globalPos().x()==QtGui.QDesktopWidget().availableGeometry().right():#caso ventana a la derecha
+                self._drop_top=False
+                self._drop_left=False
+                self._drop_right=True
+            else:
+                self._drop_top=False
+                self._drop_left=False
+                self._drop_right=False
+            #no deberia dejar mover debajo del menu de inicio
+            if event.globalPos().y()<QtGui.QDesktopWidget().availableGeometry().bottom():
+                self.move(event.globalPos()-self.offset)
+            #print event.globalPos().x()
+    def _mouseReleaseEvent(self,event):
+        if self._drop_top:
+            height = QtGui.QDesktopWidget().availableGeometry().bottom()
+            width = QtGui.QDesktopWidget().availableGeometry().right()
+            self._prev_width=self.width()
+            self.showMaximized()
+            self.resize(width, height)
+            self.showMaximized()
+            self.resize(width, height)
+            self.move(QtCore.QPoint(0,0))
+            self._drop_top=False
+        elif self._drop_left:
+            height = QtGui.QDesktopWidget().availableGeometry().bottom()
+            width = QtGui.QDesktopWidget().availableGeometry().right()
+            self.move(QtCore.QPoint(0,0))
+            self._prev_width=self.width(); self._prev_height=self.height()
+            self.resize(width/2, height)
+            self._resized=True
+        elif self._drop_right:
+            height = QtGui.QDesktopWidget().availableGeometry().bottom()
+            width = QtGui.QDesktopWidget().availableGeometry().right()
+            self.move(QtCore.QPoint(width/2,0))
+            self._prev_width=self.width(); self._prev_height=self.height()
+            self.resize(width/2, height)
+            self._resized=True
+    def isMaximized(self):
+        height = QtGui.QDesktopWidget().availableGeometry().bottom()
+        width = QtGui.QDesktopWidget().availableGeometry().right()
+        return self.height()==height and self.width()==width
 
 
 def main():
