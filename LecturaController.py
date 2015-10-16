@@ -1,15 +1,18 @@
+
 from PyQt4 import QtCore
-import time
+from lecturacodigo.devices import lectorDevice
+from lecturacodigo.reader import *
 
 
-class EscanerThread(QtCore.QThread):
-	def run(self):
-		self.parar = False
-		count = 0
-		while count < 15:
-			if(self.parar):
-				return
-			time.sleep(1)
-			print "Escaneando %d veces"%count
-			count += 1
+def iniciarReader(s):
+	d = lectorDevice()
 
+	print d.device['frendly_name'],d.device['name']
+	ser = serialReader()
+	ser.setup(d,.01)
+
+	s.connect(ser, ser.signal, s.enc)
+	print "agregado event listener"
+	ser.open()
+	print "conexion iniciada"
+	return ser
