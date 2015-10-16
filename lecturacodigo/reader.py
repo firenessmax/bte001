@@ -23,13 +23,13 @@ class serialReader(QtCore.QThread):
 		print 'You pressed Ctrl+C!'
 		self.close()
 	def run(self):
-		print "CONEXION INICIADA"
+		self._isAlive=True
 		if self._lector.device['name'] == 'COMX':
 			raise Exception('puerto no valido, revise coneccion')
 		ser= serial.Serial(self._lector.device['name'],9600,timeout=self.to)
 		init=False
 		bufer='';
-		while 1:
+		while self._isAlive:
 			#time.sleep(10)
 			buf = ser.readline()
 			if(buf!=''):
@@ -44,8 +44,8 @@ class serialReader(QtCore.QThread):
 		signal.signal(signal.SIGINT, self.signal_handler)
 		self.start()
 	def close(self):
-		if self.isRunning():
-			pass
+		if self._isAlive:
+			self._isAlive=False
 			#self.ser.close()
 
 	def addEventListener(self,lst):
