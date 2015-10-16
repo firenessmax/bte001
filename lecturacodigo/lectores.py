@@ -1,5 +1,5 @@
 
 
 '''lectores validos por ahora solo el honeywell'''
-LISTA_LECTORES = ['/(.*)honeywell(.*)\(COM\d\)/ig']
+LISTA_LECTORES = ['(.*)Honeywell(.*)\(COM\d\)']
 debug = True 

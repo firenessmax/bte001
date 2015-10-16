@@ -36,7 +36,7 @@ class serialReader(QtCore.QThread):
 				bufer=bufer+buf
 				init=True
 			elif(bufer!='' and init):
-				self.emit(self.signal, bufer, self)
+				self.emit(self.signal, bufer[2:], self)
 				bufer=''
 				ser.close()
 				break
