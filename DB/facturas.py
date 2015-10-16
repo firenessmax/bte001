@@ -14,7 +14,7 @@ from empresas import *
 #	 TipoDocumento=1, nulo=0, fecha="2015-10-02",
 #	 nomEmisor="", nomReceptor="", montoExento=0, montoTotal=0,
 #	 Glosa="", cuentaProveedores=0, contracuenta=0, contabilizado=0, idUsuario=0, esNuevo = True)
-# f = facturas(venta = 0, numDocumento = 1, rutReceptor = "17920814-8", rutEmisor = "1-9")
+# f = facturas(venta = 0, numDocumento = 1, rutEmisor = "17920814-8", rutReceptor = "1-9")
 # funciones y metodos:
 # f.save()
 class facturas(tabla):

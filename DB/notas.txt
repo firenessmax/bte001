@@ -1,3 +1,0 @@
-Falta replicar las clases para el resto de tablas de la base de datos
-Falta hacer que se entreguen los datos separados por ","
-Faltan metodos para Upgrade y Remove
