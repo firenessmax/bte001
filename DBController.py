@@ -98,7 +98,8 @@ def existeFactura(venta, datos):
     try:
         f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"])
         return False
-    except:
+    except Exception as e:
+        print "MENSAJE DE ERROR!!OIGO)FBIU: ",e
         return True
 def eliminarFactura(id):
     Facturas.deleteFactura(int(id))

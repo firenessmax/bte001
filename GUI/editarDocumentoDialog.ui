@@ -217,7 +217,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
           </font>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="displayFormat">
           <string>yyyy-MM-dd</string>
@@ -233,7 +233,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
           </font>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="placeholderText">
           <string>Receptor</string>
@@ -255,7 +255,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
           <string/>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="placeholderText">
           <string>Emisor</string>
@@ -271,7 +271,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
           </font>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="placeholderText">
           <string>Numero de documento</string>

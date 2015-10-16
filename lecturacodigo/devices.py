@@ -4,7 +4,7 @@ import re, time
 
 
 class lectorDevice(object):
-	_device=({'frendly_name':'Puerto serial virtual Modo Debug','name':'/dev/ttys003'},{'frendly_name':'No hay lectores conectados','name':'COMX'})[not debug]
+	_device=({'frendly_name':'Puerto serial virtual Modo Debug','name':'COM4'},{'frendly_name':'No hay lectores conectados','name':'COMX'})[not debug]
 	_device_list=[]
 	@property
 	def device(self):

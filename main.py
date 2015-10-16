@@ -6,6 +6,9 @@ from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
 from GUI.editarDocumentoDialog import Ui_Dialog as Ui_Dialog_editarDocumento
 
+from lecturacodigo.devices import lectorDevice
+from lecturacodigo.reader import *
+from lecturacodigo import xmlLib as XML
 import LecturaController
 import DBController
 from instance import *#para el manejo de multiples instancias
@@ -214,45 +217,60 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
-        self.thread = LecturaController.EscanerThread()
-        self.thread.finished.connect(self.terminado)
-        self.thread.start()
+        self.ser = LecturaController.iniciarReader(self)
         self.exec_()
     def terminar(self):
         print "Terminado por usuario"
-        self.thread.parar = True
+        self.ser.close()
         self.accept()
     def terminado(self):
         print "Terminando thread"
-    def encontrado(self):
+    def enc(self, data, disp):
+        try:
+            xmlp = XML.XMLprocessor(data)
+            print xmlp.TD, xmlp.F, xmlp.RS, xmlp.RSR
+            datos = {}
+            datos["Numero Documento"] = str(xmlp.F)
+            datos["Rut Emisor"] = str(xmlp.RE)
+            datos["Rut Receptor"] = str(xmlp.RR)
+            datos["RS Emisor"] = str(xmlp.RS)
+            datos["RS Receptor"] = str(xmlp.RSR)
+            try:
+                datos["Fecha"] = xmlp.FE
+            except Exception as e:
+                datos["Fecha"] = None
+                # Mostrar modal
+                print "Fecha mala: ", e
+            datos["Monto Total"] = str(xmlp.MNT)
+            datos["Tipo Documento"] = str(xmlp.TD)
+            self.encontrado(datos)
+        except Exception as e:
+            # Modal
+            print "mensaje codigo no valido: ", e
+        disp.close()
+        print "SENAL", data
+    def encontrado(self, datos):
         #Codigo encontrado, mostrar nuevo escanearDialog
-        self.thread.parar = True
-        datos = {}
-        datos["Numero Documento"] = str(randint(11231231,91231231)) #"31231231"
-        datos["Rut Emisor"] = "12544959-k"
-        datos["Rut Receptor"] = "18598138-k"
-        datos["RS Emisor"] = "Pepito"
-        datos["RS Receptor"] = "Lucho"
-        datos["Fecha"] = "2013-12-12"
-        datos["Monto Total"] = 1000
+        #self.thread.parar = True
+        print "DATOSSSS!!!!",datos
         if(DBController.existeFactura(self.tipo, datos)):
             print "La factura ya existe!!!"
             qm = QtGui.QMessageBox(self)
             qm.setWindowTitle('Advertencia')
-            qm.setText('''Esta factura ya ha sido ingresada.\nDesea editarla?''')
-            qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
-            qm.addButton(QtGui.QMessageBox.No).setText("No")
+            qm.setText('''Esta factura ya ha sido ingresada.''')
+            qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
             qm.setIcon(QtGui.QMessageBox.Warning)
             reply = qm.exec_()
             
-            if reply == QtGui.QMessageBox.Yes:
+            #if reply == QtGui.QMessageBox.Yes:
                 # Eliminar de la base de datos
-                print "Editar Dilog!!!"
+             #   print "Editar Dilog!!!"
         else:
             agregar = AgregarDocumentoModal(self.tipo, datos)
             if(agregar.resultado):
                 self.window.updateTablas()
-                self.thread.start()
+            self.ser.open()
+            
 # Ventana Principal 
 class MainWindow(QtGui.QMainWindow):
     _resized=False
@@ -347,6 +365,10 @@ class MainWindow(QtGui.QMainWindow):
         if(archivo == ""):
             print "Cancelado!!"
         else:
+            #TODO: try permiso de escritura 
+            DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
+            self.updateTablas()
+
             print "Guardando archivo",archivo
 
     def clicked(self, position):
@@ -356,6 +378,8 @@ class MainWindow(QtGui.QMainWindow):
         menu = QtGui.QMenu()
         editarAction = menu.addAction("Editar")
         eliminarAction = menu.addAction("Eliminar")
+        contabilizarAction = menu.addAction("Contabilizar")
+        
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
         print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
