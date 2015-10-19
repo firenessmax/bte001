@@ -4,7 +4,7 @@
 from facturas import *
 
 def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False,  correlativo = 0):
-	compra = open(path.strip(".txt")+"Compras.txt", 'w')
+	compra = open(path.strip(".tcv")+"Compras.tcv", 'w')
 	for obj in fCompras:
 		if guardarContabilizados:
 			obj.correlativo = correlativo
@@ -29,20 +29,15 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 			obj.save() 
 	compra.close()
 	
-	venta = open(path.strip(".txt")+"Ventas.txt", 'w')
+	venta = open(path.strip(".tcv")+"Ventas.tcv", 'w')
 	for obj in fVentas:
 		if guardarContabilizados:
-			obj.correlativo = correlativo
-			obj.save()
 			datos = formatoFacturaTxtVentas(obj)
 			linea = ""
 			for dato in datos:
 				linea += str(dato)+","
 			venta.write(linea.strip(",")+"\n")
-		elif not guardarContabilizados and obj.contabilizado:
-			obj.correlativo = correlativo
-			print obj.correlativo
-			obj.save()
+		elif not guardarContabilizados and obj.contabilizado == 0:
 			datos = formatoFacturaTxtVentas(obj)
 			linea = ""
 			for dato in datos:
@@ -200,4 +195,4 @@ ventas = obtenerVentas()
 print "ventas : ", ventas
 compras = obtenerCompras()
 print "compras : ", compras
-exportarTxt(ventas, compras, path = "prueba.txt", contabilizar = False, guardarContabilizados = False, correlativo = 620)
+exportarTxt(ventas, compras, path = "prueba.tcv", contabilizar = False, guardarContabilizados = False, correlativo = 620)
