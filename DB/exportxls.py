@@ -81,6 +81,11 @@ def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 	libro.save(path)
 
 
+
+#
+#	funcin que se utiliza para pasar de un objeto factura a una lista
+#	con los datos que se necesitan para exportar a .xls en comrpas
+#
 def formatoFacturaXlsCompras(factura):
 	print "llamada a formatear xls de compras"
 	datos = []
@@ -154,7 +159,11 @@ def formatoFacturaXlsCompras(factura):
 	datos.append(0)#monto impuesto 5
 	
 	return datos
-	
+
+#
+#	funcin que se utiliza para pasar de un objeto factura a una lista
+#	con los datos que se necesitan para exportar a .xls en ventas
+#
 def formatoFacturaXlsVentas(factura):
 	print "llamada a formatear xls de ventas"
 	datos = []
@@ -214,6 +223,10 @@ def formatoFacturaXlsVentas(factura):
 	datos.append(0)#monto impuesto 5
 	return datos
 	
+#
+#	Funcion para cambiar el tipo de documento
+#	desde un int a un str
+#	
 def switch(tipoDocumento, montoExento):
 	if tipoDocumento == 33:
 		if montoExento > 0:return "FP"
@@ -231,6 +244,6 @@ def switch(tipoDocumento, montoExento):
 #for e in ob:
 #	print formatoFacturaXls(e)
 
-ventas = obtenerVentas()
-compras = obtenerCompras()
-exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False, correlativo = 620)
+#ventas = obtenerVentas()
+#compras = obtenerCompras()
+#exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False, correlativo = 620)

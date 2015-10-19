@@ -7,7 +7,7 @@ import re
 from empresas import *
 
 
-# esta clase sirve para insertar, updatear y deletear(no esta lista)
+# esta clase sirve para insertar, updatear y deletear
 # para facturas
 # instanciamiento:
 # f = facturas(venta, numDocumento, rutEmisor, rutReceptor, sucursal=1, id=0,
@@ -17,6 +17,13 @@ from empresas import *
 # f = facturas(venta = 0, numDocumento = 1, rutEmisor = "17920814-8", rutReceptor = "1-9")
 # funciones y metodos:
 # f.save()
+#
+# importante pasos para instance y update:
+# 1. f = facturas(0, 1, "17920814-8", "1-9") // esNuevo = True, viene por defecto
+# 2. f.save()
+# 3. f = facturas(0, 1, "17920814-8", "1-9", esNuevo = False) //instanciado para editar
+# 4. f.montoExento = 999999 //editando un dato
+# 5. f.save()
 class facturas(tabla):
 	_id = 0
 	_venta = 0				# obligatorio cuando se instancia
@@ -513,6 +520,9 @@ def obtenerRutEmpresa(id):
 	consulta.close()
 	conexion.close()
 
+#
+# funcion que sirva para obtener todas las facturas de compras
+#
 def obtenerCompras(rutReceptor = None):
 	print "llamada a obtener Compras"
 	conexion = sqlite3.connect('prueba.db')
