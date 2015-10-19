@@ -258,7 +258,8 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.sucursalLineEdit, self.cuentaProveedoresClienteLineEdit)
         Dialog.setTabOrder(self.cuentaProveedoresClienteLineEdit, self.glosaLineEdit)
         Dialog.setTabOrder(self.glosaLineEdit, self.contracuentaLineEdit)
-        Dialog.setTabOrder(self.contracuentaLineEdit, self.pushButton)
+        Dialog.setTabOrder(self.contracuentaLineEdit, self.montoExcentoSpinBox)
+        Dialog.setTabOrder(self.montoExcentoSpinBox, self.pushButton)
         Dialog.setTabOrder(self.pushButton, self.pushButton_2)
 
     def retranslateUi(self, Dialog):
@@ -276,6 +277,7 @@ class Ui_Dialog(object):
         self.labelReceptor.setText(_translate("Dialog", "Receptor", None))
         self.sucursalLabel.setText(_translate("Dialog", "Sucursal", None))
         self.glosaLabel.setText(_translate("Dialog", "Glosa", None))
+        self.sucursalLineEdit.setText(_translate("Dialog", "1", None))
         self.sucursalLineEdit.setPlaceholderText(_translate("Dialog", "Sucursal", None))
         self.glosaLineEdit.setPlaceholderText(_translate("Dialog", "Glosa", None))
         self.cuentaProveedoresClienteLabel.setText(_translate("Dialog", "Cuenta Proveedores/Cliente", None))

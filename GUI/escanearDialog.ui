@@ -160,13 +160,6 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="text">
-      <string>FAKE</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources>
@@ -186,22 +179,6 @@
     <hint type="destinationlabel">
      <x>353</x>
      <y>10</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
-   <slot>encontrado_slot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>65</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>353</x>
-     <y>53</y>
     </hint>
    </hints>
   </connection>

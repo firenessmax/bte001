@@ -527,7 +527,7 @@ QTabBar::tab:selected {
               <item row="1" column="0">
                <widget class="QToolButton" name="escanearCompra">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -564,6 +564,9 @@ QTabBar::tab:selected {
               </item>
               <item row="1" column="1">
                <widget class="QToolButton" name="escanearVenta">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>

@@ -279,7 +279,7 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.pushButton, self.pushButton_2)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Nuevo Documento", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Editar Documento", None))
         self.pushButton.setText(_translate("Dialog", "Guardar", None))
         self.pushButton_2.setText(_translate("Dialog", "Cancelar", None))
         self.labelTitulo.setText(_translate("Dialog", "Editar Documento Electrónico", None))

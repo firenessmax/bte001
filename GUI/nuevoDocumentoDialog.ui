@@ -313,6 +313,9 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
              <pointsize>9</pointsize>
             </font>
            </property>
+           <property name="text">
+            <string>1</string>
+           </property>
            <property name="placeholderText">
             <string>Sucursal</string>
            </property>
@@ -452,6 +455,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
   <tabstop>cuentaProveedoresClienteLineEdit</tabstop>
   <tabstop>glosaLineEdit</tabstop>
   <tabstop>contracuentaLineEdit</tabstop>
+  <tabstop>montoExcentoSpinBox</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
  </tabstops>
