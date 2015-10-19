@@ -505,7 +505,7 @@ QTabBar::tab:selected {
              <enum>QTabWidget::North</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -786,6 +786,51 @@ QTabBar::tab:selected {
              <attribute name="title">
               <string>Configurar</string>
              </attribute>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Estado:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="pushButtonDevice">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Buscar</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="labelStatusDevice">
+                <property name="text">
+                 <string>status</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </widget>
           </item>
@@ -1438,6 +1483,22 @@ QTabWidget::tab-bar {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonDevice</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>buscar_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>-2</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>escanear_documento()</signal>
@@ -1446,5 +1507,6 @@ QTabWidget::tab-bar {
   <slot>cambiarTab_slot()</slot>
   <slot>filtrar_slot()</slot>
   <slot>documentoCambiarTab_slot()</slot>
+  <slot>buscar_slot()</slot>
  </slots>
 </ui>

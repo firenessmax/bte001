@@ -290,6 +290,7 @@ class MainWindow(QtGui.QMainWindow):
         self.escanear_slot = self.escanear
         self.exportar_slot = self.exportar
         self.cambiarTab_slot = self.cambiarTab
+        self.buscar_slot = self.buscarDevices
         self.filtrar_slot = self.filtrar
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
@@ -321,10 +322,14 @@ class MainWindow(QtGui.QMainWindow):
         LecturaController.iniciarDevice(self)
         
         self.show()
+    def buscarDevices(self):
+        LecturaController.iniciarDevice(self)
     def deviceEncontrado(self, device):
         self.device = device
         self.ui.escanearCompra.setEnabled(True)
         self.ui.escanearVenta.setEnabled(True)
+        self.ui.pushButtonDevice.setEnabled(True)
+        self.ui.labelStatusDevice.setText("Enocntrado: %s"%device.device["frendly_name"])
         print "ENCONTRADOOOO !!!!!"
     def cerrar(self, data):
         print "Cerrars"

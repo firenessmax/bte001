@@ -16,6 +16,10 @@ def iniciarReader(s, d):
 	return ser
 
 def iniciarDevice(s):
+	s.ui.escanearCompra.setEnabled(False)
+	s.ui.escanearVenta.setEnabled(False)
+	s.ui.pushButtonDevice.setEnabled(False)
+	s.ui.labelStatusDevice.setText("Buscando despositivos...")
 	s.buscador = BuscarLector()
 	s.buscador.setup()
 	s.connect(s.buscador, s.buscador.signal, s.deviceEncontrado)
@@ -30,4 +34,5 @@ class BuscarLector(QtCore.QThread):
 			d.autoset()
 		except: 
 			d.list_update()
+		print d.device
 		self.emit(self.signal, d)
