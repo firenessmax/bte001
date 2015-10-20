@@ -27,6 +27,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 #       asdasd
 # Modal para Agregar documento
 debug = True
+
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
     exit(0) # Existe la instancia
@@ -316,8 +317,8 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
         self.ui.resize_btn.hide()
         
-        self.overlay = Overlay(self.ui.tableWidget_Compras)
-        ### self.overlay.mostrar()
+        self.overlay = Overlay(self.ui.tabWidget_2)
+        self.overlay.mostrar()
         
         LecturaController.iniciarDevice(self)
         
@@ -400,16 +401,35 @@ class MainWindow(QtGui.QMainWindow):
         menu = QtGui.QMenu()
         editarAction = menu.addAction("Editar")
         eliminarAction = menu.addAction("Eliminar")
-        contabilizarAction = menu.addAction("Contabilizar")
-        
+        contabilizar = 0
+        for idx in reversed(tabla.selectionModel().selectedRows()):
+            print "CONTABILIZADO: ",tabla.item(idx.row(),0).text()
+            if(tabla.item(idx.row(),0).text()=="No"):
+                contabilizar = 1
+                break
+        contabilizarAction = None
+        if(contabilizar):
+            contabilizarAction = menu.addAction("Contabilizar")
+        else:
+            contabilizarAction = menu.addAction("Descontabilizar")
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
         print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
         allRows = tabla.columnCount()
-        for i in range(0, allRows):
-            print "i: ",i
-            print tabla.item(row,i).text()
-        if action == editarAction:
+        
+        if action == contabilizarAction:
+            print "Contabilizars: ",contabilizar
+            lista = []
+            for idx in reversed(tabla.selectionModel().selectedRows()):
+                datos = {}
+                for i in range(tabla.horizontalHeader().count()):
+                    datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(idx.row(),i).text())
+                lista.append(datos)
+            if(self.sender().objectName()=="tableWidget_Ventas"):
+                DBController.contabilizar(self, 1,contabilizar, lista)
+            else:
+                DBController.contabilizar(self, 0,contabilizar, lista)
+        elif action == editarAction:
             print "Editars"
             # Pasar los chorrocientos datos
             datos = {}
@@ -429,12 +449,15 @@ class MainWindow(QtGui.QMainWindow):
                 print "RESULTAOD::", my_dialog.resultado
                 if(my_dialog.resultado):
                     self.updateTablas()
-        if action == eliminarAction:
+        elif action == eliminarAction:
             # TODO: Si se seleccionan varias columnas, eliminarlas todas
             # TODO: lanzar evento al oprimir suprimir,
             qm = QtGui.QMessageBox(self)
             qm.setWindowTitle('Eliminar documento')
-            qm.setText("Esta seguro de que desea eliminar el documento?")
+            if( len(tabla.selectionModel().selectedRows()) == 1):
+                qm.setText("Esta seguro de que desea eliminar el documento ?")
+            else:
+                qm.setText("Esta seguro de que desea eliminar los %d documentos ?"%len(tabla.selectionModel().selectedRows()))
             qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
             qm.addButton(QtGui.QMessageBox.No).setText("No")
             qm.setIcon(QtGui.QMessageBox.Question)

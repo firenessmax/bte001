@@ -114,3 +114,12 @@ def exportarExcel(filtro, path, cont, guardarCont, correlativo):
     
     
     ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont, correlativo = correlativo)
+
+def contabilizar(s, venta, contabilizar, lista):
+    print "NASDKLNASD",lista
+    for datos in lista:
+        f = Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+        f.contabilizado = contabilizar
+        f.save()
+    s.updateTablas()
+    
