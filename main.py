@@ -317,9 +317,13 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
         self.ui.resize_btn.hide()
         
-        self.overlay = Overlay(self.ui.tabWidget_2)
-        self.overlay.mostrar()
-        
+        # Loading Spinner
+        movie = QtGui.QMovie(":/newPrefix/loading.gif")
+        self.ui.label_5.setMovie(movie)
+        movie.start()
+        self.ui.label_5.setLayout(QtGui.QHBoxLayout())
+        self.ui.label_5.layout().addWidget(QtGui.QLabel(''))
+
         LecturaController.iniciarDevice(self)
         
         self.show()
@@ -330,8 +334,23 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.escanearCompra.setEnabled(True)
         self.ui.escanearVenta.setEnabled(True)
         self.ui.pushButtonDevice.setEnabled(True)
+        # device.device_list -> spinBox
+        self.ui.statusbar.clearMessage()
+        self.ui.label_5.hide()
         self.ui.labelStatusDevice.setText("Enocntrado: %s"%device.device["frendly_name"])
         print "ENCONTRADOOOO !!!!!"
+    def deviceNoEncontrado(self):
+        qm = QtGui.QMessageBox(self)
+        qm.setWindowTitle('Advertencia')
+        qm.setText('''No se ha encontrado ningun lector soportado''')
+        qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+        qm.setIcon(QtGui.QMessageBox.Warning)
+        self.ui.statusbar.clearMessage()
+        self.ui.escanearCompra.setEnabled(False)
+        self.ui.escanearVenta.setEnabled(False)
+        self.ui.pushButtonDevice.setEnabled(True)
+        self.ui.label_5.hide()
+        reply = qm.exec_()
     def cerrar(self, data):
         print "Cerrars"
         self.close()
@@ -355,7 +374,7 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showMinimized()
     def cambiarTab(self, pos):
-        self.overlay.parar()
+        #self.overlay.parar()
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(2, 136, 209, 230) , stop:.2 rgba(25, 118, 210, 250));",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(67, 160, 71, 230)  , stop:.2 rgba(56, 142, 60, 250));",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(158, 158, 158, 230) , stop:.2 rgba(136, 136, 136, 250));"]
@@ -593,7 +612,7 @@ class MainWindow(QtGui.QMainWindow):
         width = QtGui.QDesktopWidget().availableGeometry().right()
         return self.height()==height and self.width()==width
     def resizeEvent(self, event):
-        self.overlay.resize(event.size())
+        #self.overlay.resize(event.size())
         event.accept()
         
 class Overlay(QtGui.QWidget):
