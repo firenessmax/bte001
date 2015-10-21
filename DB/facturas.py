@@ -611,7 +611,9 @@ def deleteFactura(id):
 #fac = obtenerCompras("17920814-8")
 #for e in fac:
 #	print e.rutEmisor
-
+prueba = facturas(0, 65151651, "18274169-8", "17920814-8", esNuevo = False)
+prueba.empresaEmisor = "Matias"
+prueba.save()
 
 #prueba = facturas(0,8,"17920814-8","17966491-7")
 #prueba = facturas(0,9,"17920814-8","17966491-7")

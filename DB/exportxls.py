@@ -76,14 +76,12 @@ def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
-		
-	
 	libro.save(path)
 
 
 
 #
-#	funcin que se utiliza para pasar de un objeto factura a una lista
+#	funcion que se utiliza para pasar de un objeto factura a una lista
 #	con los datos que se necesitan para exportar a .xls en comrpas
 #
 def formatoFacturaXlsCompras(factura):
@@ -161,7 +159,7 @@ def formatoFacturaXlsCompras(factura):
 	return datos
 
 #
-#	funcin que se utiliza para pasar de un objeto factura a una lista
+#	funcion que se utiliza para pasar de un objeto factura a una lista
 #	con los datos que se necesitan para exportar a .xls en ventas
 #
 def formatoFacturaXlsVentas(factura):
