@@ -94,13 +94,9 @@ class Ui_Dialog(object):
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.formLayout.setLayout(4, QtGui.QFormLayout.FieldRole, self.horizontalLayout)
-        self.pushButton_2 = QtGui.QPushButton(Dialog)
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.pushButton_2)
 
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), Dialog.reject)
-        QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), Dialog.encontrado_slot)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -108,6 +104,5 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "Escanear Factura", None))
         self.label_3.setText(_translate("Dialog", "Estado:", None))
         self.pushButton.setText(_translate("Dialog", "Terminar", None))
-        self.pushButton_2.setText(_translate("Dialog", "FAKE", None))
 
 import images_rc

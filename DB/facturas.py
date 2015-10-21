@@ -80,7 +80,7 @@ class facturas(tabla):
 	def TipoDocumento(self, data):
 		self._TipoDocumento = data
 		self._listaDeCambio['TipoDocumento'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def numDocumento(self):
 		return self._numDocumento
@@ -91,7 +91,7 @@ class facturas(tabla):
 	def nulo(self, data):
 		self._nulo = data
 		self._listaDeCambio['nulo'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def correlativo(self):
 		return self._correlativo
@@ -99,16 +99,16 @@ class facturas(tabla):
 	def correlativo(self, data):
 		self._correlativo = data
 		self._listaDeCambio['correlativo'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def fecha(self):
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
 		fecha = datetime.datetime.strptime(str(self._fecha), formato1)
-		print fecha
-		print "fehca : ", fecha
+		 #print fecha
+		 #print "fehca : ", fecha
 		fechaFromateada = fecha.strftime(formato2)
-		print "fechaFormateada : ", fechaFromateada
+		 #print "fechaFormateada : ", fechaFromateada
 		
 		self.fechaVencimiento = (fecha + timedelta(days=30)).strftime(formato1)
 		return fechaFromateada
@@ -116,17 +116,17 @@ class facturas(tabla):
 	def fecha(self, data):
 		self._fecha = data
 		self._listaDeCambio['fecha'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def empresaEmisor(self):
 		return self._empresaEmisor
 	@empresaEmisor.setter
 	def empresaEmisor(self, data):
-		print self._empresaEmisor.id
-		print self._empresaEmisor.rut
+		 #print self._empresaEmisor.id
+		 #print self._empresaEmisor.rut
 		self._empresaEmisor.rS=data
 		self._empresaEmisor.save()
-		print 'cambio id: ', self._empresaEmisor._id, " , rut: ", self._empresaEmisor._rut, " , razonSocial: ", self._empresaEmisor._rS
+		 #print 'cambio id: ', self._empresaEmisor._id, " , rut: ", self._empresaEmisor._rut, " , razonSocial: ", self._empresaEmisor._rS
 	@property
 	def empresaReceptor(self):
 		return self._empresaReceptor
@@ -134,7 +134,7 @@ class facturas(tabla):
 	def empresaReceptor(self, data):
 		self._empresaReceptor.rS=data
 		self._empresaReceptor.save()
-		print 'cambio id: ', self._empresaReceptor._id, " , rut: ", self._empresaReceptor._rut, " , razonSocial: ", self._empresaReceptor._rS
+		 #print 'cambio id: ', self._empresaReceptor._id, " , rut: ", self._empresaReceptor._rut, " , razonSocial: ", self._empresaReceptor._rS
 	@property
 	def montoExento(self):
 		return self._montoExento
@@ -145,7 +145,7 @@ class facturas(tabla):
 		self.montoAfecto=(int(round(afecto, 2)))
 		self.montoIVA=(int(round(self._montoAfecto*.19)))
 		self._listaDeCambio['montoExento'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def montoAfecto(self):
 		return self._montoAfecto
@@ -153,7 +153,7 @@ class facturas(tabla):
 	def montoAfecto(self, data):
 		self._montoAfecto = data
 		self._listaDeCambio['montoAfecto'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def montoIVA(self):
 		return self._montoIVA
@@ -161,7 +161,7 @@ class facturas(tabla):
 	def montoIVA(self, data):
 		self._montoIVA = data
 		self._listaDeCambio['montoIVA'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def montoTotal(self):
 		return self._montoTotal
@@ -172,7 +172,7 @@ class facturas(tabla):
 		self.montoAfecto=(int(round(afecto, 2)))
 		self.montoIVA=(int(round(self._montoAfecto*.19)))
 		self._listaDeCambio['montoTotal'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def Glosa(self):
 		return self._Glosa
@@ -180,7 +180,7 @@ class facturas(tabla):
 	def Glosa(self, data):
 		self._Glosa = data
 		self._listaDeCambio['Glosa'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def cuentaProveedores(self):
 		return self._cuentaProveedores
@@ -188,7 +188,7 @@ class facturas(tabla):
 	def cuentaProveedores(self, data):
 		self._cuentaProveedores = data
 		self._listaDeCambio['cuentaProveedores'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def codigoEspecial(self):
 		return self._codigoEspecial
@@ -196,23 +196,23 @@ class facturas(tabla):
 	def codigoEspecial(self, data):
 		self._codigoEspecial = data
 		self._listaDeCambio['codigoEspecial'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def fechaVencimiento(self):
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
 		
 		fecha = datetime.datetime.strptime(self._fecha, formato1)
-		print "fehcaVencimiento : ", fecha
+		 #print "fehcaVencimiento : ", fecha
 		fechaFromateada = fecha.strftime(formato2)
-		print "fechaVencimientoFormateada : ", fechaFromateada
+		 #print "fechaVencimientoFormateada : ", fechaFromateada
 		
 		return self._fechaVencimiento
 	@fechaVencimiento.setter
 	def fechaVencimiento(self, data):
 		self._fechaVencimiento = data
 		self._listaDeCambio['fechaVencimiento'] = (data, 'fecha')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def contracuenta(self):
 		return self._contracuenta
@@ -220,7 +220,7 @@ class facturas(tabla):
 	def contracuenta(self, data):
 		self._contracuenta = data
 		self._listaDeCambio['contracuenta'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def centroResultados(self):
 		return self._centroResultados
@@ -228,7 +228,7 @@ class facturas(tabla):
 	def centroResultados(self, data):
 		self._centroResultados = data
 		self._listaDeCambio['centroResultados'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def activoFijo(self):
 		return self._activoFijo
@@ -236,7 +236,7 @@ class facturas(tabla):
 	def activoFijo(self, data):
 		self._activoFijo = data
 		self._listaDeCambio['activoFijo'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def sinDerechoaCredito(self):
 		return self._sinDerechoaCredito
@@ -244,7 +244,7 @@ class facturas(tabla):
 	def sinDerechoaCredito(self, data):
 		self._sinDerechoaCredito = data
 		self._listaDeCambio['sinDerechoaCredito'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def conCreditoFiscal(self):
 		return self._conCreditoFiscal
@@ -252,7 +252,7 @@ class facturas(tabla):
 	def conCreditoFiscal(self, data):
 		self._conCreditoFiscal = data
 		self._listaDeCambio['conCreditoFiscal'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def mImpuestoEspecifico1(self):
 		return self._mImpuestoEspecifico1
@@ -260,7 +260,7 @@ class facturas(tabla):
 	def mImpuestoEspecifico1(self, data):
 		self._mImpuestoEspecifico1 = data
 		self._listaDeCambio['mImpuestoEspecifico1'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def mImpuestoEspecifico2(self):
 		return self._mImpuestoEspecifico2
@@ -268,7 +268,7 @@ class facturas(tabla):
 	def mImpuestoEspecifico2(self, data):
 		self._mImpuestoEspecifico2 = data
 		self._listaDeCambio['mImpuestoEspecifico2'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def impuestoEspecificoFijo(self):
 		return self._impuestoEspecificoFijo
@@ -276,7 +276,7 @@ class facturas(tabla):
 	def impuestoEspecificoFijo(self, data):
 		self._impuestoEspecificoFijo = data
 		self._listaDeCambio['impuestoEspecificoFijo'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def impuestoEspecificoVariable(self):
 		return self._impuestoEspecificoVariable
@@ -284,7 +284,7 @@ class facturas(tabla):
 	def impuestoEspecificoVariable(self, data):
 		self._impuestoEspecificoVariable = data
 		self._listaDeCambio['impuestoEspecificoVariable'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def M3(self):
 		return self._M3
@@ -292,7 +292,7 @@ class facturas(tabla):
 	def M3(self, data):
 		self._M3 = data
 		self._listaDeCambio['M3'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def codImpuesto2(self):
 		return self._codImpuesto2
@@ -300,7 +300,7 @@ class facturas(tabla):
 	def codImpuesto2(self, data):
 		self._codImpuesto2 = data
 		self._listaDeCambio['codImpuesto2'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 # #print 'cambio: ',self._listaDeCambio
 	@property
 	def montoImpuesto2(self):
 		return self._montoImpuesto2
@@ -308,7 +308,7 @@ class facturas(tabla):
 	def montoImpuesto2(self, data):
 		self._montoImpuesto2 = data
 		self._listaDeCambio['montoImpuesto2'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def codImpuesto3(self):
 		return self._codImpuesto3
@@ -316,7 +316,7 @@ class facturas(tabla):
 	def codImpuesto3(self, data):
 		self._codImpuesto3 = data
 		self._listaDeCambio['codImpuesto3'] = (data, 'text')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def montoImpuesto3(self):
 		return self._montoImpuesto3
@@ -324,7 +324,7 @@ class facturas(tabla):
 	def montoImpuesto3(self, data):
 		self._montoImpuesto3 = data
 		self._listaDeCambio['montoImpuesto3'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def contabilizado(self):
 		return self._contabilizado
@@ -332,7 +332,7 @@ class facturas(tabla):
 	def contabilizado(self, data):
 		self._contabilizado = data
 		self._listaDeCambio['contabilizado'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	@property
 	def idUsuario(self):
 		return self._idUsuario
@@ -340,7 +340,7 @@ class facturas(tabla):
 	def idUsuario(self, data):
 		self._idUsuario = data
 		self._listaDeCambio['idUsuario'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		 #print 'cambio: ',self._listaDeCambio
 	
 	def getId(self):
 		ident = "SELECT id FROM facturas WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
@@ -353,7 +353,8 @@ class facturas(tabla):
 		conexion = sqlite3.connect('prueba.db')
 		consulta = conexion.cursor()
 		if(consulta.execute("DELETE FROM facturas WHERE id = ?", (self._id, ))):
-			print u"se ha eliminado la factura id :", self._id
+			pass
+			 #print u"se ha eliminado la factura id :", self._id
 		conexion.commit()
 		consulta.close()
 		conexion.close()
@@ -362,24 +363,24 @@ class facturas(tabla):
 	 TipoDocumento=1, nulo=0, fecha="2015-10-02",
 	 nomEmisor="", nomReceptor="", montoExento=0, montoTotal=0,
 	 Glosa="", cuentaProveedores=0, contracuenta=0, contabilizado=0, idUsuario=0, esNuevo = True):
-		print "Creando nueva tabla en facturas..."
+		 #print "Creando nueva tabla en facturas..."
 		
 		self._venta = venta
 		self._numDocumento = numDocumento
 		try:
 			self._empresaEmisor = empresas(rutEmisor, nomEmisor)
 			self._empresaEmisor.save()
-			print u'Se creo la empresa : ', rutEmisor, ' razonSocial : ', nomEmisor
+			 #print u'Se creo la empresa : ', rutEmisor, ' razonSocial : ', nomEmisor
 		except:
 			self._empresaEmisor = empresas(rutEmisor, esNuevo = False)
-			print u'La empresa con el rut : ', rutEmisor, u' ya existe en la base de datos'
+			 #print u'La empresa con el rut : ', rutEmisor, u' ya existe en la base de datos'
 		try:
 			self._empresaReceptor = empresas(rutReceptor, nomReceptor)
 			self._empresaReceptor.save()
-			print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
+			 #print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
 		except:
 			self._empresaReceptor = empresas(rutReceptor, esNuevo = False)
-			print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
+			 #print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
 		if esNuevo:
 			conexion = sqlite3.connect('prueba.db')
 			consulta = conexion.cursor()
@@ -388,8 +389,8 @@ class facturas(tabla):
 			WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?
 			'''
 			tupla = tuple([venta, numDocumento, self._empresaEmisor._id, self._empresaReceptor._id])
-			#print "sql : ", exist
-			#print "args : ",tupla
+			# #print "sql : ", exist
+			# #print "args : ",tupla
 			if (consulta.execute(exist, tupla)):
 				count = consulta.fetchone()
 				self._ident = "id"
@@ -524,7 +525,7 @@ def obtenerRutEmpresa(id):
 # funcion que sirva para obtener todas las facturas de compras
 #
 def obtenerCompras(rutReceptor = None):
-	print "llamada a obtener Compras"
+	 #print "llamada a obtener Compras"
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
@@ -581,7 +582,7 @@ def obtenerCompras(rutReceptor = None):
 	
 
 def obtenerVentas(rutEmisor = None):
-	print "llamada a obtener Ventas"
+	 #print "llamada a obtener Ventas"
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
@@ -603,17 +604,14 @@ def deleteFactura(id):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	if(consulta.execute("DELETE FROM facturas WHERE id = ?", (id, ))):
-		print u"se ha eliminado la factura id :", id
+		pass
+		 #print u"se ha eliminado la factura id :", id
 	conexion.commit()
 	consulta.close()
 	conexion.close()
 
 #fac = obtenerCompras("17920814-8")
 #for e in fac:
-#	print e.rutEmisor
-prueba = facturas(0, 65151651, "18274169-8", "17920814-8", esNuevo = False)
-prueba.empresaEmisor = "Matias"
-prueba.save()
 
 #prueba = facturas(0,8,"17920814-8","17966491-7")
 #prueba = facturas(0,9,"17920814-8","17966491-7")

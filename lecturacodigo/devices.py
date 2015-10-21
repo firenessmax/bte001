@@ -37,7 +37,7 @@ class lectorDevice(object):
 			if self.lector_valido(p[1]):
 				self._device_list.append({'frendly_name':p[1],'name':p[0]})
 		if len(self._device_list)==0:
-			self._device=({'frendly_name':'Puerto serial virtual Modo Debug','name':'/dev/ttys003'},{'frendly_name':'No hay lectores conectados','name':'COMX'})[not debug]
+			self._device=({'frendly_name':'Puerto serial virtual Modo Debug','name':'COM4'},{'frendly_name':'No hay lectores conectados','name':'COMX'})[not debug]
 	def lector_valido(self,frendly_name):
 		for lector in LISTA_LECTORES:
 			if re.match(lector,frendly_name):

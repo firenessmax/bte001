@@ -44,8 +44,7 @@ class XMLprocessor(object):
 			self.procesar()
 		if not re.match("(.*)<FE>\d{4}-\d{2}-\d{2}<\/FE>(.*)" ,self._string):
 			raise Exception("Fecha no valida")
-		fecha_split=self._root.find('DD').find('FE').text.split('-')
-		return fecha_split[2]+'/'+fecha_split[1]+'/'+fecha_split[0]
+		return self._root.find('DD').find('FE').text
 	@FE.setter
 	def FE(self,data):
 		raise Exception("atributo no seteable")

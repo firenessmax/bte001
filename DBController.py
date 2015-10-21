@@ -7,9 +7,9 @@ import DB.exportxls as ExportarExcel
 def obtenerLista(tabla, empresa):
     # Devolver lista de facturas con el formato
     # [Contabilizado, Sucursal, Tipo Documento, Numero Documento, Fecha, Emisor, RS Emisor, Receptor, RS Receptor', Monto Exento, Monto Afecto, Monto IVA, Monto Total, Glosa, Contracuenta, id]
-    print "Tabla: %s"%tabla
-    print tabla
-    print empresa
+     #print "Tabla: %s"%tabla
+     #print tabla
+     #print empresa
     
     DB.iniciarDB()
     if(empresa == "Todas"):
@@ -30,7 +30,7 @@ def obtenerLista(tabla, empresa):
                     else:
                         listaDeCompras[i][j] = "Si"
                 listaDeCompras[i][j] = str(listaDeCompras[i][j])                
-        print "Lista de comrpas:",listaDeCompras
+         #print "Lista de comrpas:",listaDeCompras
         return listaDeCompras
         #prueba.save()
         
@@ -50,7 +50,7 @@ def obtenerLista(tabla, empresa):
                         listaDeVentas[i][j] = "Si"
                 listaDeVentas[i][j] = str(listaDeVentas[i][j])                
         return listaDeVentas
-    print "Filtro Empresa: %s"%empresa
+     #print "Filtro Empresa: %s"%empresa
     return fac
     
 def getEmpresas():
@@ -76,9 +76,9 @@ def guardarFactura(datos, venta):
     f.contracuenta = datos["Contracuenta"]
     f.save()
     
-    print datos
+     #print datos
 def modificarFactura(datos, venta):
-    print "MODIFICAR::", datos
+     #print "MODIFICAR::", datos
     f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
     nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
     f.empresaEmisor.rS = datos["RS Emisor"]
@@ -93,24 +93,33 @@ def modificarFactura(datos, venta):
     f.contracuenta = datos["Contracuenta"]
     f.save()
     
-    print datos
+     #print datos
 def existeFactura(venta, datos):
     try:
         f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"])
         return False
     except Exception as e:
-        print "MENSAJE DE ERROR!!OIGO)FBIU: ",e
+         #print "MENSAJE DE ERROR!!OIGO)FBIU: ",e
         return True
 def eliminarFactura(id):
     Facturas.deleteFactura(int(id))
-    print "Eliminando Factura ",id
+     #print "Eliminando Factura ",id
 def exportarExcel(filtro, path, cont, guardarCont, correlativo):
-    print "Exportando ", filtro
+     #print "Exportando ", filtro
     if (filtro == "Todas"):
         filtro = None
     ventas = Facturas.obtenerVentas(filtro)
     compras = Facturas.obtenerCompras(filtro)
-    print "VENTAS Y COMPRAS", ventas, compras
+     #print "VENTAS Y COMPRAS", ventas, compras
     
     
     ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont, correlativo = correlativo)
+
+def contabilizar(s, venta, contabilizar, lista):
+     #print "NASDKLNASD",lista
+    for datos in lista:
+        f = Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+        f.contabilizado = contabilizar
+        f.save()
+    s.updateTablas()
+    

@@ -5,7 +5,7 @@ from GUI.mainWindow import *
 from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
 from GUI.editarDocumentoDialog import Ui_Dialog as Ui_Dialog_editarDocumento
-
+import math
 from lecturacodigo.devices import lectorDevice
 from lecturacodigo.reader import *
 from lecturacodigo import xmlLib as XML
@@ -27,11 +27,12 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 #       asdasd
 # Modal para Agregar documento
 debug = True
+
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
     exit(0) # Existe la instancia
 
-
+lector = None
 class EditarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
@@ -49,7 +50,7 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
         self.setWindowTitle(titulo)
         #Fecha actual
-        self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+
         self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
 
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
@@ -99,7 +100,12 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
         self.ui.emisorLineEdit.setText(self.datos["RS Emisor"])
         self.ui.receptorLineEdit.setText(self.datos["RS Receptor"])
-        self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
+        self.ui.fechaDateEdit.setDisabled(False)
+        if(self.datos["Fecha"] == None):
+            self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+            self.ui.fechaDateEdit.setDisabled(False)
+        else:
+            self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         self.ui.sucursalLineEdit.setText(self.datos["Sucursal"])
         self.ui.glosaLineEdit.setText(self.datos["Glosa"])
         self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Exento"]))
@@ -117,7 +123,9 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
         #TODO: Descomentar esta linea
-        #self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
+        if(self.datos["Tipo Documento"] == "34"):
+            self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
+        self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 
 
 class AgregarDocumentoModal(QtGui.QDialog):
@@ -137,7 +145,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
         self.setWindowTitle(titulo)
         #Fecha actual
-        self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+
         self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
 
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
@@ -193,15 +201,14 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.ui.labelNDocumento.setText(self.datos["Numero Documento"])
         self.ui.labelEmisor.setText(self.datos["RS Emisor"])
         self.ui.labelReceptor.setText(self.datos["RS Receptor"])
-        self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
+        print "FECHA!!!!!!", self.datos["Fecha"]
+        if(self.datos["Fecha"] == None):
+            self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+            self.ui.fechaDateEdit.setReadOnly(False)
+        else:
+            self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
+        self.ui.glosaLineEdit.setFocus()
         
-        '''
-        11070100 "proveedores"->"Compra"
-        11040100 "cliente"->"Venta"
-        if(xmlp.TD == 34):
-            montoExcento = Total
-        self.ui.montoExcentoSpinBox.setMax(montoTotal)
-        '''
         if(self.tipo == 0):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
@@ -217,7 +224,7 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
-        self.ser = LecturaController.iniciarReader(self)
+        self.ser = LecturaController.iniciarReader(self, window.device)
         self.exec_()
     def terminar(self):
         print "Terminado por usuario"
@@ -247,7 +254,7 @@ class EscanearModal(QtGui.QDialog):
         except Exception as e:
             # Modal
             print "mensaje codigo no valido: ", e
-        disp.close()
+        #disp.close()
         print "SENAL", data
     def encontrado(self, datos):
         #Codigo encontrado, mostrar nuevo escanearDialog
@@ -269,6 +276,8 @@ class EscanearModal(QtGui.QDialog):
             agregar = AgregarDocumentoModal(self.tipo, datos)
             if(agregar.resultado):
                 self.window.updateTablas()
+            else:
+                print "CANCELANDO!!!!!"
             self.ser.open()
             
 # Ventana Principal 
@@ -282,6 +291,7 @@ class MainWindow(QtGui.QMainWindow):
         self.escanear_slot = self.escanear
         self.exportar_slot = self.exportar
         self.cambiarTab_slot = self.cambiarTab
+        self.buscar_slot = self.buscarDevices
         self.filtrar_slot = self.filtrar
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
@@ -307,9 +317,40 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
         self.ui.resize_btn.hide()
         
+        # Loading Spinner
+        movie = QtGui.QMovie(":/newPrefix/loading.gif")
+        self.ui.label_5.setMovie(movie)
+        movie.start()
+        self.ui.label_5.setLayout(QtGui.QHBoxLayout())
+        self.ui.label_5.layout().addWidget(QtGui.QLabel(''))
+
+        LecturaController.iniciarDevice(self)
         
         self.show()
-        
+    def buscarDevices(self):
+        LecturaController.iniciarDevice(self)
+    def deviceEncontrado(self, device):
+        self.device = device
+        self.ui.escanearCompra.setEnabled(True)
+        self.ui.escanearVenta.setEnabled(True)
+        self.ui.pushButtonDevice.setEnabled(True)
+        # device.device_list -> spinBox
+        self.ui.statusbar.clearMessage()
+        self.ui.label_5.hide()
+        self.ui.labelStatusDevice.setText("Enocntrado: %s"%device.device["frendly_name"])
+        print "ENCONTRADOOOO !!!!!"
+    def deviceNoEncontrado(self):
+        qm = QtGui.QMessageBox(self)
+        qm.setWindowTitle('Advertencia')
+        qm.setText('''No se ha encontrado ningun lector soportado''')
+        qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+        qm.setIcon(QtGui.QMessageBox.Warning)
+        self.ui.statusbar.clearMessage()
+        self.ui.escanearCompra.setEnabled(False)
+        self.ui.escanearVenta.setEnabled(False)
+        self.ui.pushButtonDevice.setEnabled(True)
+        self.ui.label_5.hide()
+        reply = qm.exec_()
     def cerrar(self, data):
         print "Cerrars"
         self.close()
@@ -333,6 +374,7 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showMinimized()
     def cambiarTab(self, pos):
+        #self.overlay.parar()
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(2, 136, 209, 230) , stop:.2 rgba(25, 118, 210, 250));",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(67, 160, 71, 230)  , stop:.2 rgba(56, 142, 60, 250));",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(158, 158, 158, 230) , stop:.2 rgba(136, 136, 136, 250));"]
@@ -343,7 +385,7 @@ class MainWindow(QtGui.QMainWindow):
         
         print data
     def escanear(self):
-
+        print "ESCANEAR", self.sender().objectName() 
         if( self.sender().objectName()  == "escanearCompra"):
             my_dialog = EscanearModal(0, self) 
         elif( self.sender().objectName()  == "escanearVenta"):
@@ -378,16 +420,35 @@ class MainWindow(QtGui.QMainWindow):
         menu = QtGui.QMenu()
         editarAction = menu.addAction("Editar")
         eliminarAction = menu.addAction("Eliminar")
-        contabilizarAction = menu.addAction("Contabilizar")
-        
+        contabilizar = 0
+        for idx in reversed(tabla.selectionModel().selectedRows()):
+            print "CONTABILIZADO: ",tabla.item(idx.row(),0).text()
+            if(tabla.item(idx.row(),0).text()=="No"):
+                contabilizar = 1
+                break
+        contabilizarAction = None
+        if(contabilizar):
+            contabilizarAction = menu.addAction("Contabilizar")
+        else:
+            contabilizarAction = menu.addAction("Descontabilizar")
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
         print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
         allRows = tabla.columnCount()
-        for i in range(0, allRows):
-            print "i: ",i
-            print tabla.item(row,i).text()
-        if action == editarAction:
+        
+        if action == contabilizarAction:
+            print "Contabilizars: ",contabilizar
+            lista = []
+            for idx in reversed(tabla.selectionModel().selectedRows()):
+                datos = {}
+                for i in range(tabla.horizontalHeader().count()):
+                    datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(idx.row(),i).text())
+                lista.append(datos)
+            if(self.sender().objectName()=="tableWidget_Ventas"):
+                DBController.contabilizar(self, 1,contabilizar, lista)
+            else:
+                DBController.contabilizar(self, 0,contabilizar, lista)
+        elif action == editarAction:
             print "Editars"
             # Pasar los chorrocientos datos
             datos = {}
@@ -407,12 +468,15 @@ class MainWindow(QtGui.QMainWindow):
                 print "RESULTAOD::", my_dialog.resultado
                 if(my_dialog.resultado):
                     self.updateTablas()
-        if action == eliminarAction:
+        elif action == eliminarAction:
             # TODO: Si se seleccionan varias columnas, eliminarlas todas
             # TODO: lanzar evento al oprimir suprimir,
             qm = QtGui.QMessageBox(self)
             qm.setWindowTitle('Eliminar documento')
-            qm.setText("Esta seguro de que desea eliminar el documento?")
+            if( len(tabla.selectionModel().selectedRows()) == 1):
+                qm.setText("Esta seguro de que desea eliminar el documento ?")
+            else:
+                qm.setText("Esta seguro de que desea eliminar los %d documentos ?"%len(tabla.selectionModel().selectedRows()))
             qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
             qm.addButton(QtGui.QMessageBox.No).setText("No")
             qm.setIcon(QtGui.QMessageBox.Question)
@@ -547,8 +611,62 @@ class MainWindow(QtGui.QMainWindow):
         height = QtGui.QDesktopWidget().availableGeometry().bottom()
         width = QtGui.QDesktopWidget().availableGeometry().right()
         return self.height()==height and self.width()==width
+    def resizeEvent(self, event):
+        #self.overlay.resize(event.size())
+        event.accept()
+        
+class Overlay(QtGui.QWidget):
 
+    def __init__(self, parent = None):
+    
+        QtGui.QWidget.__init__(self, parent)
+        palette = QtGui.QPalette(self.palette())
+        palette.setColor(palette.Background, QtCore.Qt.transparent)
+        self.setPalette(palette)
+        self.mostrando = False
+        self.hide()
+    def paintEvent(self, event):
+    
+        painter = QtGui.QPainter()
+        painter.begin(self)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.fillRect(event.rect(), QtGui.QBrush(QtGui.QColor(255, 255, 255, 127)))
+        painter.setPen(QtGui.QPen(QtCore.Qt.NoPen))
+        
+        for i in range(6):
+            if (self.counter / 5) % 6 == i:
+                painter.setBrush(QtGui.QBrush(QtGui.QColor(127 + (self.counter % 5)*32, 127, 127)))
+            else:
+                painter.setBrush(QtGui.QBrush(QtGui.QColor(127, 127, 127)))
+            painter.drawEllipse(
+                event.rect().width()/2 + 30 * math.cos(2 * math.pi * i / 6.0) - 10,
+                event.rect().height()/2 + 30 * math.sin(2 * math.pi * i / 6.0) - 10,
+                20, 20)
+        
+        painter.end()
+    
+    def showEvent(self, event):
+        self.timer = self.startTimer(50)
+        self.counter = 0
+    def parar(self):
+        self.mostrando = False
+        self.counter = 590
+        self.killTimer(self.timer)
+        self.hide()
+    def timerEvent(self, event):
+    
+        self.counter += 1
+        self.update()
+        if self.counter == 600:
+            self.killTimer(self.timer)
+            self.hide()
+            self.mostrando = False
 
+    def mostrar(self):
+        if(not self.mostrando):
+            self.show()
+            self.mostrando = True
+        
 def main():
     app = QtGui.QApplication(sys.argv)
     ex = MainWindow()

@@ -23,7 +23,7 @@ class tabla(object):
 			self.conexion.commit()
 			#self._identValue = self.getId()
 		elif self._esNuevo == False and self._listaDeCambio != {}:
-			print u"Se realizará un Update ..."
+			 #print u"Se realizará un Update ..."
 			self.update()
 			self.conexion.commit()
 		self._identValue = self.getId()
@@ -33,15 +33,15 @@ class tabla(object):
 	def insertar(self, datos, nombre):
 		argumentos = []
 		llaves = []
-		print u"verificación del formato de los datos ingresados..."
+		 #print u"verificación del formato de los datos ingresados..."
 		for key in datos.keys():
 			if validarTipo(datos[key][0], datos[key][1]):
 				argumentos.append(datos[key][0])
 				llaves.append(key)
 			else:
-				print ("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
+				 #print ("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
 				raise Exception("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
-		print u"Verificación exitosa"
+		 #print u"Verificación exitosa"
 		
 		ub = ""
 		preg = ""
@@ -51,13 +51,15 @@ class tabla(object):
 		ub = ub.strip(",")
 		preg = preg.strip(",")
 		sql ="INSERT INTO " +nombre+"("+ub+") VALUES ("+preg+")"
-		#print "slq : ", sql
-		#print "args : ", argumentos 
+		# #print "slq : ", sql
+		# #print "args : ", argumentos 
 		argumentos = tuple(argumentos)
 		
 		if (self.consulta.execute(sql, argumentos)):
-			print("registro guardado con exito")
-		else: ("ha ocurrido un problema al guardar el registro")
+			pass
+			 #print("registro guardado con exito")
+		else: 
+			raise Exception("ha ocurrido un problema al guardar el registro")
 		
 	def update(self):
 		if not self._listaDeCambio=={}:
@@ -67,9 +69,9 @@ class tabla(object):
 				if validarTipo(self._listaDeCambio[key][0], self._listaDeCambio[key][1]):
 					argumentos.append(self._listaDeCambio[key][0])
 					llaves.append(key)
-					print "Datos a updatear : ",key, " : ", self._listaDeCambio[key][0]
+					# #print "Datos a updatear : ",key, " : ", self._listaDeCambio[key][0]
 				else:
-					print ("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
+					 #print ("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
 					raise Exception("Error al escribir el dato: ", datos[key][0],", no posee el formato : ", datos[key][1])
 			
 			ub = ""
@@ -80,15 +82,16 @@ class tabla(object):
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= '"+self._identValue+"'"
 			else:
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+str(self._identValue)+""
-			print "sql : ", sql
+			 #print "sql : ", sql
 			argumentos = tuple(argumentos)
-			#print "args : ", argumentos
+			# #print "args : ", argumentos
 			
 			if (self.consulta.execute(sql, argumentos)):
 				self.conexion.commit()
-				print("Update realizado con exito")
+				 #print("Update realizado con exito")
 			else: 
-				print ("Se han econtrado problemas al realizar el Update")
+				raise Exception("Se han econtrado problemas al realizar el Update")
+				 #print ("Se han econtrado problemas al realizar el Update")
 				
 				
 				
@@ -98,45 +101,45 @@ def validarTipo(dato, tipo):
 			if type(dato) == bool:
 				return True
 			else:
-				print "el dato debe ser de tippo boolean"
+				 #print "el dato debe ser de tippo boolean"
 				return False
 		except:
-			print "el dato debe ser de tippo boolean"
+			 #print "el dato debe ser de tippo boolean"
 			return False
 	if tipo == "text":
 		try:
 			if type(dato) == str or type(dato) == unicode:
 				return True
 			else:
-				print "el dato debe ser de tippo String o Unicode"
+				 #print "el dato debe ser de tippo String o Unicode"
 				return False
 		except:
-			print "el dato debe ser de tippo String o Unicode"
+			 #print "el dato debe ser de tippo String o Unicode"
 			return False
 	if tipo == "int":
 		try:
 			if dato != None:
 				dato = int(dato)
 			else:
-				print "el dato fue nulo"
+				 #print "el dato fue nulo"
 				return True
 		except ValueError:
-			print (dato, " no es entero")
+			 #print (dato, " no es entero")
 			return False
 	elif tipo == "float":
 		try:
 			if dato != None:
 				dato = float(dato) or int(dato)
 			else:
-				print "el dato no puede ser nulo"
+				 #print "el dato no puede ser nulo"
 				return False
 		except ValueError:
-			print (dato, " no es flotante")
+			 #print (dato, " no es flotante")
 			return False
 	elif tipo == "rut":
 		if dato == "0-0":return True
 		if not re.match("\d{1,8}-[0-9k]", dato):
-			print (dato, " : no coincide con el formato de rut")
+			 #print (dato, " : no coincide con el formato de rut")
 			return False
 		dato = dato.split("-")
 		verificador = '0123456789k'[
