@@ -284,7 +284,7 @@ class EscanearModal(QtGui.QDialog):
             qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
             qm.setIcon(QtGui.QMessageBox.Warning)
             reply = qm.exec_()
-            
+            self.ser.open()
             #if reply == QtGui.QMessageBox.Yes:
                 # Eliminar de la base de datos
              #   print "Editar Dilog!!!"
