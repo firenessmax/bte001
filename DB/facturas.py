@@ -654,4 +654,4 @@ def deleteFactura(id):
 
 if __name__== "__main__":
 	#obtenerFacturasPorId([1,48,3, 25, 2, 3, 2])
-	ultimosDatosFactura(obtenerEmpresas()[0])
+	print ultimosDatosFactura(obtenerEmpresas()[2]).fechaVencimiento
