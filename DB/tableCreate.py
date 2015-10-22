@@ -6,7 +6,7 @@ import sqlite3
 def iniciarDB():
 	conexion = sqlite3.connect('prueba.db')
 	cursor = conexion.cursor()
-	print u"La base de datos se abrió correctamente"
+	#print u"La base de datos se abrió correctamente"
 	
 	cursor.execute(''' CREATE TABLE IF NOT EXISTS facturas(id INTEGER PRIMARY KEY,
 	 							venta INTEGER  DEFAULT 0,

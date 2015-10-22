@@ -100,7 +100,7 @@ class XMLprocessor(object):
 		hadRSR = re.match("(.*)<DD>(.*)<RSR>(.*)</RSR>(.*)</DD>(.*)" ,candidato)
 		hadMNT = re.match("(.*)<DD>(.*)<MNT>(.*)</MNT>(.*)</DD>(.*)" ,candidato)
 		if hadTD and hadF and hadFE  and hadRE  and hadRS and hadRR and hadRSR and hadMNT:
-			print 'el candidato contiene los datos necesarios para la extraccion'
+			#print 'el candidato contiene los datos necesarios para la extraccion'
 			if hadTED[0] and not hadTED[1]:
 				if self.isXMLlike(candidato+"</TED>"):
 					self._string = candidato+"</TED>"
@@ -110,9 +110,9 @@ class XMLprocessor(object):
 						raise Exception("Codigo no es corregible")
 				print '==fixed'
 		else:
-			print "El codigo no tiene los datos necesarios para la extraccion"
+			#print "El codigo no tiene los datos necesarios para la extraccion"
 			self._string= '<TED><DD></DD></TED>'#not fixeable
-			print 'codigo incorrecto'
+			#print 'codigo incorrecto'
 			raise Exception("Codigo no es corregible")
 	def isXMLlike(self,s):
 		if not re.match('<TED (.*)',s):

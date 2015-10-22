@@ -338,7 +338,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.statusbar.clearMessage()
         self.ui.label_5.hide()
         self.ui.labelStatusDevice.setText("Enocntrado: %s"%device.device["frendly_name"])
-        print "ENCONTRADOOOO !!!!!"
+        #print "ENCONTRADOOOO !!!!!"
     def deviceNoEncontrado(self):
         qm = QtGui.QMessageBox(self)
         qm.setWindowTitle('Advertencia')
@@ -352,14 +352,14 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.label_5.hide()
         reply = qm.exec_()
     def cerrar(self, data):
-        print "Cerrars"
+        #print "Cerrars"
         self.close()
     def restaurar(self, data):
-        print "Maximize"
+        #print "Maximize"
         self.ui.maximize_btn.show();self.ui.resize_btn.hide()#toggle
         self.showNormal()
     def maximizar(self, data):
-        print "Maximize"
+        #print "Maximize"
         height = QtGui.QDesktopWidget().availableGeometry().bottom()
         width = QtGui.QDesktopWidget().availableGeometry().right()
         self._prev_width=self.width()
@@ -380,12 +380,12 @@ class MainWindow(QtGui.QMainWindow):
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(158, 158, 158, 230) , stop:.2 rgba(136, 136, 136, 250));"]
         resto = "#top{%s border-top-left-radius:3px; border-top-right-radius: 3px;}"
         self.ui.top.setStyleSheet(resto%(estilos[pos]))
-        print pos
+        #print pos
     def resetFiltro(self, data):
-        
-        print data
+        pass
+        #print data
     def escanear(self):
-        print "ESCANEAR", self.sender().objectName() 
+        #print "ESCANEAR", self.sender().objectName() 
         if( self.sender().objectName()  == "escanearCompra"):
             my_dialog = EscanearModal(0, self) 
         elif( self.sender().objectName()  == "escanearVenta"):
@@ -397,21 +397,22 @@ class MainWindow(QtGui.QMainWindow):
         correlativo = self.ui.correlativoSpinBox.value()
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
-        print "Corr: %d cont: %s Guardar: %s"%(correlativo, contabilizar, guardar)
+        #print "Corr: %d cont: %s Guardar: %s"%(correlativo, contabilizar, guardar)
         archivo = None
-        print "LKSDLKASDN: ", self.sender().objectName()
+        #print "LKSDLKASDN: ", self.sender().objectName()
         if(self.sender().objectName() == "toolButtonPlano"):
             archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.txt"), filter="Texto plano (*.txt)")
         else:    
-            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xlsx"), filter="Microsoft Excel (*.xlsx)")
+            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xls"), filter="Microsoft Excel (*.xls)")
         if(archivo == ""):
-            print "Cancelado!!"
+            pass
+            #print "Cancelado!!"
         else:
             #TODO: try permiso de escritura 
             DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
             self.updateTablas()
-
-            print "Guardando archivo",archivo
+            self.ui.statusbar.showMessage("Archivo exportado en: " + unicode(archivo))
+            #print "Guardando archivo",archivo
 
     def clicked(self, position):
         if(self.sender().rowCount()==0): # Ninguna fila en la tabla
@@ -422,7 +423,7 @@ class MainWindow(QtGui.QMainWindow):
         eliminarAction = menu.addAction("Eliminar")
         contabilizar = 0
         for idx in reversed(tabla.selectionModel().selectedRows()):
-            print "CONTABILIZADO: ",tabla.item(idx.row(),0).text()
+           #print "CONTABILIZADO: ",tabla.item(idx.row(),0).text()
             if(tabla.item(idx.row(),0).text()=="No"):
                 contabilizar = 1
                 break
@@ -432,12 +433,12 @@ class MainWindow(QtGui.QMainWindow):
         else:
             contabilizarAction = menu.addAction("Descontabilizar")
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
-        print "item clickeado: %s"%tabla.rowAt(position.y())
+        #print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
         allRows = tabla.columnCount()
         
         if action == contabilizarAction:
-            print "Contabilizars: ",contabilizar
+            #print "Contabilizars: ",contabilizar
             lista = []
             for idx in reversed(tabla.selectionModel().selectedRows()):
                 datos = {}
@@ -449,23 +450,23 @@ class MainWindow(QtGui.QMainWindow):
             else:
                 DBController.contabilizar(self, 0,contabilizar, lista)
         elif action == editarAction:
-            print "Editars"
+            #print "Editars"
             # Pasar los chorrocientos datos
             datos = {}
             
             for i in range(tabla.horizontalHeader().count()):
                 datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(row,i).text())
-                print "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(row,i).text())
+                #print "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(row,i).text())
             
             
             if(self.sender().objectName()=="tableWidget_Ventas"):
                 my_dialog = EditarDocumentoModal(1, datos ) 
-                print "RESULTAOD::", my_dialog.resultado
+                #print "RESULTAOD::", my_dialog.resultado
                 if(my_dialog.resultado):
                     self.updateTablas()
             else:
                 my_dialog = EditarDocumentoModal(0, datos ) 
-                print "RESULTAOD::", my_dialog.resultado
+                #print "RESULTAOD::", my_dialog.resultado
                 if(my_dialog.resultado):
                     self.updateTablas()
         elif action == eliminarAction:
@@ -497,7 +498,8 @@ class MainWindow(QtGui.QMainWindow):
                     tabla.removeRow(idx.row())
                 #tabla.removeRow(row)
             else:
-                print "Cancelar"
+                pass
+                #print "Cancelar"
             
             
     def inicializarDatos(self, tabla):
@@ -519,16 +521,18 @@ class MainWindow(QtGui.QMainWindow):
         
     def filtrar(self, data):
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
-        for tabla in tablas:
-            documentos = DBController.obtenerLista(tabla.objectName(), str(data))
-            tabla.clearContents()
-            tabla.setRowCount(len(documentos))
-            for i in range(len(documentos)):
-                for j in range(len(documentos[i])):
-                    tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
+        if data != "":
+            for tabla in tablas:
+                print "nombre, ", tabla.objectName(), "rut :", data
+                documentos = DBController.obtenerLista(tabla.objectName(), str(data))
+                tabla.clearContents()
+                tabla.setRowCount(len(documentos))
+                for i in range(len(documentos)):
+                    for j in range(len(documentos[i])):
+                        tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
         
-        print "filtrar!!!!!!!"
-        print "data: %s"%data
+        #print "filtrar!!!!!!!"
+        #print "data: %s"%data
     def updateEmpresas(self):
         self.ui.filtrarEmpresaComboBox.clear()
         self.ui.filtrarEmpresaComboBox.addItem("Todas")
@@ -543,8 +547,8 @@ class MainWindow(QtGui.QMainWindow):
     def _mouseMoveEvent(self,event):
         if self.moving: 
             if self.isMaximized():
-                print 'event.globalPos().x : %d'%event.globalPos().x()
-                print '>offset.x : %d'%(self._prev_width/2)
+                #print 'event.globalPos().x : %d'%event.globalPos().x()
+                #print '>offset.x : %d'%(self._prev_width/2)
                 if (self._prev_width/2)<self.offset.x():
                     diferencia = 0 
                     if (event.globalPos().x()+self._prev_width/2)>QtGui.QDesktopWidget().availableGeometry().right():
@@ -552,7 +556,7 @@ class MainWindow(QtGui.QMainWindow):
                     self.offset = QtCore.QPoint(self._prev_width/2+diferencia,self.offset.y())
                 #self.x = event.globalPos().x() - self._prev_width/2
                 self.showNormal()
-                print 'W : %d '%(event.globalPos().x() - self.width()/2)
+                #print 'W : %d '%(event.globalPos().x() - self.width()/2)
                 self._drop_top=False
                 self._drop_left=False
                 self._drop_right=False

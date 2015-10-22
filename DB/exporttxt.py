@@ -47,7 +47,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 
 
 def formatoFacturaTxtCompras(factura):
-	print "llamada a formatear xls de compras"
+	#print "llamada a formatear xls de compras"
 	datos = []
 	datos.append(factura.sucursal)
 	datos.append(switch(factura.TipoDocumento, factura.montoExento))
@@ -121,7 +121,7 @@ def formatoFacturaTxtCompras(factura):
 	return datos
 	
 def formatoFacturaTxtVentas(factura):
-	print "llamada a formatear xls de ventas"
+	#print "llamada a formatear xls de ventas"
 	datos = []
 	datos.append(factura.sucursal)
 	datos.append(switch(factura.TipoDocumento, factura.montoExento))
@@ -192,7 +192,7 @@ def switch(tipoDocumento, montoExento):
 	else:return "N/A"
 	
 ventas = obtenerVentas()
-print "ventas : ", ventas
+#print "ventas : ", ventas
 compras = obtenerCompras()
-print "compras : ", compras
+#print "compras : ", compras
 exportarTxt(ventas, compras, path = "prueba.tcv", contabilizar = False, guardarContabilizados = False, correlativo = 620)

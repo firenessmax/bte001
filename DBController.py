@@ -15,8 +15,7 @@ def obtenerLista(tabla, empresa):
     if(empresa == "Todas"):
         empresa = None
     if(tabla == "tableWidget_Compras"):
-        # Consulta Compras
-        
+        # Consulta Compras}
         compras = Facturas.obtenerCompras(empresa)
         
         listaDeCompras = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
@@ -121,5 +120,6 @@ def contabilizar(s, venta, contabilizar, lista):
         f = Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
         f.contabilizado = contabilizar
         f.save()
+    print ">>>>>>>>>>>>>>>>>>>", s.ui
     s.updateTablas()
     

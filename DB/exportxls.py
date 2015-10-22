@@ -36,8 +36,8 @@ TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			"Monto Impuesto 2", "Codigo Impuesto 3", "Monto Impuesto 3", u"Código de Impuesto 4",
 			"Monto de Impuesto 4", u"Código de Impuesto 5", "Monto de Impuesto 5"]
 
-def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False, correlativo = 0): #false, las no contabilizadas, True todas
-	libro = xlwt.Workbook()
+def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False, correlativo = 0): #false, las no contabilizadas, True todas
+	libro = xlwt.Workbook(encoding="UTF-8")
 	paginaCompra = libro.add_sheet("Compras")
 	for i, e in enumerate(TITLESC):
 		paginaCompra.row(0).write(i, e)
@@ -76,7 +76,7 @@ def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
-	libro.save(path)
+	libro.save(unicode(path))
 
 
 
@@ -85,7 +85,7 @@ def exportarxls(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 #	con los datos que se necesitan para exportar a .xls en comrpas
 #
 def formatoFacturaXlsCompras(factura):
-	print "llamada a formatear xls de compras"
+	#print "llamada a formatear xls de compras"
 	datos = []
 	datos.append(factura.sucursal)
 	datos.append(switch(factura.TipoDocumento, factura.montoExento))
@@ -163,7 +163,7 @@ def formatoFacturaXlsCompras(factura):
 #	con los datos que se necesitan para exportar a .xls en ventas
 #
 def formatoFacturaXlsVentas(factura):
-	print "llamada a formatear xls de ventas"
+	#print "llamada a formatear xls de ventas"
 	datos = []
 	datos.append(factura.sucursal)
 	datos.append(switch(factura.TipoDocumento, factura.montoExento))

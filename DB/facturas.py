@@ -72,7 +72,7 @@ class facturas(tabla):
 	def sucursal(self, data):
 		self._sucursal = data
 		self._listaDeCambio['sucursal'] = (data, 'int')
-		print 'cambio: ',self._listaDeCambio
+		#print 'cambio: ',self._listaDeCambio
 	@property
 	def TipoDocumento(self):
 		return self._TipoDocumento
@@ -355,6 +355,8 @@ class facturas(tabla):
 		if(consulta.execute("DELETE FROM facturas WHERE id = ?", (self._id, ))):
 			pass
 			 #print u"se ha eliminado la factura id :", self._id
+		else:
+			raise Exception(u'No fué posible eliminar la factura')
 		conexion.commit()
 		consulta.close()
 		conexion.close()
@@ -529,6 +531,7 @@ def obtenerCompras(rutReceptor = None):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
+	#print "rut = ", rutReceptor
 	if rutReceptor == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 0"):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
