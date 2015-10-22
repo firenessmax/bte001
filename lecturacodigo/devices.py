@@ -11,7 +11,7 @@ class lectorDevice(object):
 	    return self._device
 	@device.setter
 	def device(self,value):
-		print "almenos lo intento"
+		#print "almenos lo intento"
 		self._device=self._device_list[value]
 
 	@property

@@ -191,8 +191,8 @@ def switch(tipoDocumento, montoExento):
 	elif tipoDocumento == 61:return "NE"
 	else:return "N/A"
 	
-ventas = obtenerVentas()
+#ventas = obtenerVentas()
 #print "ventas : ", ventas
-compras = obtenerCompras()
+#compras = obtenerCompras()
 #print "compras : ", compras
-exportarTxt(ventas, compras, path = "prueba.tcv", contabilizar = False, guardarContabilizados = False, correlativo = 620)
+#exportarTxt(ventas, compras, path = "prueba.tcv", contabilizar = False, guardarContabilizados = False, correlativo = 620)
