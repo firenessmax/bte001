@@ -9,7 +9,7 @@ def iniciarReader(s, d):
 	ser.setup(d,.01)
 
 	s.connect(ser, ser.signal, s.enc)
-	ser.open()
+	ser.open() 
 	return ser
 
 def iniciarDevice(s):
@@ -40,5 +40,5 @@ class BuscarLector(QtCore.QThread):
 				d.list_update()
 			else:
 				self.emit(self.signalWarning)
-		print d.device
+		#print d.device
 		self.emit(self.signal, d)

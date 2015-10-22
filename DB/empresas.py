@@ -29,7 +29,7 @@ class empresas(tabla):
 	def rS(self, data):
 		self._rS = data
 		self._listaDeCambio["razonSocial"] = (data, "text")
-		print "cambios : ", self._listaDeCambio
+		#print "cambios : ", self._listaDeCambio
 	def getId(self):
 		if(self.consulta.execute("SELECT id FROM empresas WHERE rut = ?", (self._rut,))):
 			self._id = self.consulta.fetchone()[0]
@@ -56,7 +56,8 @@ class empresas(tabla):
 					self._esNuevo = False
 					raise Exception(u"No se puede crear porque ya existe esta empresa : ", rut)	
 			else:
-				print "Error en la conexion con la base de datos"
+				raise Exception("Error en la conexion con la base de datos")
+				#print "Error en la conexion con la base de datos"
 			consulta.close()
 			conexion.close()
 		else:

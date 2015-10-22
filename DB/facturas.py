@@ -7,7 +7,7 @@ import re
 from empresas import *
 
 
-# esta clase sirve para insertar, updatear y deletear(no esta lista)
+# esta clase sirve para insertar, updatear y deletear
 # para facturas
 # instanciamiento:
 # f = facturas(venta, numDocumento, rutEmisor, rutReceptor, sucursal=1, id=0,
@@ -17,6 +17,13 @@ from empresas import *
 # f = facturas(venta = 0, numDocumento = 1, rutEmisor = "17920814-8", rutReceptor = "1-9")
 # funciones y metodos:
 # f.save()
+#
+# importante pasos para instance y update:
+# 1. f = facturas(0, 1, "17920814-8", "1-9") // esNuevo = True, viene por defecto
+# 2. f.save()
+# 3. f = facturas(0, 1, "17920814-8", "1-9", esNuevo = False) //instanciado para editar
+# 4. f.montoExento = 999999 //editando un dato
+# 5. f.save()
 class facturas(tabla):
 	_id = 0
 	_venta = 0				# obligatorio cuando se instancia
@@ -65,7 +72,7 @@ class facturas(tabla):
 	def sucursal(self, data):
 		self._sucursal = data
 		self._listaDeCambio['sucursal'] = (data, 'int')
-		 #print 'cambio: ',self._listaDeCambio
+		#print 'cambio: ',self._listaDeCambio
 	@property
 	def TipoDocumento(self):
 		return self._TipoDocumento
@@ -348,6 +355,8 @@ class facturas(tabla):
 		if(consulta.execute("DELETE FROM facturas WHERE id = ?", (self._id, ))):
 			pass
 			 #print u"se ha eliminado la factura id :", self._id
+		else:
+			raise Exception(u'No fué posible eliminar la factura')
 		conexion.commit()
 		consulta.close()
 		conexion.close()
@@ -514,11 +523,15 @@ def obtenerRutEmpresa(id):
 	consulta.close()
 	conexion.close()
 
+#
+# funcion que sirva para obtener todas las facturas de compras
+#
 def obtenerCompras(rutReceptor = None):
 	 #print "llamada a obtener Compras"
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
 	listaFacturas=[]
+	#print "rut = ", rutReceptor
 	if rutReceptor == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 0"):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
@@ -602,8 +615,6 @@ def deleteFactura(id):
 
 #fac = obtenerCompras("17920814-8")
 #for e in fac:
-#	 #print e.rutEmisor
-
 
 #prueba = facturas(0,8,"17920814-8","17966491-7")
 #prueba = facturas(0,9,"17920814-8","17966491-7")

@@ -13,11 +13,11 @@ class eventHandler(serialEventListener):
 			print 'prueba finalizada'
 			disp.close()
 
-print "Prueba de conexion virtual"
+#print "Prueba de conexion virtual"
 d = lectorDevice()
 el=eventHandler()
 
-print d.device['frendly_name'],d.device['name']
+#print d.device['frendly_name'],d.device['name']
 
 
 #master, slave = pty.openpty()
@@ -28,10 +28,10 @@ ser = serialReader(d,.01)
 
 ser.addEventListener(el)
 
-print "agregado event listener"
+#print "agregado event listener"
 
 ser.open()
-print "conexion iniciada"
+#print "conexion iniciada"
 #try 
 #	asjhdkaç
 #except Exception as e:
