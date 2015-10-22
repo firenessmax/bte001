@@ -1,3 +1,7 @@
+#arreglar lo de monto Total
+#checkbox de activo fijo
+    #tirar el dato de activofijo al crear la factura
+ #actualizar el lector para leer la pistola, luego de que se ha ingresado una repetida
 import sys
 from PyQt4 import QtGui, QtCore
 from sys import exit
