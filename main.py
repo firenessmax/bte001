@@ -123,8 +123,8 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
         #TODO: Descomentar esta linea
-        if(self.datos["Tipo Documento"] == "34"):
-            self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
+        #if(self.datos["Tipo Documento"] == "34"):
+        #    self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 
 
@@ -205,6 +205,15 @@ class AgregarDocumentoModal(QtGui.QDialog):
         if(self.datos["Fecha"] == None):
             self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
             self.ui.fechaDateEdit.setReadOnly(False)
+            
+            qm = QtGui.QMessageBox(self)
+            qm.setWindowTitle('Advertencia')
+            qm.setText('''La fecha no pudo ser encontrada, debe ingresar \nla fecha correcta en el campo correspondiente''')
+            qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+            qm.setIcon(QtGui.QMessageBox.Warning)
+            reply = qm.exec_()
+            
+            
         else:
             self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         self.ui.glosaLineEdit.setFocus()
@@ -213,6 +222,9 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
+        if(self.datos["Tipo Documento"] == "34"):
+            self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
+        print "LLENANDO: ",self.datos
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 # Modal para escanear codigo
 class EscanearModal(QtGui.QDialog):
@@ -337,8 +349,14 @@ class MainWindow(QtGui.QMainWindow):
         # device.device_list -> spinBox
         self.ui.statusbar.clearMessage()
         self.ui.label_5.hide()
-        self.ui.labelStatusDevice.setText("Enocntrado: %s"%device.device["frendly_name"])
+        self.ui.dispositivosComboBox.setEnabled(True)
+        print "Dispositivos: ", device.device_list
+        self.ui.dispositivosComboBox.addItem(device.device_list[0]["frendly_name"])
+        for d in device.device_list:
+            self.ui.dispositivosComboBox.addItem(d["frendly_name"])
         print "ENCONTRADOOOO !!!!!"
+    def deviceCambiado(self):
+        pass
     def deviceNoEncontrado(self):
         qm = QtGui.QMessageBox(self)
         qm.setWindowTitle('Advertencia')

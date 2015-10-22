@@ -59,6 +59,7 @@ def getEmpresas():
     return empresas
 
 def guardarFactura(datos, venta):
+    print "GUARDANDO::", datos
     f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
     nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"])
     f.save()
@@ -70,10 +71,12 @@ def guardarFactura(datos, venta):
     f.empresaReceptor.save()
     f.fecha = datos["Fecha"]
     f.sucursal = datos["Sucursal"]
+    f.montoTotal = int(float(datos["Monto Total"]))
     f.Glosa = datos["Glosa"]
     f.montoExento = int(float(datos["Monto Exento"]))
     f.cuentaProveedores = datos["Cuenta"]
     f.contracuenta = datos["Contracuenta"]
+    f.TipoDocumento = datos["Tipo Documento"]
     f.save()
     
      #print datos
