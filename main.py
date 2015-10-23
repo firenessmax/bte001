@@ -1,7 +1,7 @@
-#arreglar lo de monto Total
-#checkbox de activo fijo
+#arreglar lo de monto Total --
+#checkbox de activo fijo --
     #tirar el dato de activofijo al crear la factura
- #actualizar el lector para leer la pistola, luego de que se ha ingresado una repetida
+ #actualizar el lector para leer la pistola, luego de que se ha ingresado una repetida --
 import sys
 from PyQt4 import QtGui, QtCore
 from sys import exit
@@ -174,7 +174,10 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
         self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
         self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
-        
+        if(self.ui.activoFijoCheckBox.checkState () == QtCore.Qt.Checked):
+            self.datos["Activo Fijo"] = 1
+        else:
+            self.datos["Activo Fijo"] = 0
         # Si uno de los datos esta vacio
         # TODO: Cambiar color al encontrar error
         fallas = []
@@ -228,7 +231,12 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         if(self.datos["Tipo Documento"] == "34"):
             self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
+            self.ui.montoExcentoSpinBox.setReadOnly(True)
         print "LLENANDO: ",self.datos
+        self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Unchecked)
+        if(self.datos["Activo Fijo"]):
+            self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Checked)
+
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 # Modal para escanear codigo
 class EscanearModal(QtGui.QDialog):
@@ -258,6 +266,8 @@ class EscanearModal(QtGui.QDialog):
             datos["Rut Receptor"] = str(xmlp.RR)
             datos["RS Emisor"] = str(xmlp.RS)
             datos["RS Receptor"] = str(xmlp.RSR)
+            datos["RS Receptor"] = str(xmlp.RSR)
+            datos["Activo Fijo"] = 0
             try:
                 datos["Fecha"] = xmlp.FE
             except Exception as e:

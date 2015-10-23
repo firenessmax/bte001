@@ -76,6 +76,7 @@ def guardarFactura(datos, venta):
     f.cuentaProveedores = datos["Cuenta"]
     f.contracuenta = datos["Contracuenta"]
     f.TipoDocumento = datos["Tipo Documento"]
+    f.activoFijo = datos["Activo Fijo"]
     f.save()
     
      #print datos

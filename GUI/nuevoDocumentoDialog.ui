@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>400</height>
+    <height>405</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -303,6 +303,9 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
            <property name="text">
             <string>Glosa</string>
            </property>
+           <property name="buddy">
+            <cstring>glosaLineEdit</cstring>
+           </property>
           </widget>
          </item>
          <item row="1" column="0" colspan="2">
@@ -443,6 +446,47 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </property>
         </widget>
        </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="activoFijoLabel">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">margin-bottom: 5px</string>
+         </property>
+         <property name="text">
+          <string>Activo Fijo</string>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <property name="indent">
+          <number>0</number>
+         </property>
+         <property name="buddy">
+          <cstring>activoFijoCheckBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="activoFijoCheckBox">
+         <property name="styleSheet">
+          <string notr="true">margin-top: 2px</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -456,6 +500,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
   <tabstop>glosaLineEdit</tabstop>
   <tabstop>contracuentaLineEdit</tabstop>
   <tabstop>montoExcentoSpinBox</tabstop>
+  <tabstop>activoFijoCheckBox</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
  </tabstops>
@@ -470,8 +515,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>249</y>
+     <x>369</x>
+     <y>394</y>
     </hint>
     <hint type="destinationlabel">
      <x>37</x>
@@ -486,8 +531,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>277</x>
-     <y>253</y>
+     <x>288</x>
+     <y>394</y>
     </hint>
     <hint type="destinationlabel">
      <x>72</x>
