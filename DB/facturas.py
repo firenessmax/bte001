@@ -7,7 +7,7 @@ import re
 from empresas import *
 
 
-# esta clase sirve para insertar, updatear y deletear
+# esta clase sirve para hacer insert, update y delete a facturas
 # para facturas
 # instanciamiento:
 # f = facturas(venta, numDocumento, rutEmisor, rutReceptor, sucursal=1, id=0,
@@ -499,6 +499,10 @@ class facturas(tabla):
 			consulta.close()
 			conexion.close()
 			
+# funcion que obtiene la instancia de todas las facuturas ingresando su id
+# uso Ejemplo: 
+# l = obtenerFacturasPorId(1 ,2, 3, 4)
+# > lista de facturas instanciadas			
 def obtenerFacturasPorId(listaId):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
@@ -515,8 +519,11 @@ def obtenerFacturasPorId(listaId):
 	consulta.close()
 	conexion.close()
 	return listaFacturas
-
-
+	
+# funcion que obtiene la instancia de la ultima factura segun la instancia de la empresa emisora actual
+# uso Ejemplo:
+# f = ultimosDatosFactura(empresa)
+# > instancia de ultima factura cuya idEmisor sea igual a la id de la empresa
 def ultimosDatosFactura(empresa):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
@@ -529,6 +536,10 @@ def ultimosDatosFactura(empresa):
 	conexion.close()
 	return obj
 
+# funcion que obtiene la id de una empresa a partir del rut de la misma
+# uso Ejemplo:
+# id = obtenerIdEmpresa(17920814-8)
+# > integer con el valor de la id de la empresa
 def obtenerIdEmpresa(rut):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
@@ -539,7 +550,11 @@ def obtenerIdEmpresa(rut):
 		return 0
 	consulta.close()
 	conexion.close()
-	
+
+# funcion que obtiene el rut de una empresa a  partir de la id
+# uso Ejemplo:
+# id = obtenerRutEmpresa(2)
+# > 17966491-7
 def obtenerRutEmpresa(id):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
