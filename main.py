@@ -365,7 +365,6 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.label_5.hide()
         self.ui.dispositivosComboBox.setEnabled(True)
         print "Dispositivos: ", device.device_list
-        self.ui.dispositivosComboBox.addItem(device.device_list[0]["frendly_name"])
         for d in device.device_list:
             self.ui.dispositivosComboBox.addItem(d["frendly_name"])
         print "ENCONTRADOOOO !!!!!"

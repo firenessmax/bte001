@@ -58,7 +58,6 @@ def getEmpresas():
     return empresas
 
 def guardarFactura(datos, venta):
-    print "GUARDANDO::", datos
     f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
     nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"])
     f.save()
@@ -70,7 +69,6 @@ def guardarFactura(datos, venta):
     f.empresaReceptor.save()
     f.fecha = datos["Fecha"]
     f.sucursal = datos["Sucursal"]
-    f.montoTotal = int(float(datos["Monto Total"]))
     f.Glosa = datos["Glosa"]
     f.montoExento = int(float(datos["Monto Exento"]))
     f.cuentaProveedores = datos["Cuenta"]
@@ -117,6 +115,7 @@ def exportarExcel(filtro, path, cont, guardarCont, correlativo):
     
     
     ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont, correlativo = correlativo)
+    
 
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista
@@ -124,6 +123,5 @@ def contabilizar(s, venta, contabilizar, lista):
         f = Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
         f.contabilizado = contabilizar
         f.save()
-    print ">>>>>>>>>>>>>>>>>>>", s.ui
     s.updateTablas()
     

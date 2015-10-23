@@ -17,7 +17,7 @@ class serialReader(QtCore.QThread):
 		self.to=time_out
 	def dispatch(self,text):
 		for l in self.listeners:
-			print "L"
+			#print "L"
 			l.handle(text,self)
 	def run(self):
 		if self._lector.device['name'] == 'COMX':
