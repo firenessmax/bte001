@@ -527,7 +527,7 @@ def obtenerFacturasPorId(listaId):
 def ultimosDatosFactura(empresa):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
-	if (consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? ORDER BY id DESC LIMIT 1", (empresa.id, ))):
+	if (consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? ORDER BY id DESC LIMIT 1", (empresa, ))):
 		factura = consulta.fetchone()
 		if factura:
 			obj = facturas(venta = factura[1], numDocumento = factura[4], rutReceptor = obtenerRutEmpresa(factura[9]),
