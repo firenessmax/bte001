@@ -69,6 +69,7 @@ def guardarFactura(datos, venta):
     f.empresaReceptor.save()
     f.fecha = datos["Fecha"]
     f.sucursal = datos["Sucursal"]
+    f.montoTotal = int(datos["Monto Total"])
     f.Glosa = datos["Glosa"]
     f.montoExento = int(float(datos["Monto Exento"]))
     f.cuentaProveedores = datos["Cuenta"]
@@ -116,7 +117,13 @@ def exportarExcel(filtro, path, cont, guardarCont, correlativo):
     
     ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont, correlativo = correlativo)
     
-
+def ultimaFactura(empresa):
+    e = Empresas.empresas(rut=empresa, esNuevo = False)
+    try:
+        return Facturas.ultimosDatosFactura(e)
+    except:
+        return None
+    
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista
     for datos in lista:

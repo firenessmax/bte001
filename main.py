@@ -18,7 +18,7 @@ import DBController
 from instance import *#para el manejo de multiples instancias
 import os
 from random import randint
-
+import traceback
 # Para que no use el icono de python
 import ctypes
 myappid = 'BTE.lector.gui.estable' # arbitrary string
@@ -113,7 +113,7 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.ui.sucursalLineEdit.setText(self.datos["Sucursal"])
         self.ui.glosaLineEdit.setText(self.datos["Glosa"])
         self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Exento"]))
-        
+        self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
         '''
         11070100 "proveedores"->"Compra"
         11040100 "cliente"->"Venta"
@@ -125,7 +125,7 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
-        self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
+
         #TODO: Descomentar esta linea
         #if(self.datos["Tipo Documento"] == "34"):
         #    self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
@@ -198,6 +198,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
+        self.llenarUltima()
         if(self.tipo == 0):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
@@ -219,8 +220,6 @@ class AgregarDocumentoModal(QtGui.QDialog):
             qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
             qm.setIcon(QtGui.QMessageBox.Warning)
             reply = qm.exec_()
-            
-            
         else:
             self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
         self.ui.glosaLineEdit.setFocus()
@@ -232,12 +231,27 @@ class AgregarDocumentoModal(QtGui.QDialog):
         if(self.datos["Tipo Documento"] == "34"):
             self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
             self.ui.montoExcentoSpinBox.setReadOnly(True)
-        print "LLENANDO: ",self.datos
+
         self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Unchecked)
         if(self.datos["Activo Fijo"]):
             self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Checked)
-
+        
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
+        
+    def llenarUltima(self):
+        
+        fact = DBController.ultimaFactura(self.datos["Rut Emisor"])
+        if(fact):
+            self.datos["Sucursal"] = str(fact.sucursal)
+            self.datos["Cuenta"] = str(fact.cuentaProveedores)
+            self.datos["Glosa"] = str(fact.Glosa)
+            self.datos["Contracuenta"] = str(fact.contracuenta)
+            self.datos["Activo Fijo"] = fact.activoFijo
+            self.ui.sucursalLineEdit.setText(self.datos["Sucursal"])
+            self.ui.glosaLineEdit.setText(self.datos["Glosa"])
+            self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
+            self.ui.cuentaProveedoresClienteLineEdit.setText(self.datos["Cuenta"])
+        
 # Modal para escanear codigo
 class EscanearModal(QtGui.QDialog):
     def __init__(self, tipo, window):
@@ -279,6 +293,7 @@ class EscanearModal(QtGui.QDialog):
             self.encontrado(datos)
         except Exception as e:
             # Modal
+            traceback.print_exc()
             print "mensaje codigo no valido: ", e
         #disp.close()
         print "SENAL", data
@@ -515,24 +530,10 @@ class MainWindow(QtGui.QMainWindow):
             reply = qm.exec_()
             
             if reply == QtGui.QMessageBox.Yes:
-                # Eliminar de la base de datos
-                # if(deleteDocumento(id)):
-                    #print "Eliminarlo"
-                    #tabla.removeRow(row)
-                # else:
-                    #QtGui.QMessageBox.critical(self, "Error", "Error al eliminar en la base de datos")
-                print "Eliminarlo"
                 for idx in reversed(tabla.selectionModel().selectedRows()):
-                    #print [ "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(idx.row(),i).text()) for i in range(tabla.horizontalHeader().count())]
-                    print "ID: ",tabla.item(idx.row(),15).text()
                     DBController.eliminarFactura(tabla.item(idx.row(),15).text())
                     tabla.removeRow(idx.row())
-                #tabla.removeRow(row)
-            else:
-                pass
-                #print "Cancelar"
-            
-            
+
     def inicializarDatos(self, tabla):
         
         for i in range(tabla.horizontalHeader().count()):

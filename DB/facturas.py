@@ -519,7 +519,7 @@ def obtenerFacturasPorId(listaId):
 	consulta.close()
 	conexion.close()
 	return listaFacturas
-	
+
 # funcion que obtiene la instancia de la ultima factura segun la instancia de la empresa emisora actual
 # uso Ejemplo:
 # f = ultimosDatosFactura(empresa)
@@ -527,7 +527,7 @@ def obtenerFacturasPorId(listaId):
 def ultimosDatosFactura(empresa):
 	conexion = sqlite3.connect('prueba.db')
 	consulta = conexion.cursor()
-	if (consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? ORDER BY id DESC LIMIT 1", (empresa, ))):
+	if (consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? ORDER BY id DESC LIMIT 1", (empresa.id, ))):
 		factura = consulta.fetchone()
 		if factura:
 			obj = facturas(venta = factura[1], numDocumento = factura[4], rutReceptor = obtenerRutEmpresa(factura[9]),
