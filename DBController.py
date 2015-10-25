@@ -131,4 +131,9 @@ def contabilizar(s, venta, contabilizar, lista):
         f.contabilizado = contabilizar
         f.save()
     s.updateTablas()
-    
+
+def contabilizarFacturas(lista, value):
+    l = Facturas.obtenerFacturasPorId(lista)
+    for f in l:
+        f.contabilizado = value
+        f.save()

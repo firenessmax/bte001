@@ -198,12 +198,13 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
-        self.llenarUltima()
+        
         if(self.tipo == 0):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
-        
+        self.llenarUltima()
+        self.ui.montoTotalLabel.setText("$ %s"%self.datos["Monto Total"])
         for key, value in self.datos.items():
             print key," : ", value
         self.ui.labelNDocumento.setText(self.datos["Numero Documento"])
@@ -213,6 +214,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         if(self.datos["Fecha"] == None):
             self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
             self.ui.fechaDateEdit.setReadOnly(False)
+            self.ui.fechaDateEdit.setFocus()
             
             qm = QtGui.QMessageBox(self)
             qm.setWindowTitle('Advertencia')
@@ -222,12 +224,8 @@ class AgregarDocumentoModal(QtGui.QDialog):
             reply = qm.exec_()
         else:
             self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
-        self.ui.glosaLineEdit.setFocus()
-        
-        if(self.tipo == 0):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
-        elif(self.tipo == 1):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
+            self.ui.glosaLineEdit.setFocus()
+       
         if(self.datos["Tipo Documento"] == "34"):
             self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
             self.ui.montoExcentoSpinBox.setReadOnly(True)
@@ -334,6 +332,9 @@ class MainWindow(QtGui.QMainWindow):
         self.cambiarTab_slot = self.cambiarTab
         self.buscar_slot = self.buscarDevices
         self.filtrar_slot = self.filtrar
+        self.deshacer_slot = self.deshacer
+        self.rehacer_slot = self.rehacer
+        self.dispositivoChange_slot = self.cambiarDispositivo
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint )
@@ -357,6 +358,8 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.tabWidget_4.tabBar().mousePressEvent = self._mousePressEvent
         self.ui.tabWidget_4.tabBar().mouseMoveEvent = self._mouseMoveEvent
         self.ui.resize_btn.hide()
+        self.ui.rehacerToolButton.setEnabled(False)
+        self.ui.deshacerToolButton.setEnabled(False)
         
         # Loading Spinner
         movie = QtGui.QMovie(":/newPrefix/loading.gif")
@@ -368,6 +371,19 @@ class MainWindow(QtGui.QMainWindow):
         LecturaController.iniciarDevice(self)
         
         self.show()
+        
+    def rehacer(self):
+        print "Rehacer"        
+        DBController.contabilizarFacturas(self.contabilizados, not self.cambiarContabilizados)
+        self.ui.rehacerToolButton.setEnabled(False)
+        self.ui.deshacerToolButton.setEnabled(True)
+        self.updateTablas()
+    def deshacer(self):
+        print "Deshacer"
+        DBController.contabilizarFacturas(self.contabilizados, self.cambiarContabilizados)
+        self.ui.deshacerToolButton.setEnabled(False)
+        self.ui.rehacerToolButton.setEnabled(True)
+        self.updateTablas()
     def buscarDevices(self):
         LecturaController.iniciarDevice(self)
     def deviceEncontrado(self, device):
@@ -378,13 +394,14 @@ class MainWindow(QtGui.QMainWindow):
         # device.device_list -> spinBox
         self.ui.statusbar.clearMessage()
         self.ui.label_5.hide()
+        self.ui.dispositivosComboBox.clear()
         self.ui.dispositivosComboBox.setEnabled(True)
         print "Dispositivos: ", device.device_list
         for d in device.device_list:
             self.ui.dispositivosComboBox.addItem(d["frendly_name"])
         print "ENCONTRADOOOO !!!!!"
-    def deviceCambiado(self):
-        pass
+    def cambiarDispositivo(self, pos):
+        self.device = pos
     def deviceNoEncontrado(self):
         qm = QtGui.QMessageBox(self)
         qm.setWindowTitle('Advertencia')
@@ -438,27 +455,40 @@ class MainWindow(QtGui.QMainWindow):
             my_dialog = EscanearModal(1, self) 
     
     def exportar(self):
-
+        self.ui.deshacerToolButton.setEnabled(False)
+        self.ui.rehacerToolButton.setEnabled(False)
         # Opciones
         correlativo = self.ui.correlativoSpinBox.value()
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
-        #print "Corr: %d cont: %s Guardar: %s"%(correlativo, contabilizar, guardar)
         archivo = None
-        #print "LKSDLKASDN: ", self.sender().objectName()
+
         if(self.sender().objectName() == "toolButtonPlano"):
             archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.txt"), filter="Texto plano (*.txt)")
         else:    
             archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xls"), filter="Microsoft Excel (*.xls)")
-        if(archivo == ""):
-            pass
-            #print "Cancelado!!"
-        else:
+        if(archivo != ""):
+            
             #TODO: try permiso de escritura 
             DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
+            if(contabilizar):
+                tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
+                self.contabilizados = []
+                self.cambiarContabilizados = False
+                for tabla in tablas:
+                    allRows = tabla.rowCount()
+                    for row in xrange(0,allRows):
+                        c = str(tabla.item(row,0).text())
+                        Id = str(tabla.item(row,tabla.horizontalHeader().count()-1).text())
+                        if(c == "No"):
+                            self.contabilizados.append(int(Id))
+                if(len(self.contabilizados)!=0):
+                    self.ui.deshacerToolButton.setEnabled(True)
+                print self.contabilizados
             self.updateTablas()
             self.ui.statusbar.showMessage("Archivo exportado en: " + unicode(archivo))
-            #print "Guardando archivo",archivo
+            
+
 
     def clicked(self, position):
         if(self.sender().rowCount()==0): # Ninguna fila en la tabla
@@ -469,7 +499,6 @@ class MainWindow(QtGui.QMainWindow):
         eliminarAction = menu.addAction("Eliminar")
         contabilizar = 0
         for idx in reversed(tabla.selectionModel().selectedRows()):
-           #print "CONTABILIZADO: ",tabla.item(idx.row(),0).text()
             if(tabla.item(idx.row(),0).text()=="No"):
                 contabilizar = 1
                 break
@@ -479,12 +508,10 @@ class MainWindow(QtGui.QMainWindow):
         else:
             contabilizarAction = menu.addAction("Descontabilizar")
         action = menu.exec_(tabla.viewport().mapToGlobal(position))
-        #print "item clickeado: %s"%tabla.rowAt(position.y())
         row = tabla.rowAt(position.y())
         allRows = tabla.columnCount()
         
         if action == contabilizarAction:
-            #print "Contabilizars: ",contabilizar
             lista = []
             for idx in reversed(tabla.selectionModel().selectedRows()):
                 datos = {}
@@ -496,27 +523,20 @@ class MainWindow(QtGui.QMainWindow):
             else:
                 DBController.contabilizar(self, 0,contabilizar, lista)
         elif action == editarAction:
-            #print "Editars"
-            # Pasar los chorrocientos datos
             datos = {}
             
             for i in range(tabla.horizontalHeader().count()):
                 datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(row,i).text())
-                #print "[%s]: %s"%( str(tabla.horizontalHeaderItem(i).text()).replace("Rut ", "") , tabla.item(row,i).text())
-            
             
             if(self.sender().objectName()=="tableWidget_Ventas"):
                 my_dialog = EditarDocumentoModal(1, datos ) 
-                #print "RESULTAOD::", my_dialog.resultado
                 if(my_dialog.resultado):
                     self.updateTablas()
             else:
                 my_dialog = EditarDocumentoModal(0, datos ) 
-                #print "RESULTAOD::", my_dialog.resultado
                 if(my_dialog.resultado):
                     self.updateTablas()
         elif action == eliminarAction:
-            # TODO: Si se seleccionan varias columnas, eliminarlas todas
             # TODO: lanzar evento al oprimir suprimir,
             qm = QtGui.QMessageBox(self)
             qm.setWindowTitle('Eliminar documento')
@@ -536,9 +556,6 @@ class MainWindow(QtGui.QMainWindow):
 
     def inicializarDatos(self, tabla):
         
-        for i in range(tabla.horizontalHeader().count()):
-            tabla.horizontalHeader().setResizeMode(i, QtGui.QHeaderView.Stretch)
-
         documentos = DBController.obtenerLista(tabla.objectName(), None)
         tabla.setRowCount(len(documentos))
         for i in range(len(documentos)):
@@ -555,16 +572,15 @@ class MainWindow(QtGui.QMainWindow):
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
         if data != "":
             for tabla in tablas:
-                print "nombre, ", tabla.objectName(), "rut :", data
                 documentos = DBController.obtenerLista(tabla.objectName(), str(data))
                 tabla.clearContents()
                 tabla.setRowCount(len(documentos))
                 for i in range(len(documentos)):
                     for j in range(len(documentos[i])):
                         tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
-        
-        #print "filtrar!!!!!!!"
-        #print "data: %s"%data
+                tabla.verticalHeader().setVisible(True)
+                tabla.resizeColumnsToContents()
+
     def updateEmpresas(self):
         self.ui.filtrarEmpresaComboBox.clear()
         self.ui.filtrarEmpresaComboBox.addItem("Todas")
@@ -579,16 +595,12 @@ class MainWindow(QtGui.QMainWindow):
     def _mouseMoveEvent(self,event):
         if self.moving: 
             if self.isMaximized():
-                #print 'event.globalPos().x : %d'%event.globalPos().x()
-                #print '>offset.x : %d'%(self._prev_width/2)
                 if (self._prev_width/2)<self.offset.x():
                     diferencia = 0 
                     if (event.globalPos().x()+self._prev_width/2)>QtGui.QDesktopWidget().availableGeometry().right():
                         diferencia = (event.globalPos().x()+self._prev_width/2-QtGui.QDesktopWidget().availableGeometry().right())
                     self.offset = QtCore.QPoint(self._prev_width/2+diferencia,self.offset.y())
-                #self.x = event.globalPos().x() - self._prev_width/2
                 self.showNormal()
-                #print 'W : %d '%(event.globalPos().x() - self.width()/2)
                 self._drop_top=False
                 self._drop_left=False
                 self._drop_right=False
@@ -616,7 +628,6 @@ class MainWindow(QtGui.QMainWindow):
             #no deberia dejar mover debajo del menu de inicio
             if event.globalPos().y()<QtGui.QDesktopWidget().availableGeometry().bottom():
                 self.move(event.globalPos()-self.offset)
-            #print event.globalPos().x()
     def _mouseReleaseEvent(self,event):
         if self._drop_top:
             height = QtGui.QDesktopWidget().availableGeometry().bottom()
@@ -647,61 +658,7 @@ class MainWindow(QtGui.QMainWindow):
         height = QtGui.QDesktopWidget().availableGeometry().bottom()
         width = QtGui.QDesktopWidget().availableGeometry().right()
         return self.height()==height and self.width()==width
-    def resizeEvent(self, event):
-        #self.overlay.resize(event.size())
-        event.accept()
         
-class Overlay(QtGui.QWidget):
-
-    def __init__(self, parent = None):
-    
-        QtGui.QWidget.__init__(self, parent)
-        palette = QtGui.QPalette(self.palette())
-        palette.setColor(palette.Background, QtCore.Qt.transparent)
-        self.setPalette(palette)
-        self.mostrando = False
-        self.hide()
-    def paintEvent(self, event):
-    
-        painter = QtGui.QPainter()
-        painter.begin(self)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        painter.fillRect(event.rect(), QtGui.QBrush(QtGui.QColor(255, 255, 255, 127)))
-        painter.setPen(QtGui.QPen(QtCore.Qt.NoPen))
-        
-        for i in range(6):
-            if (self.counter / 5) % 6 == i:
-                painter.setBrush(QtGui.QBrush(QtGui.QColor(127 + (self.counter % 5)*32, 127, 127)))
-            else:
-                painter.setBrush(QtGui.QBrush(QtGui.QColor(127, 127, 127)))
-            painter.drawEllipse(
-                event.rect().width()/2 + 30 * math.cos(2 * math.pi * i / 6.0) - 10,
-                event.rect().height()/2 + 30 * math.sin(2 * math.pi * i / 6.0) - 10,
-                20, 20)
-        
-        painter.end()
-    
-    def showEvent(self, event):
-        self.timer = self.startTimer(50)
-        self.counter = 0
-    def parar(self):
-        self.mostrando = False
-        self.counter = 590
-        self.killTimer(self.timer)
-        self.hide()
-    def timerEvent(self, event):
-    
-        self.counter += 1
-        self.update()
-        if self.counter == 600:
-            self.killTimer(self.timer)
-            self.hide()
-            self.mostrando = False
-
-    def mostrar(self):
-        if(not self.mostrando):
-            self.show()
-            self.mostrando = True
         
 def main():
     app = QtGui.QApplication(sys.argv)

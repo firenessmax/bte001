@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>405</height>
+    <height>479</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,37 +47,6 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="8">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Guardar</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>Cancelar</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="2" colspan="2">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -141,6 +110,13 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
        </property>
        <property name="text">
         <string>Nuevo Documento Electrónico</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
@@ -468,7 +444,65 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </property>
         </widget>
        </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_4">
        <item row="3" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="montoTotalLabel">
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>9</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>$ 0</string>
+           </property>
+           <property name="indent">
+            <number>7</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="montoTotalLabel_3">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Monto Total</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout_5">
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
+       <item row="0" column="0">
         <widget class="QLabel" name="activoFijoLabel">
          <property name="font">
           <font>
@@ -478,24 +512,12 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
            <bold>true</bold>
           </font>
          </property>
-         <property name="styleSheet">
-          <string notr="true">margin-bottom: 5px</string>
-         </property>
          <property name="text">
           <string>Activo Fijo</string>
          </property>
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <property name="indent">
-          <number>0</number>
-         </property>
-         <property name="buddy">
-          <cstring>activoFijoCheckBox</cstring>
-         </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="0" column="1">
         <widget class="QCheckBox" name="activoFijoCheckBox">
          <property name="styleSheet">
           <string notr="true">margin-top: 2px</string>
@@ -503,6 +525,37 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
         </widget>
        </item>
       </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="8">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Guardar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Cancelar</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -515,7 +568,6 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
   <tabstop>glosaLineEdit</tabstop>
   <tabstop>contracuentaLineEdit</tabstop>
   <tabstop>montoExcentoSpinBox</tabstop>
-  <tabstop>activoFijoCheckBox</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
  </tabstops>
