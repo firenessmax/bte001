@@ -561,6 +561,7 @@ class MainWindow(QtGui.QMainWindow):
         for i in range(len(documentos)):
             for j in range(len(documentos[i])):
                 tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
+                tabla.item(i,j).setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         for i in range(tabla.verticalHeader().count()):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
@@ -577,7 +578,10 @@ class MainWindow(QtGui.QMainWindow):
                 tabla.setRowCount(len(documentos))
                 for i in range(len(documentos)):
                     for j in range(len(documentos[i])):
-                        tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
+                        item = QtGui.QTableWidgetItem()
+                        item.setText(documentos[i][j])
+                        item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
+                        tabla.setItem(i, j, item) # QtGui.QTableWidgetItem(documentos[i][j])
                 tabla.verticalHeader().setVisible(True)
                 tabla.resizeColumnsToContents()
 
