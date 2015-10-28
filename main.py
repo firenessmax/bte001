@@ -114,21 +114,12 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.ui.glosaLineEdit.setText(self.datos["Glosa"])
         self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Exento"]))
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
-        '''
-        11070100 "proveedores"->"Compra"
-        11040100 "cliente"->"Venta"
-        if(xmlp.TD == 34):
-            montoExcento = Total
-        self.ui.montoExcentoSpinBox.setMax(montoTotal)
-        '''
-        if(self.tipo == 0):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
-        elif(self.tipo == 1):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
-
-        #TODO: Descomentar esta linea
-        #if(self.datos["Tipo Documento"] == "34"):
-        #    self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
+        
+        #self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Unchecked)
+        #if(self.datos["Activo Fijo"]):
+        #    self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Checked)
+        
+        self.ui.montoTotalLabel.setText("$ %s"%self.datos["Monto Total"])
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
 
 
@@ -396,12 +387,10 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.label_5.hide()
         self.ui.dispositivosComboBox.clear()
         self.ui.dispositivosComboBox.setEnabled(True)
-        print "Dispositivos: ", device.device_list
         for d in device.device_list:
             self.ui.dispositivosComboBox.addItem(d["frendly_name"])
-        print "ENCONTRADOOOO !!!!!"
     def cambiarDispositivo(self, pos):
-        self.device = pos
+        self.device.device = pos
     def deviceNoEncontrado(self):
         qm = QtGui.QMessageBox(self)
         qm.setWindowTitle('Advertencia')
@@ -415,14 +404,11 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.label_5.hide()
         reply = qm.exec_()
     def cerrar(self, data):
-        #print "Cerrars"
         self.close()
     def restaurar(self, data):
-        #print "Maximize"
         self.ui.maximize_btn.show();self.ui.resize_btn.hide()#toggle
         self.showNormal()
     def maximizar(self, data):
-        #print "Maximize"
         height = QtGui.QDesktopWidget().availableGeometry().bottom()
         width = QtGui.QDesktopWidget().availableGeometry().right()
         self._prev_width=self.width()
@@ -437,18 +423,14 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showMinimized()
     def cambiarTab(self, pos):
-        #self.overlay.parar()
         estilos = [ "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(2, 136, 209, 230) , stop:.2 rgba(25, 118, 210, 250));",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(67, 160, 71, 230)  , stop:.2 rgba(56, 142, 60, 250));",
                     "background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(158, 158, 158, 230) , stop:.2 rgba(136, 136, 136, 250));"]
         resto = "#top{%s border-top-left-radius:3px; border-top-right-radius: 3px;}"
         self.ui.top.setStyleSheet(resto%(estilos[pos]))
-        #print pos
     def resetFiltro(self, data):
         pass
-        #print data
     def escanear(self):
-        #print "ESCANEAR", self.sender().objectName() 
         if( self.sender().objectName()  == "escanearCompra"):
             my_dialog = EscanearModal(0, self) 
         elif( self.sender().objectName()  == "escanearVenta"):

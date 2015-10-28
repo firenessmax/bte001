@@ -849,7 +849,17 @@ QTabBar::tab:selected {
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QComboBox" name="dispositivosComboBox"/>
+               <widget class="QComboBox" name="dispositivosComboBox">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -1461,7 +1471,7 @@ QTabWidget::tab-bar {
  </tabstops>
  <resources>
   <include location="images/images.qrc"/>
-  <include location="../../Users/luis/.designer/backup/images/images.qrc"/>
+  <include location="images/images.qrc"/>
  </resources>
  <connections>
   <connection>
