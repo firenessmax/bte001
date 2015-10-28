@@ -402,6 +402,7 @@ class MainWindow(QtGui.QMainWindow):
         print "ENCONTRADOOOO !!!!!"
     def cambiarDispositivo(self, pos):
         self.device = pos
+        print "Cambiando dispositivo ",pos
     def deviceNoEncontrado(self):
         qm = QtGui.QMessageBox(self)
         qm.setWindowTitle('Advertencia')
@@ -455,8 +456,6 @@ class MainWindow(QtGui.QMainWindow):
             my_dialog = EscanearModal(1, self) 
     
     def exportar(self):
-        self.ui.deshacerToolButton.setEnabled(False)
-        self.ui.rehacerToolButton.setEnabled(False)
         # Opciones
         correlativo = self.ui.correlativoSpinBox.value()
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
@@ -468,7 +467,8 @@ class MainWindow(QtGui.QMainWindow):
         else:    
             archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xls"), filter="Microsoft Excel (*.xls)")
         if(archivo != ""):
-            
+            self.ui.deshacerToolButton.setEnabled(False)
+            self.ui.rehacerToolButton.setEnabled(False)
             #TODO: try permiso de escritura 
             DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
             if(contabilizar):
@@ -487,7 +487,7 @@ class MainWindow(QtGui.QMainWindow):
                 print self.contabilizados
             self.updateTablas()
             self.ui.statusbar.showMessage("Archivo exportado en: " + unicode(archivo))
-            
+
 
 
     def clicked(self, position):
