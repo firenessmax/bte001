@@ -30,7 +30,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = False
+debug = True
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
@@ -323,9 +323,10 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.tableWidget_Compras.customContextMenuRequested.connect(self.clicked)
         self.ui.tableWidget_Ventas.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableWidget_Ventas.customContextMenuRequested.connect(self.clicked)
-        self.updateEmpresas()
+        
         self.inicializarDatos(self.ui.tableWidget_Compras)
         self.inicializarDatos(self.ui.tableWidget_Ventas)
+        self.updateEmpresas()
         self.ui.maximize_btn.mouseReleaseEvent = self.maximizar
         self.ui.resize_btn.mouseReleaseEvent = self.restaurar
         self.ui.labelClose.mousePressEvent = self.cerrar

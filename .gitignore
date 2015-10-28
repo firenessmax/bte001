@@ -5,3 +5,5 @@ build/
 
 GUI/images/Thumbs.db
 PyQt-win-gpl-4.11.4/
+prrrrueba.db
+*.db

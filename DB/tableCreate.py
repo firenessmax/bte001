@@ -3,7 +3,7 @@
 
 import sqlite3
 
-DB = "prueba.db"
+DB = "prrrrueba.db"
 def iniciarDB():
 	conexion = sqlite3.connect(DB)
 	cursor = conexion.cursor()

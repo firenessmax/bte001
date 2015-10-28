@@ -61,6 +61,7 @@ def guardarFactura(datos, venta):
     f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
     nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"])
     f.save()
+    
     f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
     nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
     f.empresaEmisor.rS = datos["RS Emisor"]
@@ -120,6 +121,7 @@ def exportarExcel(filtro, path, cont, guardarCont, correlativo):
     
 def ultimaFactura(empresa):
     e = Empresas.empresas(rut=empresa, esNuevo = False)
+    print "Empresa", e
     try:
         return Facturas.ultimosDatosFactura(e)
     except:

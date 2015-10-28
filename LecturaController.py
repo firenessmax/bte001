@@ -38,6 +38,7 @@ class BuscarLector(QtCore.QThread):
 		except: 
 			if(debug):
 				d.list_update()
+				self.emit(self.signal, d)
 			else:
 				self.emit(self.signalWarning)
 		#print d.device
