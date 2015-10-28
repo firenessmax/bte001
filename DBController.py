@@ -20,10 +20,10 @@ def obtenerLista(tabla, empresa):
         
         listaDeCompras = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
                             c._fecha, c.empresaEmisor.rut, c.empresaEmisor.rS,  c.empresaReceptor.rut, c.empresaReceptor.rS, c._montoExento,
-                            c._montoAfecto,c._montoIVA ,c._montoTotal, c._Glosa, c._contracuenta, c._id] for c in compras]
+                            c._montoAfecto,c._montoIVA ,c._montoTotal, c._Glosa, c._contracuenta, c._activoFijo, c._id] for c in compras]
         for i in range(0, len(listaDeCompras)):
             for j in range(0, len(listaDeCompras[i])):
-                if(j==0):
+                if(j==0 or j==15):
                     if(listaDeCompras[i][j]==0):
                         listaDeCompras[i][j] = "No"
                     else:
@@ -39,10 +39,10 @@ def obtenerLista(tabla, empresa):
         
         listaDeVentas = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
                             c._fecha, c.empresaEmisor.rut, c.empresaEmisor.rS,  c.empresaReceptor.rut, c.empresaReceptor.rS, c._montoExento,
-                            c._montoAfecto,c._montoIVA ,c._montoTotal, c._Glosa, c._contracuenta, c._id] for c in ventas]
+                            c._montoAfecto,c._montoIVA ,c._montoTotal, c._Glosa, c._contracuenta, c._activoFijo, c._id] for c in ventas]
         for i in range(0, len(listaDeVentas)):
             for j in range(0, len(listaDeVentas[i])):
-                if(j==0):
+                if(j==0 or j==15):
                     if(listaDeVentas[i][j]==0):
                         listaDeVentas[i][j] = "No"
                     else:
@@ -93,6 +93,7 @@ def modificarFactura(datos, venta):
     f.montoExento = int(float(datos["Monto Exento"]))
     f.cuentaProveedores = datos["Cuenta"]
     f.contracuenta = datos["Contracuenta"]
+    f.activoFijo = int(datos["Activo Fijo"])
     f.save()
     
      #print datos
