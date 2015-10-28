@@ -5,6 +5,7 @@ import datetime
 import sqlite3
 import re
 from table import *
+from tableCreate import *
 
 # esta clase sirve para insertar, updatear y deletear(no hecho aun)
 # elementos de empresas en la base de ddatos
@@ -38,7 +39,7 @@ class empresas(tabla):
 		self._rut = rut
 		self._rS = rs
 		if esNuevo:
-			conexion = sqlite3.connect('prueba.db')
+			conexion = sqlite3.connect(DB)
 			consulta = conexion.cursor()
 			exist = '''
 			SELECT COUNT(*) FROM empresas
@@ -61,7 +62,7 @@ class empresas(tabla):
 			consulta.close()
 			conexion.close()
 		else:
-			conexion = sqlite3.connect('prueba.db')
+			conexion = sqlite3.connect(DB)
 			consulta = conexion.cursor()
 			if(consulta.execute("SELECT * FROM empresas WHERE rut = ?", (self.rut,))): 	
 				row = consulta.fetchone()
@@ -80,7 +81,7 @@ class empresas(tabla):
 			
 
 def obtenerEmpresas():
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaEmpresas = []
 	for row in consulta.execute("SELECT * FROM empresas"):
