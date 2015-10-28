@@ -30,7 +30,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = True
+debug = False
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
@@ -74,6 +74,10 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
         self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
         self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
+        if(self.ui.activoFijoCheckBox.checkState () == QtCore.Qt.Checked):
+            self.datos["Activo Fijo"] = 1
+        else:
+            self.datos["Activo Fijo"] = 0
         # Si uno de los datos esta vacio
         # TODO: Cambiar color al encontrar error
         fallas = []
@@ -111,9 +115,9 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Exento"]))
         self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
         
-        #self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Unchecked)
-        #if(self.datos["Activo Fijo"]):
-        #    self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Checked)
+        self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Unchecked)
+        if(self.datos["Activo Fijo"] == "Si"):
+            self.ui.activoFijoCheckBox.setCheckState(QtCore.Qt.Checked)
         
         self.ui.montoTotalLabel.setText("$ %s"%self.datos["Monto Total"])
         self.ui.montoExcentoSpinBox.setMaximum(int(self.datos["Monto Total"]))
@@ -520,9 +524,12 @@ class MainWindow(QtGui.QMainWindow):
         documentos = DBController.obtenerLista(tabla.objectName(), None)
         tabla.setRowCount(len(documentos))
         for i in range(len(documentos)):
+            print documentos[i]
             for j in range(len(documentos[i])):
-                tabla.setItem(i, j, QtGui.QTableWidgetItem(documentos[i][j]))
-                tabla.item(i,j).setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
+                item = QtGui.QTableWidgetItem()
+                item.setText(documentos[i][j])
+                item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
+                tabla.setItem(i, j, item) # QtGui.QTableWidgetItem(documentos[i][j])
         for i in range(tabla.verticalHeader().count()):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
@@ -532,9 +539,11 @@ class MainWindow(QtGui.QMainWindow):
         
     def filtrar(self, data):
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
+        
         if data != "":
             for tabla in tablas:
                 documentos = DBController.obtenerLista(tabla.objectName(), str(data))
+
                 tabla.clearContents()
                 tabla.setRowCount(len(documentos))
                 for i in range(len(documentos)):

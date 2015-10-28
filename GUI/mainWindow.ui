@@ -505,7 +505,7 @@ QTabBar::tab:selected {
              <enum>QTabWidget::North</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -1111,7 +1111,7 @@ QTabWidget::tab-bar {
                  <number>1</number>
                 </property>
                 <property name="columnCount">
-                 <number>16</number>
+                 <number>17</number>
                 </property>
                 <attribute name="horizontalHeaderVisible">
                  <bool>true</bool>
@@ -1263,6 +1263,11 @@ QTabWidget::tab-bar {
                 </column>
                 <column>
                  <property name="text">
+                  <string>Activo Fijo</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
                   <string>id</string>
                  </property>
                 </column>
@@ -1405,6 +1410,11 @@ QTabWidget::tab-bar {
                 <column>
                  <property name="text">
                   <string>Contracuenta</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Activo Fijo</string>
                  </property>
                 </column>
                 <column>
