@@ -5,6 +5,7 @@ from datetime import *
 import sqlite3
 import re
 from empresas import *
+from tableCreate import *
 
 
 # esta clase sirve para hacer insert, update y delete a facturas
@@ -350,7 +351,7 @@ class facturas(tabla):
 			return self._id
 			
 	def borrar(self):
-		conexion = sqlite3.connect('prueba.db')
+		conexion = sqlite3.connect(DB)
 		consulta = conexion.cursor()
 		if(consulta.execute("DELETE FROM facturas WHERE id = ?", (self._id, ))):
 			pass
@@ -384,7 +385,7 @@ class facturas(tabla):
 			self._empresaReceptor = empresas(rutReceptor, esNuevo = False)
 			 #print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
 		if esNuevo:
-			conexion = sqlite3.connect('prueba.db')
+			conexion = sqlite3.connect(DB)
 			consulta = conexion.cursor()
 			exist = '''
 			SELECT COUNT(*) FROM facturas
@@ -444,7 +445,7 @@ class facturas(tabla):
 			consulta.close()
 			conexion.close()
 		else:
-			conexion = sqlite3.connect('prueba.db')
+			conexion = sqlite3.connect(DB)
 			consulta = conexion.cursor()
 			sql = "SELECT * FROM facturas WHERE venta = ? AND numDocumento = ? AND idEmisor = ? AND idReceptor = ?"
 			tupla = (venta, numDocumento, self._empresaEmisor._id, self._empresaReceptor._id)
@@ -504,7 +505,7 @@ class facturas(tabla):
 # l = obtenerFacturasPorId(1 ,2, 3, 4)
 # > lista de facturas instanciadas			
 def obtenerFacturasPorId(listaId):
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaFacturas = []
 	idNoEncontradas = []
@@ -525,7 +526,7 @@ def obtenerFacturasPorId(listaId):
 # f = ultimosDatosFactura(empresa)
 # > instancia de ultima factura cuya idEmisor sea igual a la id de la empresa
 def ultimosDatosFactura(empresa):
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	if (consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? ORDER BY id DESC LIMIT 1", (empresa.id, ))):
 		factura = consulta.fetchone()
@@ -541,7 +542,7 @@ def ultimosDatosFactura(empresa):
 # id = obtenerIdEmpresa(17920814-8)
 # > integer con el valor de la id de la empresa
 def obtenerIdEmpresa(rut):
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	if (consulta.execute("SELECT id FROM empresas WHERE rut = ?", (rut, ))):
 		id = consulta.fetchone()
@@ -556,7 +557,7 @@ def obtenerIdEmpresa(rut):
 # id = obtenerRutEmpresa(2)
 # > 17966491-7
 def obtenerRutEmpresa(id):
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	if (consulta.execute("SELECT rut FROM empresas WHERE id = ?", (id, ))):
 		rut = consulta.fetchone()
@@ -571,7 +572,7 @@ def obtenerRutEmpresa(id):
 #
 def obtenerCompras(rutReceptor = None):
 	 #print "llamada a obtener Compras"
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	#print "rut = ", rutReceptor
@@ -629,7 +630,7 @@ def obtenerCompras(rutReceptor = None):
 
 def obtenerVentas(rutEmisor = None):
 	 #print "llamada a obtener Ventas"
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	if rutEmisor == None:
@@ -647,7 +648,7 @@ def obtenerVentas(rutEmisor = None):
 	return listaFacturas
 	
 def deleteFactura(id):
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	if(consulta.execute("DELETE FROM facturas WHERE id = ?", (id, ))):
 		pass

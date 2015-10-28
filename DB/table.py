@@ -4,6 +4,7 @@
 import datetime
 import sqlite3
 import re
+from tableCreate import *
 
 
 class tabla(object):
@@ -16,7 +17,7 @@ class tabla(object):
 	def getId(self):pass
 	def borrar(self):pass
 	def save(self):
-		self.conexion = sqlite3.connect('prueba.db')
+		self.conexion = sqlite3.connect(DB)
 		self.consulta = self.conexion.cursor()
 		if self._esNuevo:
 			self.insertar(self._listaDeCambio, self.__class__.__name__)

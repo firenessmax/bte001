@@ -3,8 +3,9 @@
 
 import sqlite3
 
+DB = "prueba.db"
 def iniciarDB():
-	conexion = sqlite3.connect('prueba.db')
+	conexion = sqlite3.connect(DB)
 	cursor = conexion.cursor()
 	#print u"La base de datos se abrió correctamente"
 	

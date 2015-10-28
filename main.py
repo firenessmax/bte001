@@ -516,7 +516,7 @@ class MainWindow(QtGui.QMainWindow):
             
             if reply == QtGui.QMessageBox.Yes:
                 for idx in reversed(tabla.selectionModel().selectedRows()):
-                    DBController.eliminarFactura(tabla.item(idx.row(),15).text())
+                    DBController.eliminarFactura(tabla.item(idx.row(),16).text())
                     tabla.removeRow(idx.row())
 
     def inicializarDatos(self, tabla):
