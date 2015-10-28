@@ -65,7 +65,6 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.resultado = False
         self.exec_()
     def accept(self):
-        print "Guardando documento"
         self.datos["Numero Documento"] = str(self.ui.nDocumentoLineEdit.text())
         self.datos["RS Emisor"] = str(self.ui.emisorLineEdit.text())
         self.datos["RS Receptor"] = str(self.ui.receptorLineEdit.text())
@@ -79,7 +78,6 @@ class EditarDocumentoModal(QtGui.QDialog):
         # TODO: Cambiar color al encontrar error
         fallas = []
         for key, value in self.datos.items():
-            print key," : ", value
             if(not ("%s"%value)):
                 fallas.append(key)
         error = ""
@@ -98,9 +96,7 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
-        
-        for key, value in self.datos.items():
-            print key," : ", value
+       
         self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
         self.ui.emisorLineEdit.setText(self.datos["RS Emisor"])
         self.ui.receptorLineEdit.setText(self.datos["RS Receptor"])
@@ -152,7 +148,6 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.exec_()
         
     def accept(self):
-        print "Guardando documento"
         # Datos
         # Limitar a numeros o alfanumerico
         
@@ -173,7 +168,6 @@ class AgregarDocumentoModal(QtGui.QDialog):
         # TODO: Cambiar color al encontrar error
         fallas = []
         for key, value in self.datos.items():
-            print key," : ", value
             if(not ("%s"%value)):
                 fallas.append(key)
         error = ""
@@ -196,12 +190,9 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.llenarUltima()
         self.ui.montoTotalLabel.setText("$ %s"%self.datos["Monto Total"])
-        for key, value in self.datos.items():
-            print key," : ", value
         self.ui.labelNDocumento.setText(self.datos["Numero Documento"])
         self.ui.labelEmisor.setText(self.datos["RS Emisor"])
         self.ui.labelReceptor.setText(self.datos["RS Receptor"])
-        print "FECHA!!!!!!", self.datos["Fecha"]
         if(self.datos["Fecha"] == None):
             self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
             self.ui.fechaDateEdit.setReadOnly(False)
@@ -254,15 +245,13 @@ class EscanearModal(QtGui.QDialog):
         self.ser = LecturaController.iniciarReader(self, window.device)
         self.exec_()
     def terminar(self):
-        print "Terminado por usuario"
         self.ser.close()
         self.accept()
     def terminado(self):
-        print "Terminando thread"
+        pass
     def enc(self, data, disp):
         try:
             xmlp = XML.XMLprocessor(data)
-            print xmlp.TD, xmlp.F, xmlp.RS, xmlp.RSR
             datos = {}
             datos["Numero Documento"] = str(xmlp.F)
             datos["Rut Emisor"] = str(xmlp.RE)
@@ -276,22 +265,17 @@ class EscanearModal(QtGui.QDialog):
             except Exception as e:
                 datos["Fecha"] = None
                 # Mostrar modal
-                print "Fecha mala: ", e
             datos["Monto Total"] = str(xmlp.MNT)
             datos["Tipo Documento"] = str(xmlp.TD)
             self.encontrado(datos)
         except Exception as e:
             # Modal
             traceback.print_exc()
-            print "mensaje codigo no valido: ", e
         #disp.close()
-        print "SENAL", data
     def encontrado(self, datos):
         #Codigo encontrado, mostrar nuevo escanearDialog
         #self.thread.parar = True
-        print "DATOSSSS!!!!",datos
         if(DBController.existeFactura(self.tipo, datos)):
-            print "La factura ya existe!!!"
             qm = QtGui.QMessageBox(self)
             qm.setWindowTitle('Advertencia')
             qm.setText('''Esta factura ya ha sido ingresada.''')
@@ -307,7 +291,7 @@ class EscanearModal(QtGui.QDialog):
             if(agregar.resultado):
                 self.window.updateTablas()
             else:
-                print "CANCELANDO!!!!!"
+                pass
             self.ser.open()
             
 # Ventana Principal 
@@ -364,13 +348,11 @@ class MainWindow(QtGui.QMainWindow):
         self.show()
         
     def rehacer(self):
-        print "Rehacer"        
         DBController.contabilizarFacturas(self.contabilizados, not self.cambiarContabilizados)
         self.ui.rehacerToolButton.setEnabled(False)
         self.ui.deshacerToolButton.setEnabled(True)
         self.updateTablas()
     def deshacer(self):
-        print "Deshacer"
         DBController.contabilizarFacturas(self.contabilizados, self.cambiarContabilizados)
         self.ui.deshacerToolButton.setEnabled(False)
         self.ui.rehacerToolButton.setEnabled(True)
@@ -418,7 +400,6 @@ class MainWindow(QtGui.QMainWindow):
         self.showMaximized()
         self.resize(self.width(), height)
     def minimizar(self, data):
-        print "Minimize"
         self.ui.labelMinimize.repaint()
         
         self.showMinimized()
@@ -465,7 +446,6 @@ class MainWindow(QtGui.QMainWindow):
                             self.contabilizados.append(int(Id))
                 if(len(self.contabilizados)!=0):
                     self.ui.deshacerToolButton.setEnabled(True)
-                print self.contabilizados
             self.updateTablas()
             self.ui.statusbar.showMessage("Archivo exportado en: " + unicode(archivo))
 
