@@ -36,7 +36,7 @@ TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			"Monto Impuesto 2", "Codigo Impuesto 3", "Monto Impuesto 3", u"Código de Impuesto 4",
 			"Monto de Impuesto 4", u"Código de Impuesto 5", "Monto de Impuesto 5"]
 
-def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False, correlativo = 0): #false, las no contabilizadas, True todas
+def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False): #false, las no contabilizadas, True todas
 	libro = xlwt.Workbook(encoding="UTF-8")
 	paginaCompra = libro.add_sheet("Compras")
 	for i, e in enumerate(TITLESC):
@@ -44,19 +44,13 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	for num, obj in enumerate(fCompras):
 		fila = paginaCompra.row(num+1)
 		if guardarContabilizados:
-			obj.correlativo = correlativo
-			obj.save()
 			datos = formatoFacturaXlsCompras(obj)
 			for index, dato in enumerate(datos):
 				fila.write(index, dato)
-			correlativo+=1
 		elif not guardarContabilizados and obj.contabilizado == 0:
-			obj.correlativo = correlativo
-			obj.save()
 			datos = formatoFacturaXlsCompras(obj)
 			for index, dato in enumerate(datos):
 				fila.write(index, dato)
-			correlativo+=1
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
@@ -244,4 +238,4 @@ def switch(tipoDocumento, montoExento):
 
 #ventas = obtenerVentas()
 #compras = obtenerCompras()
-#exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False, correlativo = 620)
+#exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)

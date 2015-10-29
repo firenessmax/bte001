@@ -3,15 +3,14 @@
 
 import sqlite3
 import os
+import sys
 
 dir_path = '%s\\CAMDE\\' %  os.environ['APPDATA'] 
 if not os.path.exists(dir_path):
     os.makedirs(dir_path)
 
-DB = '%sprueba.db' % dir_path
-
+DB = '%sprueba.db' % dir_path.decode('latin_1')
 def iniciarDB():
-	print "PATH",DB
 	conexion = sqlite3.connect(DB)
 	cursor = conexion.cursor()
 	#print u"La base de datos se abrió correctamente"
@@ -75,5 +74,7 @@ def iniciarDB():
 								) ''')
 	
 	conexion.close()
+	
+
 
 iniciarDB()
