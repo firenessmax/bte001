@@ -670,6 +670,9 @@ QTabBar::tab:selected {
                     <family>Segoe UI</family>
                    </font>
                   </property>
+                  <property name="toolTip">
+                   <string>Al realizar la exportación, todas las facturas exportadas se marcarán como &quot;contabilizadas&quot;</string>
+                  </property>
                   <property name="text">
                    <string>Contabilizar al exportar</string>
                   </property>
@@ -684,6 +687,9 @@ QTabBar::tab:selected {
                    <font>
                     <family>Segoe UI</family>
                    </font>
+                  </property>
+                  <property name="toolTip">
+                   <string>Al realizar la exportación, se incluirán las facturas que han sido &quot;contabiliadas&quot;</string>
                   </property>
                   <property name="text">
                    <string>Guardar contabilizados</string>
@@ -905,6 +911,9 @@ QTabBar::tab:selected {
                 <family>Segoe UI</family>
                </font>
               </property>
+              <property name="toolTip">
+               <string>Filtro por rut de las empresas</string>
+              </property>
               <property name="text">
                <string>Filtrar Empresa</string>
               </property>
@@ -922,6 +931,9 @@ QTabBar::tab:selected {
                <font>
                 <family>Segoe UI</family>
                </font>
+              </property>
+              <property name="toolTip">
+               <string>Filtro por rut de las empresas</string>
               </property>
               <item>
                <property name="text">

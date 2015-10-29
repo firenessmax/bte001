@@ -338,6 +338,7 @@ class Ui_Dialog(object):
         self.sucursalLabel.setText(_translate("Dialog", "Sucursal", None))
         self.glosaLabel.setText(_translate("Dialog", "Glosa", None))
         self.sucursalLineEdit.setPlaceholderText(_translate("Dialog", "Sucursal", None))
+        self.glosaLineEdit.setToolTip(_translate("Dialog", "esto es la glosa", None))
         self.glosaLineEdit.setPlaceholderText(_translate("Dialog", "Glosa", None))
         self.cuentaProveedoresClienteLabel.setText(_translate("Dialog", "Cuenta Proveedores/Cliente", None))
         self.cuentaProveedoresClienteLineEdit.setPlaceholderText(_translate("Dialog", "Numero de cuenta", None))

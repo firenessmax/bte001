@@ -262,8 +262,8 @@ def switch(tipoDocumento, montoExento):
 	elif tipoDocumento == 61:return "NE"
 	else:return "N/A"
 	
-ventas = obtenerVentas()
-print "ventas : ", ventas
-compras = obtenerCompras()
-print "compras : ", compras
-exportarTxt(ventas, compras, path = "", contabilizar = False, guardarContabilizados = True)
+#ventas = obtenerVentas()
+#print "ventas : ", ventas
+#compras = obtenerCompras()
+#print "compras : ", compras
+#exportarTxt(ventas, compras, path = "", contabilizar = False, guardarContabilizados = True)
