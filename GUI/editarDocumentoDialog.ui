@@ -350,6 +350,9 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
              <pointsize>9</pointsize>
             </font>
            </property>
+           <property name="toolTip">
+            <string>esto es la glosa</string>
+           </property>
            <property name="placeholderText">
             <string>Glosa</string>
            </property>
