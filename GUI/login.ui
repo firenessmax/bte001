@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>214</height>
+    <width>338</width>
+    <height>205</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,7 +36,10 @@
   </property>
   <property name="windowIcon">
    <iconset resource="images/images.qrc">
-    <normaloff>:/newPrefix/document.png</normaloff>:/newPrefix/document.png</iconset>
+    <normaloff>:/newPrefix/Error.png</normaloff>:/newPrefix/Error.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog{
@@ -45,6 +48,9 @@
 QLineEdit,QDateEdit,QDoubleSpinBox{
 	padding:4px
 }</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="6">
@@ -63,14 +69,14 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="enviarPushButton">
        <property name="text">
         <string>Enviar</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="cancelPushButton">
        <property name="text">
         <string>Cancelar</string>
        </property>
@@ -122,7 +128,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="nDocumentoLineEdit">
+        <widget class="QLineEdit" name="mailLineEdit">
          <property name="font">
           <font>
            <family>Segoe UI</family>
@@ -153,7 +159,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="emisorLineEdit">
+        <widget class="QLineEdit" name="passwordLineEdit">
          <property name="font">
           <font>
            <family>Segoe UI</family>
@@ -180,9 +186,9 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <spacer name="horizontalSpacer_3">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="2" column="0">
+        <spacer name="horizontalSpacer_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -194,8 +200,18 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </property>
         </spacer>
        </item>
-       <item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="mensajeLabel">
+         <property name="text">
+          <string>Conectando</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
         <widget class="QLabel" name="spinnerLabel">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>25</width>
@@ -216,45 +232,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </property>
         </widget>
        </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_5">
+       <item row="2" column="3">
+        <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -273,24 +252,24 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
   </layout>
  </widget>
  <tabstops>
-  <tabstop>nDocumentoLineEdit</tabstop>
-  <tabstop>emisorLineEdit</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>mailLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>enviarPushButton</tabstop>
+  <tabstop>cancelPushButton</tabstop>
  </tabstops>
  <resources>
   <include location="images/images.qrc"/>
  </resources>
  <connections>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>cancelPushButton</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>389</y>
+     <x>327</x>
+     <y>194</y>
     </hint>
     <hint type="destinationlabel">
      <x>37</x>
@@ -299,14 +278,14 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>enviarPushButton</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>288</x>
-     <y>389</y>
+     <x>246</x>
+     <y>194</y>
     </hint>
     <hint type="destinationlabel">
      <x>72</x>
@@ -314,5 +293,57 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>mailLineEdit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mailLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>changed_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>60</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>passwordLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>changed_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>202</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>4</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>toggle_slot()</slot>
+  <slot>changed_slot()</slot>
+ </slots>
 </ui>

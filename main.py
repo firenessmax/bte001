@@ -16,6 +16,7 @@ from lecturacodigo.reader import *
 from lecturacodigo import xmlLib as XML
 import LecturaController
 import DBController
+import ActivacionController
 from instance import *#para el manejo de multiples instancias
 import os
 from random import randint
@@ -31,7 +32,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = True
+debug = False
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
@@ -43,6 +44,7 @@ class LoginModal(QtGui.QDialog):
     def __init__(self):
         super(LoginModal, self).__init__()
         self.ui=Ui_Dialog_login()
+        self.changed_slot = self.verificar
         self.ui.setupUi(self)
         self.resultado = False
         movie = QtGui.QMovie(":/newPrefix/loading.gif")
@@ -50,14 +52,38 @@ class LoginModal(QtGui.QDialog):
         movie.start()
         self.ui.spinnerLabel.setLayout(QtGui.QHBoxLayout())
         self.ui.spinnerLabel.layout().addWidget(QtGui.QLabel(''))
-        
+        self.ui.spinnerLabel.hide()
+        self.ui.mensajeLabel.hide()
+        self.redimensionar()
+        self.ui.enviarPushButton.setEnabled(False)
         self.exec_()
-        
-    def estado(self, mensaje):
-        pass
-    def accept(self):
+    def activado(self):
+        print "Activado!!!!!"
         self.resultado = True
         self.close()
+    def rechazado(self):
+        print "Rechazado"
+        self.reject()
+        # Mostrar mensaje error
+    def verificar(self, text):
+        passw = self.ui.passwordLineEdit.text()
+        mail = self.ui.mailLineEdit.text()
+        if(ActivacionController.verificarMail(mail) and ActivacionController.verificarPassword(passw) ):
+            self.ui.enviarPushButton.setEnabled(True)
+        else:
+            self.ui.enviarPushButton.setEnabled(False)
+    def redimensionar(self):
+        s = self.sizeHint()
+        s.setWidth(self.width())
+        self.resize(s);
+    def estado(self, mensaje):
+        self.ui.mensajeLabel.setText(mensaje)
+    def accept(self):
+        self.ui.enviarPushButton.setEnabled(False)
+        self.ui.spinnerLabel.show()
+        self.ui.mensajeLabel.show()
+        self.redimensionar()
+        ActivacionController.iniciar(self)
         
 class EditarDocumentoModal(QtGui.QDialog):
     
@@ -659,6 +685,9 @@ class MainWindow(QtGui.QMainWindow):
         
 def main():
     app = QtGui.QApplication(sys.argv)
+    if(not debug):
+        ex = MainWindow()
+        sys.exit(app.exec_())
     login = LoginModal()
     if(login.resultado):
         ex = MainWindow()
