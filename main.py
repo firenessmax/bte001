@@ -688,12 +688,16 @@ def main():
     if(not debug):
         ex = MainWindow()
         sys.exit(app.exec_())
-    login = LoginModal()
-    if(login.resultado):
+    if(ActivacionController.valido()):
         ex = MainWindow()
         sys.exit(app.exec_())
     else:
-        sys.exit()
+        login = LoginModal()
+        if(login.resultado):
+            ex = MainWindow()
+            sys.exit(app.exec_())
+        else:
+            sys.exit()
 
 if __name__ == '__main__':
     main()

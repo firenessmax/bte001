@@ -90,7 +90,7 @@ class activador(object):
 #	else:
 #		'''probablemente sea pirata'''
 #except Exception as e:
-#	'''solicitar usuario y contraseña'''	
+#	'''solicitar usuario y contrasena'''	
 #	activador.validar(user,password)
 
 
