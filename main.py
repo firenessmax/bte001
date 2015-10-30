@@ -9,6 +9,7 @@ from GUI.mainWindow import *
 from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
 from GUI.editarDocumentoDialog import Ui_Dialog as Ui_Dialog_editarDocumento
+from GUI.login import Ui_Dialog as Ui_Dialog_login
 import math
 from lecturacodigo.devices import lectorDevice
 from lecturacodigo.reader import *
@@ -36,7 +37,28 @@ if not Instance.verificar('main'):#cambiar
     Instance.traeralfrente()
     exit(0) # Existe la instancia
 
-lector = None
+
+class LoginModal(QtGui.QDialog):
+    
+    def __init__(self):
+        super(LoginModal, self).__init__()
+        self.ui=Ui_Dialog_login()
+        self.ui.setupUi(self)
+        self.resultado = False
+        movie = QtGui.QMovie(":/newPrefix/loading.gif")
+        self.ui.spinnerLabel.setMovie(movie)
+        movie.start()
+        self.ui.spinnerLabel.setLayout(QtGui.QHBoxLayout())
+        self.ui.spinnerLabel.layout().addWidget(QtGui.QLabel(''))
+        
+        self.exec_()
+        
+    def estado(self, mensaje):
+        pass
+    def accept(self):
+        self.resultado = True
+        self.close()
+        
 class EditarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
@@ -637,8 +659,12 @@ class MainWindow(QtGui.QMainWindow):
         
 def main():
     app = QtGui.QApplication(sys.argv)
-    ex = MainWindow()
-    sys.exit(app.exec_())
+    login = LoginModal()
+    if(login.resultado):
+        ex = MainWindow()
+        sys.exit(app.exec_())
+    else:
+        sys.exit()
 
 if __name__ == '__main__':
     main()
