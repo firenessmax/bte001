@@ -24,10 +24,10 @@ def dump_to_file(nombre = PATH):
 def restore_db( db_file = DB, nombre = PATH):
 	conexion = sqlite3.connect(db_file)
 	cursor = conexion.cursor()
-	#cursor.execute('drop table if exists facturas')
-	#cursor.execute('drop table if exists empresas')
-	#cursor.execute('drop table if exists bitacora')
-	#cursor.execute('drop table if exists usuario')
+	cursor.execute('drop table if exists facturas')
+	cursor.execute('drop table if exists empresas')
+	cursor.execute('drop table if exists bitacora')
+	cursor.execute('drop table if exists usuario')
 	conexion.commit()
 	with open(nombre, 'r') as f:
 		sql = f.read()

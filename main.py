@@ -32,7 +32,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = False
+debug = True
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
