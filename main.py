@@ -89,6 +89,7 @@ class EditarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
         super(EditarDocumentoModal, self).__init__()
+        self.setWindowFlags(QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.ui=Ui_Dialog_editarDocumento()
         self.ui.setupUi(self)
         # Tipo de documento
@@ -173,6 +174,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
     
     def __init__(self, tipo, datos):
         super(AgregarDocumentoModal, self).__init__()
+        self.setWindowFlags(QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.ui=Ui_Dialog_nuevoDocumento()
         self.ui.setupUi(self)
         # Tipo de documento
@@ -289,6 +291,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
 class EscanearModal(QtGui.QDialog):
     def __init__(self, tipo, window):
         super(EscanearModal, self).__init__()
+        self.setWindowFlags(QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.ui=Ui_Dialog()
         self.encontrado_slot = self.encontrado
         self.reject = self.terminar
