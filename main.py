@@ -58,17 +58,15 @@ class LoginModal(QtGui.QDialog):
         self.ui.enviarPushButton.setEnabled(False)
         self.exec_()
     def activado(self):
-        print "Activado!!!!!"
         self.resultado = True
         self.close()
     def rechazado(self):
-        print "Rechazado"
         self.reject()
         # Mostrar mensaje error
     def verificar(self, text):
         passw = self.ui.passwordLineEdit.text()
-        mail = self.ui.mailLineEdit.text()
-        if(ActivacionController.verificarMail(mail) and ActivacionController.verificarPassword(passw) ):
+        user = self.ui.mailLineEdit.text()
+        if(ActivacionController.verificarUser(user) and ActivacionController.verificarPassword(passw) ):
             self.ui.enviarPushButton.setEnabled(True)
         else:
             self.ui.enviarPushButton.setEnabled(False)
@@ -79,11 +77,13 @@ class LoginModal(QtGui.QDialog):
     def estado(self, mensaje):
         self.ui.mensajeLabel.setText(mensaje)
     def accept(self):
+        passw = self.ui.passwordLineEdit.text()
+        user = self.ui.mailLineEdit.text()
         self.ui.enviarPushButton.setEnabled(False)
         self.ui.spinnerLabel.show()
         self.ui.mensajeLabel.show()
         self.redimensionar()
-        ActivacionController.iniciar(self)
+        ActivacionController.iniciar(self, user, passw)
         
 class EditarDocumentoModal(QtGui.QDialog):
     
@@ -102,9 +102,9 @@ class EditarDocumentoModal(QtGui.QDialog):
             self.ui.cuentaProveedoresClienteLabel.setText("Cuenta Cliente")
         self.setWindowTitle(titulo)
         #Fecha actual
-
+        self.f = fac = DBController.getFactura(datos, tipo)
         self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
-
+        self.ui.correlativoLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         self.ui.contracuentaLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         
@@ -122,6 +122,7 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
         self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
         self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
+        self.datos["Correlativo"] = str(self.ui.correlativoLineEdit.text())
         if(self.ui.activoFijoCheckBox.checkState () == QtCore.Qt.Checked):
             self.datos["Activo Fijo"] = 1
         else:
@@ -139,16 +140,13 @@ class EditarDocumentoModal(QtGui.QDialog):
             QtGui.QMessageBox.about(self, "Datos incompletos", "Faltan datos a ingresar en los siguientes campos:\n%s"%error)
         else:
             # Guardando
-            DBController.modificarFactura(self.datos, self.tipo)
+            DBController.modificarFactura(self.f, self.datos, self.tipo)
             self.resultado = True
             self.close()
     def llenarDatos(self):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
-        if(self.tipo == 0):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
-        elif(self.tipo == 1):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
-       
+        self.ui.correlativoLineEdit.setText(self.datos["Correlativo"])
+        self.ui.cuentaProveedoresClienteLineEdit.setText(self.datos["Cuenta"])
         self.ui.nDocumentoLineEdit.setText(self.datos["Numero Documento"])
         self.ui.emisorLineEdit.setText(self.datos["RS Emisor"])
         self.ui.receptorLineEdit.setText(self.datos["RS Receptor"])
@@ -193,6 +191,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
 
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         self.ui.contracuentaLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        self.ui.correlativoLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         
         self.datos = datos
         self.llenarDatos()
@@ -212,6 +211,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
         self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
         self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
+        self.datos["Correlativo"] = str(self.ui.correlativoLineEdit.text())
         if(self.ui.activoFijoCheckBox.checkState () == QtCore.Qt.Checked):
             self.datos["Activo Fijo"] = 1
         else:
@@ -245,6 +245,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.ui.labelNDocumento.setText(self.datos["Numero Documento"])
         self.ui.labelEmisor.setText(self.datos["RS Emisor"])
         self.ui.labelReceptor.setText(self.datos["RS Receptor"])
+
         if(self.datos["Fecha"] == None):
             self.ui.fechaDateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
             self.ui.fechaDateEdit.setReadOnly(False)
@@ -472,7 +473,6 @@ class MainWindow(QtGui.QMainWindow):
     
     def exportar(self):
         # Opciones
-        correlativo = self.ui.correlativoSpinBox.value()
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         archivo = None
@@ -485,7 +485,7 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.deshacerToolButton.setEnabled(False)
             self.ui.rehacerToolButton.setEnabled(False)
             #TODO: try permiso de escritura 
-            DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, correlativo)
+            DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
             if(contabilizar):
                 tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
                 self.contabilizados = []
@@ -541,15 +541,15 @@ class MainWindow(QtGui.QMainWindow):
             
             for i in range(tabla.horizontalHeader().count()):
                 datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(row,i).text())
-            
+            tipo = 0
             if(self.sender().objectName()=="tableWidget_Ventas"):
-                my_dialog = EditarDocumentoModal(1, datos ) 
-                if(my_dialog.resultado):
-                    self.updateTablas()
-            else:
-                my_dialog = EditarDocumentoModal(0, datos ) 
-                if(my_dialog.resultado):
-                    self.updateTablas()
+                tipo = 1
+            fac = DBController.getFactura(datos, tipo)
+            datos["Cuenta"] = fac.cuentaProveedores
+            datos["Correlativo"] = str(fac.correlativo)
+            my_dialog = EditarDocumentoModal(tipo, datos ) 
+            if(my_dialog.resultado):
+                self.updateTablas()
         elif action == eliminarAction:
             # TODO: lanzar evento al oprimir suprimir,
             qm = QtGui.QMessageBox(self)

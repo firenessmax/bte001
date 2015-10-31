@@ -85,6 +85,10 @@ class facturas(tabla):
 	@property
 	def numDocumento(self):
 		return self._numDocumento
+	@numDocumento.setter
+	def numDocumento(self, data):
+		self._numDocumento = data
+		self._listaDeCambio['numDocumento'] = (data, 'int')
 	@property
 	def nulo(self):
 		return self._nulo

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>554</height>
+    <width>400</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -388,6 +388,9 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
              <family>Segoe UI</family>
              <pointsize>9</pointsize>
             </font>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
            <property name="placeholderText">
             <string>Correlativo</string>

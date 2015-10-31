@@ -123,7 +123,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
           </font>
          </property>
          <property name="text">
-          <string>E-mail</string>
+          <string>Usuario</string>
          </property>
         </widget>
        </item>
@@ -139,7 +139,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
           <bool>false</bool>
          </property>
          <property name="placeholderText">
-          <string>E-mail</string>
+          <string>Usuario</string>
          </property>
         </widget>
        </item>

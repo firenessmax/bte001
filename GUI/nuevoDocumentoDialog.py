@@ -26,7 +26,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.setEnabled(True)
-        Dialog.resize(380, 554)
+        Dialog.resize(400, 534)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(2)
         sizePolicy.setVerticalStretch(0)
@@ -361,6 +361,7 @@ class Ui_Dialog(object):
         self.cuentaProveedoresClienteLabel.setText(_translate("Dialog", "Cuenta Proveedores/Cliente", None))
         self.cuentaProveedoresClienteLineEdit.setPlaceholderText(_translate("Dialog", "Numero de cuenta", None))
         self.correlativoLabel.setText(_translate("Dialog", "Correlativo", None))
+        self.correlativoLineEdit.setText(_translate("Dialog", "0", None))
         self.correlativoLineEdit.setPlaceholderText(_translate("Dialog", "Correlativo", None))
         self.glosaLabel.setToolTip(_translate("Dialog", "Explicación o descripción de la factura", None))
         self.glosaLabel.setText(_translate("Dialog", "Glosa", None))

@@ -77,14 +77,17 @@ def guardarFactura(datos, venta):
     f.contracuenta = datos["Contracuenta"]
     f.TipoDocumento = datos["Tipo Documento"]
     f.activoFijo = datos["Activo Fijo"]
+    f.correlativo = int(datos["Correlativo"])
     f.save()
     
      #print datos
-def modificarFactura(datos, venta):
+def modificarFactura(f, datos, venta):
      #print "MODIFICAR::", datos
-    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
-    nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+    #f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
+    #nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+    
     f.empresaEmisor.rS = datos["RS Emisor"]
+    f.numDocumento = int(datos["Numero Documento"])
     f.empresaReceptor.rS = datos["RS Receptor"]
     f.empresaEmisor.save()
     f.empresaReceptor.save()
@@ -95,6 +98,7 @@ def modificarFactura(datos, venta):
     f.cuentaProveedores = datos["Cuenta"]
     f.contracuenta = datos["Contracuenta"]
     f.activoFijo = int(datos["Activo Fijo"])
+    f.correlativo = int(datos["Correlativo"])
     f.save()
     
      #print datos
@@ -108,7 +112,7 @@ def existeFactura(venta, datos):
 def eliminarFactura(id):
     Facturas.deleteFactura(int(id))
      #print "Eliminando Factura ",id
-def exportarExcel(filtro, path, cont, guardarCont, correlativo):
+def exportarExcel(filtro, path, cont, guardarCont):
      #print "Exportando ", filtro
     if (filtro == "Todas"):
         filtro = None
@@ -117,11 +121,14 @@ def exportarExcel(filtro, path, cont, guardarCont, correlativo):
      #print "VENTAS Y COMPRAS", ventas, compras
     
     
-    ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont, correlativo = correlativo)
-    
+    ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont)
+def getFactura(datos, venta):
+    try:
+        return Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
+    except:
+        return None
 def ultimaFactura(empresa):
     e = Empresas.empresas(rut=empresa, esNuevo = False)
-    print "Empresa", e
     try:
         return Facturas.ultimosDatosFactura(e)
     except:
