@@ -4,6 +4,8 @@ import DB.tableCreate as DB
 import DB.facturas as Facturas
 import DB.empresas as Empresas
 import DB.exportxls as ExportarExcel
+import DB.exporttcv as ExportarTCV
+import DB.backup as Backup
 def obtenerLista(tabla, empresa):
     # Devolver lista de facturas con el formato
     # [Contabilizado, Sucursal, Tipo Documento, Numero Documento, Fecha, Emisor, RS Emisor, Receptor, RS Receptor', Monto Exento, Monto Afecto, Monto IVA, Monto Total, Glosa, Contracuenta, id]
@@ -114,15 +116,19 @@ def eliminarFactura(id):
     Facturas.deleteFactura(int(id))
      #print "Eliminando Factura ",id
 def exportarExcel(filtro, path, cont, guardarCont):
-     #print "Exportando ", filtro
+    print "Exportando ", filtro
     if (filtro == "Todas"):
         filtro = None
     ventas = Facturas.obtenerVentas(filtro)
     compras = Facturas.obtenerCompras(filtro)
-     #print "VENTAS Y COMPRAS", ventas, compras
-    
-    
-    ExportarExcel.exportarxls(ventas, compras, path = path, contabilizar = cont, guardarContabilizados = guardarCont)
+    ExportarExcel.exportarxls(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont)
+def exportarTCV(filtro, path, cont, guardarCont):
+    #print "Exportando ", filtro
+    if (filtro == "Todas"):
+        filtro = None
+    ventas = Facturas.obtenerVentas(filtro)
+    compras = Facturas.obtenerCompras(filtro)
+    ExportarTCV.exportarTxt(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont)
 def getFactura(datos, venta):
     try:
         return Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
@@ -148,3 +154,16 @@ def contabilizarFacturas(lista, value):
     for f in l:
         f.contabilizado = value
         f.save()
+def backup(path):
+    Backup.dump_to_file(path)
+def verificar(path):
+    try:
+        Backup.verificacionBackup(path)
+        return True
+    except:
+        return False
+    
+def restaurar(path):
+    Backup.restore_db(nombre = path)
+    
+    

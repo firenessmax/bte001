@@ -26,14 +26,14 @@ def verificacionBackup(path):
 								idUsuario INTEGER DEFAULT 0
 								);''')
 	bitacora = "CREATE TABLE bitacora"
-	if find1 == -1: raise Excecute("No tiene el formato de Base de Datos correcto, le falta la entidad bitacora")
+	if find1 == -1: raise Exception("No tiene el formato de Base de Datos correcto, le falta la entidad bitacora")
 	texto = texto[:find1] +texto[len(bitacora) + len(texto[:find1]):]
 	find2 = texto.find('''CREATE TABLE empresas(id INTEGER PRIMARY KEY,
 								rut TEXT, 
 								razonSocial TEXT
 								);''')
 	empresas = "CREATE TABLE empresas"
-	if find2 == -1: raise Excecute("No tiene el formato de Base de Datos correcto, le falta la entidad empresas")
+	if find2 == -1: raise Exception("No tiene el formato de Base de Datos correcto, le falta la entidad empresas")
 	texto = texto[:find2] +texto[len(empresas) + len(texto[:find2]):]
 	find3 = texto.find('''CREATE TABLE facturas(id INTEGER PRIMARY KEY,
 	 							venta INTEGER  DEFAULT 0,
@@ -74,7 +74,7 @@ def verificacionBackup(path):
 								FOREIGN KEY(idReceptor) REFERENCES empresas(id)
 								);''');
 	facturas = "CREATE TABLE facturas"
-	if find3 == -1: raise Excecute("No tiene el formato de Base de Datos correcto, le falta la entidad facturas")
+	if find3 == -1: raise Exception("No tiene el formato de Base de Datos correcto, le falta la entidad facturas")
 	texto = texto[:find3] +texto[len(facturas) + len(texto[:find3]):]
 	find4 = texto.find('''CREATE TABLE usuario(id INTEGER PRIMARY KEY, 
 								username TEXT, 
@@ -82,9 +82,9 @@ def verificacionBackup(path):
 								activo INTEGER DEFAULT 1
 								);''');
 	usuario = "CREATE TABLE usuario"
-	if find4 == -1: raise Excecute("No tiene el formato de Base de Datos correcto, le falta la entidad usuario")
+	if find4 == -1: raise Exception("No tiene el formato de Base de Datos correcto, le falta la entidad usuario")
 	texto = texto[:find4] +texto[len(usuario) + len(texto[:find4]):]
-	if texto.find("CREATE TABLE") != -1: raise Excecute(u"No tiene el formato de Base de Datos correcto, posee más entidades de lo correcto")
+	if texto.find("CREATE TABLE") != -1: raise Exception(u"No tiene el formato de Base de Datos correcto, posee más entidades de lo correcto")
 	archivo.close()
 
 

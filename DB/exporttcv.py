@@ -5,8 +5,9 @@ from facturas import *
 import datetime
 
 def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarContabilizados = False):
-	fac = open(path.strip(".tcv")+"facturas.tcv", 'w')
+	fac = open(path, 'w')
 	for obj in fCompras:
+		datos = formatoFacturaTxtCompras(obj)
 		if guardarContabilizados:
 			datos = formatoFacturaTxtCompras(obj)
 			if datos[2] != "N/A":
@@ -42,7 +43,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += ",0,0,0,0,0"
 				fac.write(linea.strip(",")+"\n")
 		elif not guardarContabilizados and obj.contabilizado == 0:
-			datos = formatoFacturaTxtCompras(obj)
+
 			if datos[2] != "N/A":
 				linea = "1"
 				linea += "," + str(datetime.datetime.now().month)

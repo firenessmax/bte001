@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #arreglar lo de monto Total --
 #checkbox de activo fijo --
     #tirar el dato de activofijo al crear la factura
@@ -262,7 +263,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         else:
             self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
             self.ui.glosaLineEdit.setFocus()
-       
+        
         if(self.datos["Tipo Documento"] == "34"):
             self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
             self.ui.montoExcentoSpinBox.setReadOnly(True)
@@ -367,6 +368,8 @@ class MainWindow(QtGui.QMainWindow):
         self.filtrar_slot = self.filtrar
         self.deshacer_slot = self.deshacer
         self.rehacer_slot = self.rehacer
+        self.respaldar_slot = self.backup
+        self.restaurar_slot = self.restaurarDB
         self.dispositivoChange_slot = self.cambiarDispositivo
         self.documentoCambiarTab_slot = self.resetFiltro
         self.ui.setupUi(self)
@@ -405,7 +408,32 @@ class MainWindow(QtGui.QMainWindow):
         LecturaController.iniciarDevice(self)
         
         self.show()
-        
+    def restaurarDB(self):
+        path = QtGui.QFileDialog.getOpenFileName(self, directory=(os.path.expanduser("~/Documents/")+"dump.sql"), filter="Sql Script (*.sql)")
+        if(path!=""):
+            if(DBController.verificar(path)):
+                # Mensaje
+                qm = QtGui.QMessageBox(self)
+                qm.setWindowTitle('Advertencia')
+                qm.setText(QtCore.QString(u"Al restaurar la base de datos se perderán todos los datos ingresados posterior al respaldo.\nEstá seguro de que desea realizar esta operación?"))
+                qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+                qm.addButton(QtGui.QMessageBox.No).setText("Cancelar")
+                qm.setIcon(QtGui.QMessageBox.Critical)
+                reply = qm.exec_()
+                if reply == QtGui.QMessageBox.Yes:
+                    DBController.restaurar(path)
+                    self.updateTablas()
+                    self.mensaje("Base de datos restaurada desde %s"%path)
+                    
+    def mensaje(self,mensaje):
+        self.ui.statusbar.showMessage(mensaje)
+        QtCore.QTimer.singleShot(4000, self.ui.statusbar.clearMessage)
+
+    def backup(self):
+        path = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"dump.sql"), filter="Sql Script (*.sql)")
+        if(path!=""):
+            DBController.backup(path)
+            self.mensaje("Base de datos respaldada en %s"%path)
     def rehacer(self):
         DBController.contabilizarFacturas(self.contabilizados, not self.cambiarContabilizados)
         self.ui.rehacerToolButton.setEnabled(False)
@@ -481,16 +509,19 @@ class MainWindow(QtGui.QMainWindow):
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         archivo = None
-
+        
         if(self.sender().objectName() == "toolButtonPlano"):
-            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.txt"), filter="Texto plano (*.txt)")
+            archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.tcv"), filter="Texto tcv (*.tcv)")
         else:    
             archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.xls"), filter="Microsoft Excel (*.xls)")
         if(archivo != ""):
             self.ui.deshacerToolButton.setEnabled(False)
             self.ui.rehacerToolButton.setEnabled(False)
             #TODO: try permiso de escritura 
-            DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
+            if(self.sender().objectName() != "toolButtonPlano"):
+                DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
+            else:
+                DBController.exportarTCV(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
             if(contabilizar):
                 tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
                 self.contabilizados = []
@@ -503,9 +534,10 @@ class MainWindow(QtGui.QMainWindow):
                         if(c == "No"):
                             self.contabilizados.append(int(Id))
                 if(len(self.contabilizados)!=0):
+                    #DBController.contabilizarFacturas(self.contabilizados, 1)
                     self.ui.deshacerToolButton.setEnabled(True)
             self.updateTablas()
-            self.ui.statusbar.showMessage("Archivo exportado en: " + unicode(archivo))
+            self.mensaje("Archivo exportado en: " + unicode(archivo))
 
 
 

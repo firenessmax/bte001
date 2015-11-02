@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>760</width>
-    <height>533</height>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -505,7 +505,7 @@ QTabBar::tab:selected {
              <enum>QTabWidget::North</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -750,7 +750,7 @@ QTabBar::tab:selected {
                  </font>
                 </property>
                 <property name="text">
-                 <string>Dispsitivo:</string>
+                 <string>Dispositivo:</string>
                 </property>
                </widget>
               </item>
@@ -812,6 +812,64 @@ QTabBar::tab:selected {
                 </property>
                 <property name="sizeAdjustPolicy">
                  <enum>QComboBox::AdjustToContents</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="5">
+               <widget class="QToolButton" name="restaurarToolButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>65</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">margin-bottom: 6px</string>
+                </property>
+                <property name="text">
+                 <string>Restaurar</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="images/images.qrc">
+                  <normaloff>:/newPrefix/alerta.png</normaloff>:/newPrefix/alerta.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>100</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextUnderIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="6">
+               <widget class="QToolButton" name="respaldarToolButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>65</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">margin-bottom: 6px</string>
+                </property>
+                <property name="text">
+                 <string>Respaldar</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="images/images.qrc">
+                  <normaloff>:/newPrefix/pregunta.png</normaloff>:/newPrefix/pregunta.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>100</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextUnderIcon</enum>
                 </property>
                </widget>
               </item>
@@ -1583,7 +1641,7 @@ QTabWidget::tab-bar {
     </hint>
     <hint type="destinationlabel">
      <x>382</x>
-     <y>-10</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -1599,7 +1657,7 @@ QTabWidget::tab-bar {
     </hint>
     <hint type="destinationlabel">
      <x>524</x>
-     <y>-7</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -1610,12 +1668,44 @@ QTabWidget::tab-bar {
    <slot>rehacer_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>673</x>
-     <y>180</y>
+     <x>636</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
      <x>621</x>
-     <y>-16</y>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>restaurarToolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>restaurar_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>585</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>328</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>respaldarToolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>respaldar_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>678</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>-8</y>
     </hint>
    </hints>
   </connection>
@@ -1630,5 +1720,7 @@ QTabWidget::tab-bar {
   <slot>dispositivoChange_slot()</slot>
   <slot>deshacer_slot()</slot>
   <slot>rehacer_slot()</slot>
+  <slot>restaurar_slot()</slot>
+  <slot>respaldar_slot()</slot>
  </slots>
 </ui>
