@@ -377,17 +377,17 @@ class facturas(tabla):
 		try:
 			self._empresaEmisor = empresas(rutEmisor, nomEmisor)
 			self._empresaEmisor.save()
-			print u'Se creo la empresa : ', rutEmisor, ' razonSocial : ', nomEmisor
+			#print u'Se creo la empresa : ', rutEmisor, ' razonSocial : ', nomEmisor
 		except:
 			self._empresaEmisor = empresas(rutEmisor, esNuevo = False)
-			print u'La empresa con el rut : ', rutEmisor, u' ya existe en la base de datos'
+			#print u'La empresa con el rut : ', rutEmisor, u' ya existe en la base de datos'
 		try:
 			self._empresaReceptor = empresas(rutReceptor, nomReceptor)
 			self._empresaReceptor.save()
-			print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
+			#print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
 		except:
 			self._empresaReceptor = empresas(rutReceptor, esNuevo = False)
-			print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
+			#print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
 		if esNuevo:
 			conexion = sqlite3.connect(DB)
 			consulta = conexion.cursor()

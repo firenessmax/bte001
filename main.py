@@ -282,6 +282,8 @@ class AgregarDocumentoModal(QtGui.QDialog):
             self.datos["Glosa"] = str(fact.Glosa)
             self.datos["Contracuenta"] = str(fact.contracuenta)
             self.datos["Activo Fijo"] = fact.activoFijo
+            self.datos["RS Emisor"] = fact.empresaEmisor.rS
+            self.datos["RS Receptor"] = fact.empresaReceptor.rS
             self.ui.sucursalLineEdit.setText(self.datos["Sucursal"])
             self.ui.glosaLineEdit.setText(self.datos["Glosa"])
             self.ui.contracuentaLineEdit.setText(self.datos["Contracuenta"])
@@ -576,7 +578,6 @@ class MainWindow(QtGui.QMainWindow):
         documentos = DBController.obtenerLista(tabla.objectName(), None)
         tabla.setRowCount(len(documentos))
         for i in range(len(documentos)):
-            print documentos[i]
             for j in range(len(documentos[i])):
                 item = QtGui.QTableWidgetItem()
                 item.setText(documentos[i][j])
@@ -655,6 +656,8 @@ class MainWindow(QtGui.QMainWindow):
             if event.globalPos().y()<QtGui.QDesktopWidget().availableGeometry().bottom():
                 self.move(event.globalPos()-self.offset)
     def _mouseReleaseEvent(self,event):
+        if not hasattr(self, '_drop_top'):
+            return
         if self._drop_top:
             height = QtGui.QDesktopWidget().availableGeometry().bottom()
             width = QtGui.QDesktopWidget().availableGeometry().right()

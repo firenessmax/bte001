@@ -58,16 +58,17 @@ def getEmpresas():
     return empresas
 
 def guardarFactura(datos, venta):
-    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
-    nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"])
+    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"])
+    #nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"])
     f.save()
     
-    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"],
-    nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
-    f.empresaEmisor.rS = datos["RS Emisor"]
-    f.empresaReceptor.rS = datos["RS Receptor"]
-    f.empresaEmisor.save()
-    f.empresaReceptor.save()
+    f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], esNuevo = False)
+    if(f.empresaEmisor.rS == ""):
+        f.empresaEmisor.rS = datos["RS Emisor"]
+        f.empresaEmisor.save()
+    if(f.empresaReceptor.rS == ""):
+        f.empresaReceptor.rS = datos["RS Receptor"]
+        f.empresaReceptor.save()
     f.fecha = datos["Fecha"]
     f.sucursal = datos["Sucursal"]
     f.montoTotal = int(datos["Monto Total"])
