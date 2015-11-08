@@ -56,7 +56,7 @@ def obtenerLista(tabla, empresa):
     
 def getEmpresas():
     emp = Empresas.obtenerEmpresas()
-    empresas = [e.rut for e in emp]
+    empresas = [[e.rut, e.rS] for e in emp]
     return empresas
 
 def guardarFactura(datos, venta):

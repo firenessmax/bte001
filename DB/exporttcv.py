@@ -20,7 +20,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(atributoDoc(datos[1], datos[10], datos[13]))
 				linea += "," + str(datos[3])
 				linea += ''',"N"'''
-				linea += ''', "%s'''%datos[8].split("-")[0] + '''%s"'''%datos[8].split("-")[1]
+				linea += ''', %s'''%datos[8].split("-")[0] + '''%s'''%datos[8].split("-")[1]
 				linea += ''', "%s"'''%datos[9]
 				formato1 = "%d/%m/%Y" 
 				formato2 = "%d%m%Y" 
@@ -33,11 +33,11 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(datos[13])
 				linea += "," + str(datos[15])
 				linea += "," + str(datos[0])
-				linea += ",,,,,,,,,"
+				linea += ",,,,,%s,,,,"%str(datos[21])
 				linea += "," + str(datos[42])
 				linea += ''',"F"'''
 				linea += ",0,0"
-				linea += "," + str(datos[18])
+				linea += "," + str(datos[5])
 				linea += ''',"N","N","N"'''
 				linea += ''',"%s"''' % datos[14]
 				linea += ",0,0,0,0,0"
@@ -54,7 +54,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(atributoDoc(datos[1], datos[10], datos[13]))
 				linea += "," + str(datos[3])
 				linea += ''',"N"'''
-				linea += ''', "%s'''%datos[8].split("-")[0] + '''%s"'''%datos[8].split("-")[1]
+				linea += ''', %s'''%datos[8].split("-")[0] + '''%s'''%datos[8].split("-")[1]
 				linea += ''', "%s"'''%datos[9]
 				formato1 = "%d/%m/%Y" 
 				formato2 = "%d%m%Y" 
@@ -67,11 +67,11 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(datos[13])
 				linea += "," + str(datos[15])
 				linea += "," + str(datos[0])
-				linea += ",,,,,,,,,"
+				linea += ",,,,,%s,,,,"%str(datos[21])
 				linea += "," + str(datos[42])
 				linea += ''',"F"'''
 				linea += ",0,0"
-				linea += "," + str(datos[18])
+				linea += "," + str(datos[5])
 				linea += ''',"N","N","N"'''
 				linea += ''',"%s"''' % datos[14]
 				linea += ",0,0,0,0,0"
@@ -93,7 +93,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(atributoDoc(datos[1], datos[10], datos[13]))
 				linea += "," + str(datos[3])
 				linea += ''',"N"'''
-				linea += ''', "%s'''%datos[8].split("-")[0] + '''%s"'''%datos[8].split("-")[1]
+				linea += ''', %s'''%datos[8].split("-")[0] + '''%s'''%datos[8].split("-")[1]
 				linea += ''', "%s"'''%datos[9]
 				formato1 = "%d/%m/%Y" 
 				formato2 = "%d%m%Y" 
@@ -106,11 +106,11 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(datos[13])
 				linea += "," + str(datos[15])
 				linea += "," + str(datos[0])
-				linea += ",,,,,,,,,"
+				linea += ",,,,,%s,,,,"%str(datos[21])
 				linea += "," + str(datos[42])
 				linea += ''',"F"'''
 				linea += ",0,0"
-				linea += "," + str(datos[18])
+				linea += "," + str(datos[5])
 				linea += ''',"N","N","N"'''
 				linea += ''',"%s"''' % datos[14]
 				linea += ",0,0,0,0,0"
@@ -127,7 +127,7 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(atributoDoc(datos[1], datos[10], datos[13]))
 				linea += "," + str(datos[3])
 				linea += ''',"N"'''
-				linea += ''', "%s'''%datos[8].split("-")[0] + '''%s"'''%datos[8].split("-")[1]
+				linea += ''', %s'''%datos[8].split("-")[0] + '''%s'''%datos[8].split("-")[1]
 				linea += ''', "%s"'''%datos[9]
 				formato1 = "%d/%m/%Y" 
 				formato2 = "%d%m%Y" 
@@ -140,11 +140,11 @@ def exportarTxt(fVentas, fCompras, path = "", contabilizar = False, guardarConta
 				linea += "," + str(datos[13])
 				linea += "," + str(datos[15])
 				linea += "," + str(datos[0])
-				linea += ",,,,,,,,,"
+				linea += ",,,,,%s,,,,"%str(datos[21])
 				linea += "," + str(datos[42])
 				linea += ''',"F"'''
 				linea += ",0,0"
-				linea += "," + str(datos[18])
+				linea += "," + str(datos[5])
 				linea += ''',"N","N","N"'''
 				linea += ''',"%s"''' % datos[14]
 				linea += ",0,0,0,0,0"
@@ -174,7 +174,13 @@ def atributoDoc(tipoDocumento, montoExento, montoTotal):
 	if tipoDocumento == 111:return 12
 	if tipoDocumento == 112:return 13
 	else:return 16
-
+	
+	
+	
+	
+	
+	
+	
 def formatoFacturaTxtCompras(factura):
 	#print "llamada a formatear xls de compras"
 	datos = []

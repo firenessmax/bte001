@@ -372,6 +372,7 @@ class MainWindow(QtGui.QMainWindow):
         self.restaurar_slot = self.restaurarDB
         self.dispositivoChange_slot = self.cambiarDispositivo
         self.documentoCambiarTab_slot = self.resetFiltro
+        self.empresas = [["Todas", ""]]
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint )
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -619,7 +620,7 @@ class MainWindow(QtGui.QMainWindow):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
     def updateTablas(self):
-        self.filtrar(self.ui.filtrarEmpresaComboBox.currentText())
+        self.filtrar(self.ui.filtrarEmpresaComboBox.currentIndex())
         self.updateEmpresas()
         
     def filtrar(self, data):
@@ -627,7 +628,7 @@ class MainWindow(QtGui.QMainWindow):
         
         if data != "":
             for tabla in tablas:
-                documentos = DBController.obtenerLista(tabla.objectName(), str(data))
+                documentos = DBController.obtenerLista(tabla.objectName(), str(self.empresas[data][0]))
 
                 tabla.clearContents()
                 tabla.setRowCount(len(documentos))
@@ -643,8 +644,11 @@ class MainWindow(QtGui.QMainWindow):
     def updateEmpresas(self):
         self.ui.filtrarEmpresaComboBox.clear()
         self.ui.filtrarEmpresaComboBox.addItem("Todas")
+        self.empresas = []
+        self.empresas.append(["Todas", ""])
         for e in DBController.getEmpresas():
-            self.ui.filtrarEmpresaComboBox.addItem(e)
+            self.empresas.append(e)
+            self.ui.filtrarEmpresaComboBox.addItem(e[0]+" | "+e[1])
     
     def _mousePressEvent(self,event):
 
