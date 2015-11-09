@@ -525,6 +525,7 @@ def obtenerFacturasPorId(listaId):
 	conexion.close()
 	return listaFacturas
 
+
 # funcion que obtiene la instancia de la ultima factura segun la instancia de la empresa emisora actual
 # uso Ejemplo:
 # f = ultimosDatosFactura(empresa)
@@ -571,20 +572,38 @@ def obtenerRutEmpresa(id):
 	consulta.close()
 	conexion.close()
 
+
+	
+	
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
+	
+def getFacturaMonthYear(month, year):
+	conexion = sqlite3.connect(DB)
+	consulta = conexion.cursor()
+	formato1 = "%Y-%m-%d" # aaaa-mm-dd
+	formato2 = "%d/%m/%Y" # dd/mm/aaaa
+	listaFacturas = []
+	for row in consulta.execute("SELECT * FROM facturas")):
+		#row[7] = fecha
+		fecha = datetime.datetime.strptime(str(self._fecha), formato1)
+		listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+	consulta.close()
+	conexion.close()
 #
 # funcion que sirva para obtener todas las facturas de compras
 #
-def obtenerCompras(rutReceptor = None):
+def obtenerCompras(rutReceptor = None, month = None, year = None):
 	 #print "llamada a obtener Compras"
 	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaFacturas=[]
 	#print "rut = ", rutReceptor
-	if rutReceptor == None:
+	if rutReceptor == None and month == None and year == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 0"):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
-	else:
+	elif rutReceptor != None and month == None and year == None:
 		#consulta sql donde rutReceptor
 		for row in consulta.execute("SELECT * FROM facturas WHERE idReceptor = ? AND venta = 0", (obtenerIdEmpresa(rutReceptor),)):
 			#row[0] = id
@@ -626,27 +645,47 @@ def obtenerCompras(rutReceptor = None):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 		#f = factura(..., evNuevo = False)-> lista de facturas
+	elif rutReceptor != None and month != None and year != None:
+		formato1 = "%Y-%m-%d" # aaaa-mm-dd
+		formato2 = "%d/%m/%Y" # dd/mm/aaaa
+		for row in consulta.execute("SELECT * FROM facturas")):
+			fecha = datetime.datetime.strptime(row[7], formato1)
+			if fecha.month == month and fecha.year = year:
+				listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+										rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+	else:
+		raise Exception(u"Alguno de los datos no es correcto, o no fué ingresado")
 	consulta.close()
 	conexion.close()
 	return listaFacturas
 	
 	
 
-def obtenerVentas(rutEmisor = None):
+def obtenerVentas(rutEmisor = None, month = None, year = None):
 	 #print "llamada a obtener Ventas"
 	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaFacturas=[]
-	if rutEmisor == None:
+	if rutEmisor == None and month == None and year == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 1"):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
-	else:
+	elif rutEmisor != None and month == None and year == None
 		#consulta sql donde rutEmisor
 		for row in consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? AND venta = 1", (obtenerIdEmpresa(rutEmisor),)):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 		#f = factura(..., evNuevo = False)-> lista de facturas
+	elif rutEmisor != None and month != None and year != None:
+			formato1 = "%Y-%m-%d" # aaaa-mm-dd
+			formato2 = "%d/%m/%Y" # dd/mm/aaaa
+			for row in consulta.execute("SELECT * FROM facturas")):
+				fecha = datetime.datetime.strptime(row[7], formato1)
+				if fecha.month == month and fecha.year = year:
+					listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+	else:
+			raise Exception(u"Alguno de los datos no es correcto, o no fué ingresado")
 	consulta.close()
 	conexion.close()
 	return listaFacturas
