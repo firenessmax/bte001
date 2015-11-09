@@ -4,8 +4,8 @@
 import xlwt
 from facturas import *
 TITLESC = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "Correlativo", 
-			"Fecha", "Rut Nacional", "Rut", "Nombre Proveedor", "null", "Monto Exento", "Monto Neto", 
-			"Monto Iva", "Monto Total",	"Glosa General de Detalle", "null",	"Cuenta de Proveedores", 
+			"Fecha", "Rut Nacional", "Rut", "Nombre Proveedor", "", "Monto Exento", "Monto Neto", 
+			"Monto Iva", "Monto Total",	"Glosa General de Detalle", "",	"Cuenta de Proveedores", 
 			u"Código Especial", "Fecha de Venciemiento", "Contracuenta", "Centro de Resultado", 
 			"Glosa de Contracuenta", "Monto de Contracuenta", u"Código especial Contracuenta",
 			"Rut Nacional Contracuenta", "Rut de Contracuenta",	"Nombre Rut Contracuenta", 
@@ -21,9 +21,9 @@ TITLESC = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			u"Código impuesto 2", "Monto Impuesto 2", u"Código Impuesto 3", "Monto Impuesto 3", 
 			u"Código Impuesto 4", "Monto de Impuesto 4", u"Código Impuesto 5", "Monto Impuesto 5"]
 
-TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "null", "Fecha", "Rut Nacional",
-			"Rut", "null", "Nombre Cliente", "Monto Exento", "Monto Neto", "Monto Iva", "Monto Total",	
-			"Glosa General de Detalle",	"Cuenta de Clientes", "null", "Codigo Especial", "Fecha de Venciemiento",	
+TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "", "Fecha", "Rut Nacional",
+			"Rut", "", "Nombre Cliente", "Monto Exento", "Monto Neto", "Monto Iva", "Monto Total",	
+			"Glosa General de Detalle",	"Cuenta de Clientes", "", "Codigo Especial", "Fecha de Venciemiento",	
 			"Contracuenta",	"Centro de Resultado", "Glosa de Contracuenta",	"Monto de Contracuenta", 
 			u"Código especial Contracuenta", "Rut Nacional Contracuenta", "Rut de Contracuenta", 
 			"Nombre Rut Contracuenta",
@@ -45,15 +45,21 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 		fila = paginaCompra.row(num+1)
 		if guardarContabilizados:
 			datos = formatoFacturaXlsCompras(obj)
-			for index, dato in enumerate(datos):
-				fila.write(index, dato)
+			if datos[1] != "NA":
+				for index, dato in enumerate(datos):
+					fila.write(index, dato)
 		elif not guardarContabilizados and obj.contabilizado == 0:
 			datos = formatoFacturaXlsCompras(obj)
-			for index, dato in enumerate(datos):
-				fila.write(index, dato)
+			if datos[1] != "NA":
+				for index, dato in enumerate(datos):
+					fila.write(index, dato)
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
+	hoja = paginaCompra.col(9)
+	hoja.width = 0
+	hoja = paginaCompra.col(16)
+	hoja.width = 0
 			
 	paginaVenta = libro.add_sheet("Ventas")
 	for i, e in enumerate(TITLESV):
@@ -61,15 +67,22 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	for num, obj in enumerate(fVentas):
 		fila = paginaVenta.row(num+1)
 		datos = formatoFacturaXlsVentas(obj)
-		if guardarContabilizados:
-			for index, dato in enumerate(datos):
-				fila.write(index, dato)
-		elif not guardarContabilizados and obj.contabilizado == 0:
-			for index, dato in enumerate(datos):
-				fila.write(index, dato)
+		if datos[1] != "NA":
+			if guardarContabilizados:
+				for index, dato in enumerate(datos):
+					fila.write(index, dato)
+			elif not guardarContabilizados and obj.contabilizado == 0:
+				for index, dato in enumerate(datos):
+					fila.write(index, dato)
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
+	hoja = paginaVenta.col(4)
+	hoja.width = 0
+	hoja = paginaVenta.col(8)
+	hoja.width = 0
+	hoja = paginaVenta.col(16)
+	hoja.width = 0
 	libro.save(unicode(path))
 
 
@@ -102,7 +115,7 @@ def formatoFacturaXlsCompras(factura):
 	datos.append(factura.cuentaProveedores)
 	datos.append("")#es espacio en blanco
 	datos.append(factura.codigoEspecial)
-	datos.append(factura.fechaVencimiento)
+	datos.append(factura.fecha)
 	datos.append(factura.contracuenta)
 	datos.append(factura.centroResultados)
 	datos.append(factura.Glosa)
@@ -172,8 +185,8 @@ def formatoFacturaXlsVentas(factura):
 	datos.append(factura.fecha)
 	datos.append("S")
 	datos.append(factura.empresaReceptor.rut)
-	datos.append(factura.empresaReceptor.rS)
 	datos.append("")#es espacio en blanco
+	datos.append(factura.empresaReceptor.rS)
 	datos.append(factura.montoExento)
 	datos.append(factura.montoAfecto)
 	datos.append(factura.montoIVA)
@@ -182,7 +195,7 @@ def formatoFacturaXlsVentas(factura):
 	datos.append(factura.cuentaProveedores)
 	datos.append("")#es espacio en blanco
 	datos.append(factura.codigoEspecial)
-	datos.append(factura.fechaVencimiento)
+	datos.append(factura.fecha)
 	datos.append(factura.contracuenta)
 	datos.append(factura.centroResultados)
 	datos.append(factura.Glosa)
@@ -207,6 +220,13 @@ def formatoFacturaXlsVentas(factura):
 	datos.append("")#Rut Nacional Contracuenta 3
 	datos.append("")#Rut Contracuenta 3
 	datos.append("")#Nombre Rut Contracuenta 3
+	datos.append("")
+	datos.append("")
+	datos.append("")
+	datos.append("")
+	datos.append("")
+	datos.append(0)
+	datos.append(0)
 	datos.append(factura.impuestoEspecificoFijo)
 	datos.append(factura.impuestoEspecificoVariable)
 	datos.append(factura.M3)
@@ -234,13 +254,13 @@ def switch(tipoDocumento, montoExento):
 		return "FE"
 	elif tipoDocumento == 56:return "ND"
 	elif tipoDocumento == 61:return "NE"
-	else:return "N/A"
+	else:return "NA"
 
 
 #ob = obtenerCompras("18598138-k")
 #for e in ob:
 #	print formatoFacturaXls(e)
 
-#ventas = obtenerVentas()
-#compras = obtenerCompras()
-#exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)
+ventas = obtenerVentas()
+compras = obtenerCompras()
+exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)
