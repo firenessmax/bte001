@@ -140,7 +140,17 @@ def ultimaFactura(empresa):
         return Facturas.ultimosDatosFactura(e)
     except:
         return None
+def obtenerFechas(rut = None):
     
+    months = ["Enero", "Febrero" ,"Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    facts = Facturas.obtenerCompras(rut)
+    #TODO:  formato1 = "%Y-%m-%d" # aaaa-mm-dd
+    #fecha = datetime.datetime.strptime(row[7], formato1)
+				
+    meses = [[months[f.fecha] + f.fecha] for f in facts]
+    meses = [["Marzo-2015", 3, 2015], ["Marzo-2015", 3, 2015]]
+    
+    return meses
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista
     for datos in lista:
