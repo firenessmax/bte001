@@ -572,24 +572,6 @@ def obtenerRutEmpresa(id):
 	consulta.close()
 	conexion.close()
 
-
-	
-	
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
-	
-def getFacturaMonthYear(month, year):
-	conexion = sqlite3.connect(DB)
-	consulta = conexion.cursor()
-	formato1 = "%Y-%m-%d" # aaaa-mm-dd
-	formato2 = "%d/%m/%Y" # dd/mm/aaaa
-	listaFacturas = []
-	for row in consulta.execute("SELECT * FROM facturas")):
-		#row[7] = fecha
-		fecha = datetime.datetime.strptime(str(self._fecha), formato1)
-		listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
-											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
-	consulta.close()
-	conexion.close()
 #
 # funcion que sirva para obtener todas las facturas de compras
 #
