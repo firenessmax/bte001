@@ -630,9 +630,9 @@ def obtenerCompras(rutReceptor = None, month = None, year = None):
 	elif rutReceptor != None and month != None and year != None:
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
-		for row in consulta.execute("SELECT * FROM facturas")):
+		for row in consulta.execute("SELECT * FROM facturas"):
 			fecha = datetime.datetime.strptime(row[7], formato1)
-			if fecha.month == month and fecha.year = year:
+			if fecha.month == month and fecha.year == year:
 				listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 										rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 	else:
@@ -652,7 +652,7 @@ def obtenerVentas(rutEmisor = None, month = None, year = None):
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 1"):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
-	elif rutEmisor != None and month == None and year == None
+	elif rutEmisor != None and month == None and year == None:
 		#consulta sql donde rutEmisor
 		for row in consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? AND venta = 1", (obtenerIdEmpresa(rutEmisor),)):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
@@ -661,9 +661,9 @@ def obtenerVentas(rutEmisor = None, month = None, year = None):
 	elif rutEmisor != None and month != None and year != None:
 			formato1 = "%Y-%m-%d" # aaaa-mm-dd
 			formato2 = "%d/%m/%Y" # dd/mm/aaaa
-			for row in consulta.execute("SELECT * FROM facturas")):
+			for row in consulta.execute("SELECT * FROM facturas"):
 				fecha = datetime.datetime.strptime(row[7], formato1)
-				if fecha.month == month and fecha.year = year:
+				if fecha.month == month and fecha.year == year:
 					listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
 	else:
