@@ -45,12 +45,12 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 		fila = paginaCompra.row(num+1)
 		if guardarContabilizados:
 			datos = formatoFacturaXlsCompras(obj)
-			if datos[1] != "NA":
+			if True:#datos[1] != "NA":
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 		elif not guardarContabilizados and obj.contabilizado == 0:
 			datos = formatoFacturaXlsCompras(obj)
-			if datos[1] != "NA":
+			if True:#datos[1] != "NA":
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 		if contabilizar:
@@ -67,7 +67,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	for num, obj in enumerate(fVentas):
 		fila = paginaVenta.row(num+1)
 		datos = formatoFacturaXlsVentas(obj)
-		if datos[1] != "NA":
+		if True:#datos[1] != "NA":
 			if guardarContabilizados:
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
