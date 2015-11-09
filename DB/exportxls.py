@@ -4,8 +4,8 @@
 import xlwt
 from facturas import *
 TITLESC = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "Correlativo", 
-			"Fecha", "Rut Nacional", "Rut", "Nombre Proveedor", "Monto Exento", "Monto Neto", 
-			"Monto Iva", "Monto Total",	"Glosa General de Detalle",	"Cuenta de Proveedores", 
+			"Fecha", "Rut Nacional", "Rut", "Nombre Proveedor", "null", "Monto Exento", "Monto Neto", 
+			"Monto Iva", "Monto Total",	"Glosa General de Detalle", "null",	"Cuenta de Proveedores", 
 			u"Código Especial", "Fecha de Venciemiento", "Contracuenta", "Centro de Resultado", 
 			"Glosa de Contracuenta", "Monto de Contracuenta", u"Código especial Contracuenta",
 			"Rut Nacional Contracuenta", "Rut de Contracuenta",	"Nombre Rut Contracuenta", 
@@ -21,9 +21,9 @@ TITLESC = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			u"Código impuesto 2", "Monto Impuesto 2", u"Código Impuesto 3", "Monto Impuesto 3", 
 			u"Código Impuesto 4", "Monto de Impuesto 4", u"Código Impuesto 5", "Monto Impuesto 5"]
 
-TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "Fecha", "Rut Nacional",
-			"Rut", "Nombre Cliente", "Monto Exento", "Monto Neto", "Monto Iva", "Monto Total",	
-			"Glosa General de Detalle",	"Cuenta de Clientes", "Codigo Especial", "Fecha de Venciemiento",	
+TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "null", "Fecha", "Rut Nacional",
+			"Rut", "null", "Nombre Cliente", "Monto Exento", "Monto Neto", "Monto Iva", "Monto Total",	
+			"Glosa General de Detalle",	"Cuenta de Clientes", "null", "Codigo Especial", "Fecha de Venciemiento",	
 			"Contracuenta",	"Centro de Resultado", "Glosa de Contracuenta",	"Monto de Contracuenta", 
 			u"Código especial Contracuenta", "Rut Nacional Contracuenta", "Rut de Contracuenta", 
 			"Nombre Rut Contracuenta",
@@ -93,12 +93,14 @@ def formatoFacturaXlsCompras(factura):
 	datos.append("S")
 	datos.append(factura.empresaEmisor.rut)
 	datos.append(factura.empresaEmisor.rS)
+	datos.append("")#es espacio en blanco
 	datos.append(factura.montoExento)
 	datos.append(factura.montoAfecto)
 	datos.append(factura.montoIVA)
 	datos.append(factura.montoTotal)
 	datos.append(factura.Glosa)
 	datos.append(factura.cuentaProveedores)
+	datos.append("")#es espacio en blanco
 	datos.append(factura.codigoEspecial)
 	datos.append(factura.fechaVencimiento)
 	datos.append(factura.contracuenta)
@@ -166,16 +168,19 @@ def formatoFacturaXlsVentas(factura):
 		datos.append("N")
 	else:
 		datos.append("S")
+	datos.append("")#es espacio en blanco
 	datos.append(factura.fecha)
 	datos.append("S")
 	datos.append(factura.empresaReceptor.rut)
 	datos.append(factura.empresaReceptor.rS)
+	datos.append("")#es espacio en blanco
 	datos.append(factura.montoExento)
 	datos.append(factura.montoAfecto)
 	datos.append(factura.montoIVA)
 	datos.append(factura.montoTotal)
 	datos.append(factura.Glosa)
 	datos.append(factura.cuentaProveedores)
+	datos.append("")#es espacio en blanco
 	datos.append(factura.codigoEspecial)
 	datos.append(factura.fechaVencimiento)
 	datos.append(factura.contracuenta)

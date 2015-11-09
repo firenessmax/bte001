@@ -148,7 +148,7 @@ class facturas(tabla):
 		self._montoExento = data
 		afecto = (self._montoTotal - data)/1.19
 		self.montoAfecto=(int(round(afecto, 2)))
-		self.montoIVA=(int(round(self._montoAfecto*.19)))
+		self.montoIVA=self._montoTotal - self._montoExento - self._montoAfecto
 		self._listaDeCambio['montoExento'] = (data, 'int')
 		 #print 'cambio: ',self._listaDeCambio
 	@property
@@ -175,7 +175,7 @@ class facturas(tabla):
 		self._montoTotal = data
 		afecto = (data - self._montoExento)/1.19
 		self.montoAfecto=(int(round(afecto, 2)))
-		self.montoIVA=(int(round(self._montoAfecto*.19)))
+		self.montoIVA=self._montoTotal - self._montoExento - self._montoAfecto
 		self._listaDeCambio['montoTotal'] = (data, 'int')
 		 #print 'cambio: ',self._listaDeCambio
 	@property
