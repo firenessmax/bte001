@@ -70,7 +70,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 			obj.contabilizado=1
 		
 		obj.save()
-	hoja = paginaCompra.col(8)
+	hoja = paginaCompra.col(9)
 	hoja.width = 0
 	hoja = paginaCompra.col(16)
 	hoja.width = 0
