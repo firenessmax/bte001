@@ -14,7 +14,6 @@ def obtenerLista(tabla, empresa, month, year):
      #print "Tabla: %s"%tabla
      #print tabla
      #print empresa
-    print "ARGUMENTOS", empresa," - ", month," - ", year
     DB.iniciarDB()
     if(empresa == "Todas"):
         empresa = None
@@ -120,7 +119,7 @@ def eliminarFactura(id):
     Facturas.deleteFactura(int(id))
      #print "Eliminando Factura ",id
 def exportarExcel(filtro, path, cont, guardarCont, month, year, correlativo):
-    print "Exportando ", filtro
+
     if (filtro == "Todas"):
         filtro = None
     ventas = Facturas.obtenerVentas(filtro, month, year)
@@ -145,7 +144,6 @@ def ultimaFactura(empresa):
     except:
         return None
 def obtenerFechas(rut = None):
-    print "WDASMKLDKMASKMDAMKLSMKLDASD"
     months = ["Enero", "Febrero" ,"Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     facts = Facturas.obtenerCompras(rut) + Facturas.obtenerVentas(rut)
     
@@ -158,7 +156,6 @@ def obtenerFechas(rut = None):
         i = ["%s-%s"%(months[t.month-1], t.year), t.month, t.year]
         if(i not in meses):
             meses.append(i)
-    print meses
     return meses
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista

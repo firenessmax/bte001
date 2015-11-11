@@ -651,7 +651,6 @@ class MainWindow(QtGui.QMainWindow):
         for f in self.fechas:
             self.ui.fechaComboBox.addItem(f[0])
     def filtrarFecha(self, fechaData):
-        print "Buscando la fecha ", self.fechas[fechaData]
         self.filtrar(self.ui.filtrarEmpresaComboBox.currentIndex())
     def filtrar(self, data):
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]

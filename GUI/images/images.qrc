@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>redo.png</file>
+    <file>undo.png</file>
     <file>loading.gif</file>
     <file>alerta.png</file>
     <file>barcode.png</file>

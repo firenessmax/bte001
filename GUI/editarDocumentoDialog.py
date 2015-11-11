@@ -335,8 +335,13 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.receptorLineEdit, self.fechaDateEdit)
         Dialog.setTabOrder(self.fechaDateEdit, self.sucursalLineEdit)
         Dialog.setTabOrder(self.sucursalLineEdit, self.cuentaProveedoresClienteLineEdit)
-        Dialog.setTabOrder(self.cuentaProveedoresClienteLineEdit, self.pushButton)
+        Dialog.setTabOrder(self.cuentaProveedoresClienteLineEdit, self.contracuentaLineEdit)
+        Dialog.setTabOrder(self.contracuentaLineEdit, self.glosaLineEdit)
+        Dialog.setTabOrder(self.glosaLineEdit, self.montoExcentoSpinBox)
+        Dialog.setTabOrder(self.montoExcentoSpinBox, self.activoFijoCheckBox)
+        Dialog.setTabOrder(self.activoFijoCheckBox, self.pushButton)
         Dialog.setTabOrder(self.pushButton, self.pushButton_2)
+        Dialog.setTabOrder(self.pushButton_2, self.correlativoLineEdit)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Editar Documento", None))
