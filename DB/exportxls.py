@@ -286,6 +286,6 @@ def switch(tipoDocumento, montoExento):
 #for e in ob:
 #	print formatoFacturaXls(e)
 
-ventas = obtenerVentas()
-compras = obtenerCompras()
-exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)
+#ventas = obtenerVentas()
+#compras = obtenerCompras()
+#exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)
