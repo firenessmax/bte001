@@ -38,6 +38,7 @@ TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			"Monto de Impuesto 4", u"Código de Impuesto 5", "Monto de Impuesto 5"]
 
 def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False, correlativo = 1, aceptaBoleta = False): #false, las no contabilizadas, True todas
+	print "CORRELATIVO", correlativo
 	try:
 		libro = xlwt.Workbook(encoding="UTF-8")
 	except:
@@ -46,6 +47,8 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	for i, e in enumerate(TITLESC):
 		paginaCompra.row(0).write(i, e)
 	for num, obj in enumerate(fCompras):
+		obj.correlativo = correlativo
+		correlativo += 1
 		fila = paginaCompra.row(num+1)
 		if guardarContabilizados:
 			datos = formatoFacturaXlsCompras(obj)
@@ -65,8 +68,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 					fila.write(index, dato)
 		if contabilizar:
 			obj.contabilizado=1
-		obj.correlativo = correlativo
-		correlativo += 1
+		
 		obj.save()
 	hoja = paginaCompra.col(8)
 	hoja.width = 0

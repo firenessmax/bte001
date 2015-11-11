@@ -125,7 +125,7 @@ def exportarExcel(filtro, path, cont, guardarCont, month, year, correlativo):
         filtro = None
     ventas = Facturas.obtenerVentas(filtro, month, year)
     compras = Facturas.obtenerCompras(filtro, month, year)
-    ExportarExcel.exportarxls(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont, correlativo=correlativo, aceptaBoletas = True)
+    ExportarExcel.exportarxls(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont, correlativo=int(correlativo), aceptaBoleta = True)
 def exportarTCV(filtro, path, cont, guardarCont):
     #print "Exportando ", filtro
     if (filtro == "Todas"):

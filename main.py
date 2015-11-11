@@ -33,7 +33,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = False
+debug = True
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
@@ -105,11 +105,14 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.setWindowTitle(titulo)
         #Fecha actual
         self.f = fac = DBController.getFactura(datos, tipo)
-
-        self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
-        self.ui.correlativoLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
-        self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
-        self.ui.contracuentaLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        rx = QtCore.QRegExp("[0-9]*")
+        qr = QtGui.QRegExpValidator(rx)
+        
+        self.ui.nDocumentoLineEdit.setValidator( qr )
+        self.ui.sucursalLineEdit.setValidator( qr)
+        self.ui.correlativoLineEdit.setValidator( qr )
+        self.ui.cuentaProveedoresClienteLineEdit.setValidator( qr )
+        self.ui.contracuentaLineEdit.setValidator( qr )
         
         self.datos = datos
         self.llenarDatos()
@@ -191,11 +194,13 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.setWindowTitle(titulo)
         #Fecha actual
 
-        self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        rx = QtCore.QRegExp("[0-9]*")
+        qr = QtGui.QRegExpValidator(rx)
+        self.ui.sucursalLineEdit.setValidator( qr )
 
-        self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
-        self.ui.contracuentaLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
-        self.ui.correlativoLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
+        self.ui.cuentaProveedoresClienteLineEdit.setValidator( qr )
+        self.ui.contracuentaLineEdit.setValidator( qr )
+        self.ui.correlativoLineEdit.setValidator( qr)
         
         self.datos = datos
         self.llenarDatos()
@@ -529,8 +534,15 @@ class MainWindow(QtGui.QMainWindow):
             if(self.sender().objectName() != "toolButtonPlano"):
                 month = self.fechas[self.ui.fechaComboBox.currentIndex()][1]
                 year = self.fechas[self.ui.fechaComboBox.currentIndex()][2]
-                
-                DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, month, year, correlativo)
+                try:
+                    DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, month, year, correlativo)
+                except:
+                    qm = QtGui.QMessageBox(self)
+                    qm.setWindowTitle('Error de escritura')
+                    qm.setText("Se produjo un error al exportar el archivo, verifique que no tiene el archivo de salida abierto")
+                    qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+                    qm.setIcon(QtGui.QMessageBox.Warning)
+                    reply = qm.exec_()
             else:
                 DBController.exportarTCV(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
             if(contabilizar):

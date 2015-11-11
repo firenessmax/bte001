@@ -392,6 +392,12 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="correlativoLabel">
+           <property name="maximumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="font">
             <font>
              <family>Segoe UI</family>
@@ -407,6 +413,12 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </item>
          <item row="3" column="0" colspan="2">
           <widget class="QLineEdit" name="correlativoLineEdit">
+           <property name="maximumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="font">
             <font>
              <family>Segoe UI</family>
@@ -589,8 +601,13 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
   <tabstop>fechaDateEdit</tabstop>
   <tabstop>sucursalLineEdit</tabstop>
   <tabstop>cuentaProveedoresClienteLineEdit</tabstop>
+  <tabstop>contracuentaLineEdit</tabstop>
+  <tabstop>glosaLineEdit</tabstop>
+  <tabstop>montoExcentoSpinBox</tabstop>
+  <tabstop>activoFijoCheckBox</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
+  <tabstop>correlativoLineEdit</tabstop>
  </tabstops>
  <resources>
   <include location="images/images.qrc"/>
@@ -603,8 +620,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>389</y>
+     <x>391</x>
+     <y>542</y>
     </hint>
     <hint type="destinationlabel">
      <x>37</x>
@@ -619,8 +636,8 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>288</x>
-     <y>389</y>
+     <x>310</x>
+     <y>542</y>
     </hint>
     <hint type="destinationlabel">
      <x>72</x>
