@@ -971,6 +971,9 @@ QTabBar::tab:selected {
             </item>
             <item>
              <widget class="QToolButton" name="rehacerToolButton">
+              <property name="toolTip">
+               <string>Volver a los valores de contabilizado originales</string>
+              </property>
               <property name="text">
                <string>Rehacer</string>
               </property>
@@ -985,6 +988,9 @@ QTabBar::tab:selected {
             </item>
             <item>
              <widget class="QToolButton" name="deshacerToolButton">
+              <property name="toolTip">
+               <string>Deshace los cambios hechos al exportar Exel</string>
+              </property>
               <property name="text">
                <string>Deshacer</string>
               </property>
