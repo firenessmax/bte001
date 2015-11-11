@@ -92,7 +92,10 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	hoja.width = 0
 	hoja = paginaVenta.col(16)
 	hoja.width = 0
-	libro.save(unicode(path))
+	try:
+		libro.save(unicode(path))
+	except:
+		raise Exception ("No se puede guardar")
 
 
 
