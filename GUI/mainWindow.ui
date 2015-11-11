@@ -505,7 +505,7 @@ QTabBar::tab:selected {
              <enum>QTabWidget::North</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -909,7 +909,7 @@ QTabBar::tab:selected {
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox">
+             <widget class="QComboBox" name="fechaComboBox">
               <property name="minimumSize">
                <size>
                 <width>100</width>
@@ -1651,6 +1651,22 @@ QTabWidget::tab-bar {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>fechaComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>filtrarFecha_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>242</x>
+     <y>175</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>408</x>
+     <y>-12</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>escanear_slot()</slot>
@@ -1664,5 +1680,6 @@ QTabWidget::tab-bar {
   <slot>rehacer_slot()</slot>
   <slot>restaurar_slot()</slot>
   <slot>respaldar_slot()</slot>
+  <slot>filtrarFecha_slot()</slot>
  </slots>
 </ui>

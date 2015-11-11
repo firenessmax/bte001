@@ -6,7 +6,7 @@ import sqlite3
 import re
 from empresas import *
 from tableCreate import *
-
+import traceback
 
 # esta clase sirve para hacer insert, update y delete a facturas
 # para facturas
@@ -385,7 +385,7 @@ class facturas(tabla):
 			self._empresaReceptor = empresas(rutReceptor, nomReceptor)
 			self._empresaReceptor.save()
 			#print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
-		except:
+		except Exception as e:
 			self._empresaReceptor = empresas(rutReceptor, esNuevo = False)
 			#print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
 		if esNuevo:
@@ -630,11 +630,20 @@ def obtenerCompras(rutReceptor = None, month = None, year = None):
 	elif rutReceptor != None and month != None and year != None:
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
-		for row in consulta.execute("SELECT * FROM facturas"):
+		for row in consulta.execute("SELECT * FROM facturas WHERE idReceptor = ? AND venta = 0", (obtenerIdEmpresa(rutReceptor),)):
 			fecha = datetime.datetime.strptime(row[7], formato1)
 			if fecha.month == month and fecha.year == year:
 				listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 										rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+	elif rutReceptor == None and month != None and year != None:
+		formato1 = "%Y-%m-%d" # aaaa-mm-dd
+		formato2 = "%d/%m/%Y" # dd/mm/aaaa
+		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 0"):
+			fecha = datetime.datetime.strptime(row[7], formato1)
+			if fecha.month == month and fecha.year == year:
+				listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+										rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+		
 	else:
 		raise Exception(u"Alguno de los datos no es correcto, o no fué ingresado")
 	consulta.close()
@@ -661,11 +670,20 @@ def obtenerVentas(rutEmisor = None, month = None, year = None):
 	elif rutEmisor != None and month != None and year != None:
 			formato1 = "%Y-%m-%d" # aaaa-mm-dd
 			formato2 = "%d/%m/%Y" # dd/mm/aaaa
-			for row in consulta.execute("SELECT * FROM facturas"):
+			for row in consulta.execute("SELECT * FROM facturas WHERE idEmisor = ? AND venta = 1", (obtenerIdEmpresa(rutEmisor),)):
 				fecha = datetime.datetime.strptime(row[7], formato1)
 				if fecha.month == month and fecha.year == year:
 					listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
 											rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+	elif rutEmisor == None and month != None and year != None:
+		formato1 = "%Y-%m-%d" # aaaa-mm-dd
+		formato2 = "%d/%m/%Y" # dd/mm/aaaa
+		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 1"):
+			fecha = datetime.datetime.strptime(row[7], formato1)
+			if fecha.month == month and fecha.year == year:
+				listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),
+										rutEmisor = obtenerRutEmpresa(row[8]), esNuevo = False))
+		
 	else:
 			raise Exception(u"Alguno de los datos no es correcto, o no fué ingresado")
 	consulta.close()

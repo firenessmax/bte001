@@ -5,20 +5,22 @@ import DB.facturas as Facturas
 import DB.empresas as Empresas
 import DB.exportxls as ExportarExcel
 import DB.exporttcv as ExportarTCV
+import traceback
 import DB.backup as Backup
-def obtenerLista(tabla, empresa):
+import datetime
+def obtenerLista(tabla, empresa, month, year):
     # Devolver lista de facturas con el formato
     # [Contabilizado, Sucursal, Tipo Documento, Numero Documento, Fecha, Emisor, RS Emisor, Receptor, RS Receptor', Monto Exento, Monto Afecto, Monto IVA, Monto Total, Glosa, Contracuenta, id]
      #print "Tabla: %s"%tabla
      #print tabla
      #print empresa
-    
+    print "ARGUMENTOS", empresa," - ", month," - ", year
     DB.iniciarDB()
     if(empresa == "Todas"):
         empresa = None
     if(tabla == "tableWidget_Compras"):
         # Consulta Compras}
-        compras = Facturas.obtenerCompras(empresa)
+        compras = Facturas.obtenerCompras(empresa, month, year)
         
         listaDeCompras = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
                             c._fecha, c.empresaEmisor.rut, c.empresaEmisor.rS,  c.empresaReceptor.rut, c.empresaReceptor.rS, c._montoExento,
@@ -37,7 +39,7 @@ def obtenerLista(tabla, empresa):
         
     elif(tabla == "tableWidget_Ventas"):
         # consulta Ventas
-        ventas = Facturas.obtenerVentas(empresa)
+        ventas = Facturas.obtenerVentas(empresa, month, year)
         
         listaDeVentas = [ [c._contabilizado, c._sucursal, c._TipoDocumento, c._numDocumento, 
                             c._fecha, c.empresaEmisor.rut, c.empresaEmisor.rS,  c.empresaReceptor.rut, c.empresaReceptor.rS, c._montoExento,
@@ -111,6 +113,8 @@ def existeFactura(venta, datos):
         return False
     except Exception as e:
          #print "MENSAJE DE ERROR!!OIGO)FBIU: ",e
+        print e
+        traceback.print_exc()
         return True
 def eliminarFactura(id):
     Facturas.deleteFactura(int(id))
@@ -141,15 +145,20 @@ def ultimaFactura(empresa):
     except:
         return None
 def obtenerFechas(rut = None):
-    
+    print "WDASMKLDKMASKMDAMKLSMKLDASD"
     months = ["Enero", "Febrero" ,"Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-    facts = Facturas.obtenerCompras(rut)
-    #TODO:  formato1 = "%Y-%m-%d" # aaaa-mm-dd
-    #fecha = datetime.datetime.strptime(row[7], formato1)
-				
-    meses = [[months[f.fecha] + f.fecha] for f in facts]
-    meses = [["Marzo-2015", 3, 2015], ["Marzo-2015", 3, 2015]]
+    facts = Facturas.obtenerCompras(rut) + Facturas.obtenerVentas(rut)
     
+    formato1 = "%d/%m/%Y" # aaaa-mm-dd
+    #fecha = datetime.datetime.strptime(row[7], formato1)
+    
+    meses = [["Todo", None, None]]
+    for f in facts:
+        t = datetime.datetime.strptime(f.fecha, formato1)
+        i = ["%s-%s"%(months[t.month-1], t.year), t.month, t.year]
+        if(i not in meses):
+            meses.append(i)
+    print meses
     return meses
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista

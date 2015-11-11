@@ -370,9 +370,11 @@ class MainWindow(QtGui.QMainWindow):
         self.rehacer_slot = self.rehacer
         self.respaldar_slot = self.backup
         self.restaurar_slot = self.restaurarDB
+        self.filtrarFecha_slot = self.filtrarFecha
         self.dispositivoChange_slot = self.cambiarDispositivo
         self.documentoCambiarTab_slot = self.resetFiltro
         self.empresas = [["Todas", ""]]
+        self.fechas = [["Todo", None, None]]
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint )
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -607,8 +609,8 @@ class MainWindow(QtGui.QMainWindow):
                     tabla.removeRow(idx.row())
 
     def inicializarDatos(self, tabla):
-        
-        documentos = DBController.obtenerLista(tabla.objectName(), None)
+        self.updateFechas()
+        documentos = DBController.obtenerLista(tabla.objectName(), None, None, None)
         tabla.setRowCount(len(documentos))
         for i in range(len(documentos)):
             for j in range(len(documentos[i])):
@@ -620,15 +622,23 @@ class MainWindow(QtGui.QMainWindow):
             tabla.verticalHeader().setResizeMode(i, QtGui.QHeaderView.Fixed)
         tabla.setColumnHidden(tabla.horizontalHeader().count()-1, True)
     def updateTablas(self):
+        self.updateFechas()
         self.filtrar(self.ui.filtrarEmpresaComboBox.currentIndex())
         self.updateEmpresas()
-        
+    def updateFechas(self):
+        self.ui.fechaComboBox.clear()
+        self.fechas = DBController.obtenerFechas()
+        for f in self.fechas:
+            self.ui.fechaComboBox.addItem(f[0])
+    def filtrarFecha(self, fechaData):
+        print "Buscando la fecha ", self.fechas[fechaData]
+        self.filtrar(self.ui.filtrarEmpresaComboBox.currentIndex())
     def filtrar(self, data):
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
-        
+        f = self.fechas[self.ui.fechaComboBox.currentIndex()]
         if data != "":
             for tabla in tablas:
-                documentos = DBController.obtenerLista(tabla.objectName(), str(self.empresas[data][0]))
+                documentos = DBController.obtenerLista(tabla.objectName(), str(self.empresas[data][0]), f[1], f[2])
 
                 tabla.clearContents()
                 tabla.setRowCount(len(documentos))
