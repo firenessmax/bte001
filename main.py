@@ -534,9 +534,12 @@ class MainWindow(QtGui.QMainWindow):
             if(self.sender().objectName() != "toolButtonPlano"):
                 month = self.fechas[self.ui.fechaComboBox.currentIndex()][1]
                 year = self.fechas[self.ui.fechaComboBox.currentIndex()][2]
+                print "YEYYEYE",year
+                print "MJSAASD",month
                 try:
-                    DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, month, year, correlativo)
+                    DBController.exportarExcel(str(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo)
                 except:
+                    traceback.print_exc()
                     qm = QtGui.QMessageBox(self)
                     qm.setWindowTitle('Error de escritura')
                     qm.setText("Se produjo un error al exportar el archivo, verifique que no tiene el archivo de salida abierto")

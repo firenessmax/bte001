@@ -70,7 +70,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 			obj.contabilizado=1
 		
 		obj.save()
-	hoja = paginaCompra.col(8)
+	hoja = paginaCompra.col(9)
 	hoja.width = 0
 	hoja = paginaCompra.col(16)
 	hoja.width = 0
@@ -286,6 +286,6 @@ def switch(tipoDocumento, montoExento):
 #for e in ob:
 #	print formatoFacturaXls(e)
 
-ventas = obtenerVentas()
-compras = obtenerCompras()
-exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)
+#ventas = obtenerVentas()
+#compras = obtenerCompras()
+#exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)
