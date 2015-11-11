@@ -38,7 +38,10 @@ TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			"Monto de Impuesto 4", u"Código de Impuesto 5", "Monto de Impuesto 5"]
 
 def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False, correlativo = 1, aceptaBoleta = False): #false, las no contabilizadas, True todas
-	libro = xlwt.Workbook(encoding="UTF-8")
+	try:
+		libro = xlwt.Workbook(encoding="UTF-8")
+	except:
+		raise Exception ("No se puede guardar")
 	paginaCompra = libro.add_sheet("Compras")
 	for i, e in enumerate(TITLESC):
 		paginaCompra.row(0).write(i, e)
