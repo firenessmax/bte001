@@ -307,13 +307,27 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
+
         self.ser = LecturaController.iniciarReader(self, window.device)
+
         self.exec_()
     def terminar(self):
         self.ser.close()
         self.accept()
     def terminado(self):
         pass
+    def error(self):
+        self.window.ui.escanearCompra.setEnabled(False)
+        self.window.ui.escanearVenta.setEnabled(False)
+        self.window.ui.dispositivosComboBox.clear()
+        self.window.ui.dispositivosComboBox.setEnabled(False)
+        qm = QtGui.QMessageBox(self)
+        qm.setWindowTitle('Advertencia')
+        qm.setText('''No se ha encontrado ningun lector soportado''')
+        qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+        qm.setIcon(QtGui.QMessageBox.Warning)
+        reply = qm.exec_()
+        self.close()
     def enc(self, data, disp):
         try:
             xmlp = XML.XMLprocessor(data)

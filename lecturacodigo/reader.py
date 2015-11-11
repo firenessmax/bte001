@@ -10,6 +10,7 @@ class serialReader(QtCore.QThread):
 	listeners=[]
 	def setup(self,device,time_out):
 		self.signal = QtCore.SIGNAL("signal")
+		self.error = QtCore.SIGNAL("error")
 		if isinstance(device,lectorDevice):
 			self._lector=device
 		else:
@@ -22,7 +23,10 @@ class serialReader(QtCore.QThread):
 	def run(self):
 		if self._lector.device['name'] == 'COMX':
 			raise Exception('puerto no valido, revise coneccion')
-		ser= serial.Serial(self._lector.device['name'],9600,timeout=self.to)
+		try:
+			ser= serial.Serial(self._lector.device['name'],9600,timeout=self.to)
+		except:
+			self.emit(self.error)
 		init=False
 		bufer='';
 		print self._isAlive
