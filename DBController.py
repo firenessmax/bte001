@@ -151,11 +151,23 @@ def obtenerFechas(rut = None):
     #fecha = datetime.datetime.strptime(row[7], formato1)
     
     meses = [["Todo", None, None]]
+    dates = []
     for f in facts:
         t = datetime.datetime.strptime(f.fecha, formato1)
+        
         i = ["%s-%s"%(months[t.month-1], t.year), t.month, t.year]
         if(i not in meses):
             meses.append(i)
+            dates.append(t)
+    dates.sort()
+    meses = []
+    for t in dates:
+        i = ["%s-%s"%(months[t.month-1], t.year), t.month, t.year]
+        if(i not in meses):
+            meses.append(i)
+    meses.append(["Todo", None, None])
+    meses=meses[::-1]
+    
     return meses
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista
