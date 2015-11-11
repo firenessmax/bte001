@@ -33,7 +33,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = True
+debug = False
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
@@ -105,6 +105,7 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.setWindowTitle(titulo)
         #Fecha actual
         self.f = fac = DBController.getFactura(datos, tipo)
+
         self.ui.sucursalLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         self.ui.correlativoLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
         self.ui.cuentaProveedoresClienteLineEdit.setValidator( QtGui.QDoubleValidator(0, 100, 0, self) )
@@ -364,6 +365,7 @@ class MainWindow(QtGui.QMainWindow):
         self.escanear_slot = self.escanear
         self.exportar_slot = self.exportar
         self.cambiarTab_slot = self.cambiarTab
+        self.correlativo_changed_slot = self.correlativoChanged
         self.buscar_slot = self.buscarDevices
         self.filtrar_slot = self.filtrar
         self.deshacer_slot = self.deshacer
@@ -506,13 +508,16 @@ class MainWindow(QtGui.QMainWindow):
             my_dialog = EscanearModal(0, self) 
         elif( self.sender().objectName()  == "escanearVenta"):
             my_dialog = EscanearModal(1, self) 
-    
+    def correlativoChanged(self):
+        self.ui.correlativoDoubleSpinBox.value()
+        if(self.ui.correlativoDoubleSpinBox.value() <= 0):
+            self.ui.correlativoDoubleSpinBox.setValue(1)
     def exportar(self):
         # Opciones
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         archivo = None
-        
+        correlativo = self.ui.correlativoDoubleSpinBox.value()
         if(self.sender().objectName() == "toolButtonPlano"):
             archivo = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"Facturas.tcv"), filter="Texto tcv (*.tcv)")
         else:    
@@ -522,7 +527,10 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.rehacerToolButton.setEnabled(False)
             #TODO: try permiso de escritura 
             if(self.sender().objectName() != "toolButtonPlano"):
-                DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
+                month = self.fechas[self.ui.fechaComboBox.currentIndex()][1]
+                year = self.fechas[self.ui.fechaComboBox.currentIndex()][2]
+                
+                DBController.exportarExcel(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar, month, year, correlativo)
             else:
                 DBController.exportarTCV(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
             if(contabilizar):

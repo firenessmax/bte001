@@ -119,13 +119,13 @@ def existeFactura(venta, datos):
 def eliminarFactura(id):
     Facturas.deleteFactura(int(id))
      #print "Eliminando Factura ",id
-def exportarExcel(filtro, path, cont, guardarCont):
+def exportarExcel(filtro, path, cont, guardarCont, month, year, correlativo):
     print "Exportando ", filtro
     if (filtro == "Todas"):
         filtro = None
-    ventas = Facturas.obtenerVentas(filtro)
-    compras = Facturas.obtenerCompras(filtro)
-    ExportarExcel.exportarxls(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont)
+    ventas = Facturas.obtenerVentas(filtro, month, year)
+    compras = Facturas.obtenerCompras(filtro, month, year)
+    ExportarExcel.exportarxls(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont, correlativo=correlativo, aceptaBoletas = True)
 def exportarTCV(filtro, path, cont, guardarCont):
     #print "Exportando ", filtro
     if (filtro == "Todas"):

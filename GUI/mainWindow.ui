@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>760</width>
-    <height>530</height>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -505,7 +505,7 @@ QTabBar::tab:selected {
              <enum>QTabWidget::North</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -643,6 +643,39 @@ QTabBar::tab:selected {
                    <string>Guardar contabilizados</string>
                   </property>
                  </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="text">
+                     <string>Correlativo</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="correlativoDoubleSpinBox">
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                    <property name="decimals">
+                     <number>0</number>
+                    </property>
+                    <property name="minimum">
+                     <double>0.000000000000000</double>
+                    </property>
+                    <property name="maximum">
+                     <double>1999999999.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>
@@ -1631,7 +1664,7 @@ QTabWidget::tab-bar {
     </hint>
     <hint type="destinationlabel">
      <x>328</x>
-     <y>-6</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -1647,7 +1680,7 @@ QTabWidget::tab-bar {
     </hint>
     <hint type="destinationlabel">
      <x>241</x>
-     <y>-8</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -1663,7 +1696,23 @@ QTabWidget::tab-bar {
     </hint>
     <hint type="destinationlabel">
      <x>408</x>
-     <y>-12</y>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>correlativoDoubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>correlativo_changed_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>225</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>-15</y>
     </hint>
    </hints>
   </connection>
@@ -1681,5 +1730,6 @@ QTabWidget::tab-bar {
   <slot>restaurar_slot()</slot>
   <slot>respaldar_slot()</slot>
   <slot>filtrarFecha_slot()</slot>
+  <slot>correlativo_changed_slot()</slot>
  </slots>
 </ui>
