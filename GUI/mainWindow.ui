@@ -990,6 +990,9 @@ QTabBar::tab:selected {
               <property name="toolTip">
                <string>Filtro por rut de las empresas</string>
               </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+              </property>
               <property name="modelColumn">
                <number>0</number>
               </property>
