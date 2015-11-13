@@ -365,6 +365,7 @@ class EscanearModal(QtGui.QDialog):
             qm.setIcon(QtGui.QMessageBox.Warning)
             reply = qm.exec_()
             self.ser.open()
+            self.ui.estadoLabel.setText("Estado: Listo")
             #if reply == QtGui.QMessageBox.Yes:
                 # Eliminar de la base de datos
              #   print "Editar Dilog!!!"
