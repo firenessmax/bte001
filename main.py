@@ -246,7 +246,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
         
         if(self.tipo == 0):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
+            self.ui.cuentaProveedoresClienteLineEdit.setText("21070100")
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.llenarUltima()
@@ -352,6 +352,7 @@ class EscanearModal(QtGui.QDialog):
             # Modal
             self.ui.estadoLabel.setText("Estado: El codigo no es legible")
             self.ser.open()
+            self.window.zumbido(self)
         #disp.close()
     def encontrado(self, datos):
         #Codigo encontrado, mostrar nuevo escanearDialog
