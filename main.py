@@ -307,13 +307,9 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
-<<<<<<< HEAD
-        self.ser = LecturaController.iniciarReader(self, window.device)
-=======
         self.ui.estadoLabel.setText("Estado: Listo")
         self.ser = LecturaController.iniciarReader(self, window.device)
         
->>>>>>> origin/master
         self.exec_()
     def terminar(self):
         self.ser.close()
