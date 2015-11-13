@@ -15,7 +15,7 @@ class XMLprocessor(object):
 	_string = ''
 	_root = None
 	def __init__(self,s):
-		self._string = s
+		self._string = unicode(s)
 
 	def procesar(self):
 		if not self.isXMLlike(self._string):
