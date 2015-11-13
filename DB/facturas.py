@@ -109,7 +109,7 @@ class facturas(tabla):
 	def fecha(self):
 		formato1 = "%Y-%m-%d" # aaaa-mm-dd
 		formato2 = "%d/%m/%Y" # dd/mm/aaaa
-		fecha = datetime.datetime.strptime(str(self._fecha), formato1)
+		fecha = datetime.datetime.strptime(unicode(self._fecha), formato1)
 		 #print fecha
 		 #print "fehca : ", fecha
 		fechaFromateada = fecha.strftime(formato2)
@@ -657,7 +657,7 @@ def obtenerVentas(rutEmisor = None, month = None, year = None):
 	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaFacturas=[]
-	print "RUT >>>>>>>>>>><<", rutEmisor
+
 	if rutEmisor == None and month == None and year == None:
 		for row in consulta.execute("SELECT * FROM facturas WHERE venta = 1"):
 			listaFacturas.append(facturas(venta = row[1], numDocumento = row[4], rutReceptor = obtenerRutEmpresa(row[9]),

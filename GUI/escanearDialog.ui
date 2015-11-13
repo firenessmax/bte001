@@ -78,7 +78,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="estadoLabel">
        <property name="font">
         <font>
          <weight>50</weight>
