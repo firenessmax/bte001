@@ -386,7 +386,6 @@ class facturas(tabla):
 			self._empresaReceptor.save()
 			#print u'Se creo la empresa : ', rutReceptor, ' razonSocial : ', nomReceptor
 		except Exception as e:
-			traceback.print_exc()
 			self._empresaReceptor = empresas(rutReceptor, esNuevo = False)
 			#print u'La empresa con el rut : ', rutReceptor, u' ya existe en la base de datos'
 		if esNuevo:

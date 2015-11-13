@@ -544,6 +544,8 @@ class MainWindow(QtGui.QMainWindow):
         # Opciones
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
+        centro = self.ui.centroLineEdit.text() 
+        especial = self.ui.codigoLineEdit.text()
         archivo = None
         correlativo = self.ui.correlativoDoubleSpinBox.value()
         if(self.sender().objectName() == "toolButtonPlano"):
@@ -560,7 +562,7 @@ class MainWindow(QtGui.QMainWindow):
                 print "YEYYEYE",year
                 print "MJSAASD",month
                 try:
-                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo)
+                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo, centro, especial)
                 except:
                     traceback.print_exc()
                     qm = QtGui.QMessageBox(self)
