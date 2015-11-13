@@ -31,7 +31,7 @@ def obtenerLista(tabla, empresa, month, year):
                         listaDeCompras[i][j] = "No"
                     else:
                         listaDeCompras[i][j] = "Si"
-                listaDeCompras[i][j] = str(listaDeCompras[i][j])                
+                listaDeCompras[i][j] = unicode(listaDeCompras[i][j])                
          #print "Lista de comrpas:",listaDeCompras
         return listaDeCompras
         #prueba.save()
@@ -50,7 +50,7 @@ def obtenerLista(tabla, empresa, month, year):
                         listaDeVentas[i][j] = "No"
                     else:
                         listaDeVentas[i][j] = "Si"
-                listaDeVentas[i][j] = str(listaDeVentas[i][j])                
+                listaDeVentas[i][j] = unicode(listaDeVentas[i][j])                
         return listaDeVentas
      #print "Filtro Empresa: %s"%empresa
     return fac
@@ -124,14 +124,14 @@ def exportarExcel(filtro, path, cont, guardarCont, month, year, correlativo):
         filtro = None
     ventas = Facturas.obtenerVentas(filtro, month, year)
     compras = Facturas.obtenerCompras(filtro, month, year)
-    ExportarExcel.exportarxls(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont, correlativo=int(correlativo), aceptaBoleta = True)
+    ExportarExcel.exportarxls(ventas, compras, path = unicode(path), contabilizar = cont, guardarContabilizados = guardarCont, correlativo=int(correlativo), aceptaBoleta = True)
 def exportarTCV(filtro, path, cont, guardarCont):
     #print "Exportando ", filtro
     if (filtro == "Todas"):
         filtro = None
     ventas = Facturas.obtenerVentas(filtro)
     compras = Facturas.obtenerCompras(filtro)
-    ExportarTCV.exportarTxt(ventas, compras, path = str(path), contabilizar = cont, guardarContabilizados = guardarCont)
+    ExportarTCV.exportarTxt(ventas, compras, path = unicode(path), contabilizar = cont, guardarContabilizados = guardarCont)
 def getFactura(datos, venta):
     try:
         return Facturas.facturas(venta = venta,numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"], nomReceptor=datos["RS Receptor"], nomEmisor=["RS Emisor"], esNuevo = False)
@@ -151,11 +151,23 @@ def obtenerFechas(rut = None):
     #fecha = datetime.datetime.strptime(row[7], formato1)
     
     meses = [["Todo", None, None]]
+    dates = []
     for f in facts:
         t = datetime.datetime.strptime(f.fecha, formato1)
+        
         i = ["%s-%s"%(months[t.month-1], t.year), t.month, t.year]
         if(i not in meses):
             meses.append(i)
+            dates.append(t)
+    dates.sort()
+    meses = []
+    for t in dates:
+        i = ["%s-%s"%(months[t.month-1], t.year), t.month, t.year]
+        if(i not in meses):
+            meses.append(i)
+    meses.append(["Todo", None, None])
+    meses=meses[::-1]
+    
     return meses
 def contabilizar(s, venta, contabilizar, lista):
      #print "NASDKLNASD",lista

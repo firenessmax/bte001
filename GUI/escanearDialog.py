@@ -61,13 +61,13 @@ class Ui_Dialog(object):
         self.label_2.setWordWrap(False)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout.addWidget(self.label_2)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.estadoLabel = QtGui.QLabel(Dialog)
         font = QtGui.QFont()
         font.setBold(False)
         font.setWeight(50)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.verticalLayout.addWidget(self.label_3)
+        self.estadoLabel.setFont(font)
+        self.estadoLabel.setObjectName(_fromUtf8("estadoLabel"))
+        self.verticalLayout.addWidget(self.estadoLabel)
         self.formLayout.setLayout(0, QtGui.QFormLayout.FieldRole, self.verticalLayout)
         self.progressBar = QtGui.QProgressBar(Dialog)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
@@ -102,7 +102,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Escanear Factura", None))
         self.label_2.setText(_translate("Dialog", "Escanear Factura", None))
-        self.label_3.setText(_translate("Dialog", "Estado:", None))
+        self.estadoLabel.setText(_translate("Dialog", "Estado:", None))
         self.pushButton.setText(_translate("Dialog", "Terminar", None))
 
 import images_rc

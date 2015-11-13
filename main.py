@@ -33,7 +33,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 #       asdasd
 # Modal para Agregar documento
-debug = True
+debug = False
 
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
@@ -119,16 +119,16 @@ class EditarDocumentoModal(QtGui.QDialog):
         self.resultado = False
         self.exec_()
     def accept(self):
-        self.datos["Numero Documento"] = str(self.ui.nDocumentoLineEdit.text())
-        self.datos["RS Emisor"] = str(self.ui.emisorLineEdit.text())
-        self.datos["RS Receptor"] = str(self.ui.receptorLineEdit.text())
-        self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
-        self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
-        self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
-        self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
-        self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
-        self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
-        self.datos["Correlativo"] = str(self.ui.correlativoLineEdit.text())
+        self.datos["Numero Documento"] = unicode(self.ui.nDocumentoLineEdit.text())
+        self.datos["RS Emisor"] = unicode(self.ui.emisorLineEdit.text())
+        self.datos["RS Receptor"] = unicode(self.ui.receptorLineEdit.text())
+        self.datos["Fecha"] = unicode(self.ui.fechaDateEdit.text())
+        self.datos["Sucursal"] =unicode( self.ui.sucursalLineEdit.text())
+        self.datos["Glosa"] = unicode(self.ui.glosaLineEdit.text())
+        self.datos["Monto Exento"] = unicode(self.ui.montoExcentoSpinBox.value())
+        self.datos["Cuenta"] = unicode(self.ui.cuentaProveedoresClienteLineEdit.text())
+        self.datos["Contracuenta"] = unicode(self.ui.contracuentaLineEdit.text())
+        self.datos["Correlativo"] = unicode(self.ui.correlativoLineEdit.text())
         if(self.ui.activoFijoCheckBox.checkState () == QtCore.Qt.Checked):
             self.datos["Activo Fijo"] = 1
         else:
@@ -211,16 +211,16 @@ class AgregarDocumentoModal(QtGui.QDialog):
         # Datos
         # Limitar a numeros o alfanumerico
         
-        self.datos["Numero Documento"] = str(self.ui.labelNDocumento.text())
-        self.datos["RS Emisor"] = str(self.ui.labelEmisor.text())
-        self.datos["RS Receptor"] = str(self.ui.labelReceptor.text())
-        self.datos["Fecha"] = str(self.ui.fechaDateEdit.text())
-        self.datos["Sucursal"] =str( self.ui.sucursalLineEdit.text())
-        self.datos["Glosa"] = str(self.ui.glosaLineEdit.text())
-        self.datos["Monto Exento"] = str(self.ui.montoExcentoSpinBox.value())
-        self.datos["Cuenta"] = str(self.ui.cuentaProveedoresClienteLineEdit.text())
-        self.datos["Contracuenta"] = str(self.ui.contracuentaLineEdit.text())
-        self.datos["Correlativo"] = str(self.ui.correlativoLineEdit.text())
+        self.datos["Numero Documento"] = unicode(self.ui.labelNDocumento.text())
+        self.datos["RS Emisor"] = unicode(self.ui.labelEmisor.text())
+        self.datos["RS Receptor"] = unicode(self.ui.labelReceptor.text())
+        self.datos["Fecha"] = unicode(self.ui.fechaDateEdit.text())
+        self.datos["Sucursal"] =unicode( self.ui.sucursalLineEdit.text())
+        self.datos["Glosa"] = unicode(self.ui.glosaLineEdit.text())
+        self.datos["Monto Exento"] = unicode(self.ui.montoExcentoSpinBox.value())
+        self.datos["Cuenta"] = unicode(self.ui.cuentaProveedoresClienteLineEdit.text())
+        self.datos["Contracuenta"] = unicode(self.ui.contracuentaLineEdit.text())
+        self.datos["Correlativo"] = unicode(self.ui.correlativoLineEdit.text())
         if(self.ui.activoFijoCheckBox.checkState () == QtCore.Qt.Checked):
             self.datos["Activo Fijo"] = 1
         else:
@@ -284,10 +284,10 @@ class AgregarDocumentoModal(QtGui.QDialog):
         
         fact = DBController.ultimaFactura(self.datos["Rut Emisor"])
         if(fact):
-            self.datos["Sucursal"] = str(fact.sucursal)
-            self.datos["Cuenta"] = str(fact.cuentaProveedores)
-            self.datos["Glosa"] = str(fact.Glosa)
-            self.datos["Contracuenta"] = str(fact.contracuenta)
+            self.datos["Sucursal"] = unicode(fact.sucursal)
+            self.datos["Cuenta"] = unicode(fact.cuentaProveedores)
+            self.datos["Glosa"] = unicode(fact.Glosa)
+            self.datos["Contracuenta"] = unicode(fact.contracuenta)
             self.datos["Activo Fijo"] = fact.activoFijo
             self.datos["RS Emisor"] = fact.empresaEmisor.rS
             self.datos["RS Receptor"] = fact.empresaReceptor.rS
@@ -307,7 +307,13 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
+<<<<<<< HEAD
         self.ser = LecturaController.iniciarReader(self, window.device)
+=======
+        self.ui.estadoLabel.setText("Estado: Listo")
+        self.ser = LecturaController.iniciarReader(self, window.device)
+        
+>>>>>>> origin/master
         self.exec_()
     def terminar(self):
         self.ser.close()
@@ -326,28 +332,30 @@ class EscanearModal(QtGui.QDialog):
         qm.setIcon(QtGui.QMessageBox.Warning)
         reply = qm.exec_()
         self.close()
+        
     def enc(self, data, disp):
+        self.ui.estadoLabel.setText("Estado: Factura encontrada")
         try:
             xmlp = XML.XMLprocessor(data)
             datos = {}
-            datos["Numero Documento"] = str(xmlp.F)
-            datos["Rut Emisor"] = str(xmlp.RE)
-            datos["Rut Receptor"] = str(xmlp.RR)
-            datos["RS Emisor"] = str(xmlp.RS)
-            datos["RS Receptor"] = str(xmlp.RSR)
-            datos["RS Receptor"] = str(xmlp.RSR)
+            datos["Numero Documento"] = unicode(xmlp.F)
+            datos["Rut Emisor"] = unicode(xmlp.RE)
+            datos["Rut Receptor"] = unicode(xmlp.RR)
+            datos["RS Emisor"] = unicode(xmlp.RS)
+            datos["RS Receptor"] = unicode(xmlp.RSR)
             datos["Activo Fijo"] = 0
             try:
                 datos["Fecha"] = xmlp.FE
             except Exception as e:
                 datos["Fecha"] = None
                 # Mostrar modal
-            datos["Monto Total"] = str(xmlp.MNT)
-            datos["Tipo Documento"] = str(xmlp.TD)
+            datos["Monto Total"] = unicode(xmlp.MNT)
+            datos["Tipo Documento"] = unicode(xmlp.TD)
             self.encontrado(datos)
         except Exception as e:
             # Modal
-            traceback.print_exc()
+            self.ui.estadoLabel.setText("Estado: El codigo no es legible")
+            self.ser.open()
         #disp.close()
     def encontrado(self, datos):
         #Codigo encontrado, mostrar nuevo escanearDialog
@@ -369,6 +377,7 @@ class EscanearModal(QtGui.QDialog):
                 self.window.updateTablas()
             else:
                 pass
+            self.ui.estadoLabel.setText("Estado: Listo")
             self.ser.open()
             
 # Ventana Principal 
@@ -420,6 +429,11 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.rehacerToolButton.setEnabled(False)
         self.ui.deshacerToolButton.setEnabled(False)
         
+        rx = QtCore.QRegExp("^[1-9][0-9]*|^$")
+        qr = QtGui.QRegExpValidator(rx)
+        
+        self.ui.codigoLineEdit.setValidator( qr )
+        self.ui.centroLineEdit.setValidator( qr )
         # Loading Spinner
         movie = QtGui.QMovie(":/newPrefix/loading.gif")
         self.ui.label_5.setMovie(movie)
@@ -550,7 +564,7 @@ class MainWindow(QtGui.QMainWindow):
                 print "YEYYEYE",year
                 print "MJSAASD",month
                 try:
-                    DBController.exportarExcel(str(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo)
+                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo)
                 except:
                     traceback.print_exc()
                     qm = QtGui.QMessageBox(self)
@@ -560,7 +574,7 @@ class MainWindow(QtGui.QMainWindow):
                     qm.setIcon(QtGui.QMessageBox.Warning)
                     reply = qm.exec_()
             else:
-                DBController.exportarTCV(str(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
+                DBController.exportarTCV(unicode(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
             if(contabilizar):
                 tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
                 self.contabilizados = []
@@ -568,8 +582,8 @@ class MainWindow(QtGui.QMainWindow):
                 for tabla in tablas:
                     allRows = tabla.rowCount()
                     for row in xrange(0,allRows):
-                        c = str(tabla.item(row,0).text())
-                        Id = str(tabla.item(row,tabla.horizontalHeader().count()-1).text())
+                        c = unicode(tabla.item(row,0).text())
+                        Id = unicode(tabla.item(row,tabla.horizontalHeader().count()-1).text())
                         if(c == "No"):
                             self.contabilizados.append(int(Id))
                 if(len(self.contabilizados)!=0):
@@ -606,7 +620,7 @@ class MainWindow(QtGui.QMainWindow):
             for idx in reversed(tabla.selectionModel().selectedRows()):
                 datos = {}
                 for i in range(tabla.horizontalHeader().count()):
-                    datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(idx.row(),i).text())
+                    datos[ unicode(tabla.horizontalHeaderItem(i).text())] =  unicode(tabla.item(idx.row(),i).text())
                 lista.append(datos)
             if(self.sender().objectName()=="tableWidget_Ventas"):
                 DBController.contabilizar(self, 1,contabilizar, lista)
@@ -616,13 +630,13 @@ class MainWindow(QtGui.QMainWindow):
             datos = {}
             
             for i in range(tabla.horizontalHeader().count()):
-                datos[ str(tabla.horizontalHeaderItem(i).text())] =  str(tabla.item(row,i).text())
+                datos[ unicode(tabla.horizontalHeaderItem(i).text())] =  unicode(tabla.item(row,i).text())
             tipo = 0
             if(self.sender().objectName()=="tableWidget_Ventas"):
                 tipo = 1
             fac = DBController.getFactura(datos, tipo)
             datos["Cuenta"] = fac.cuentaProveedores
-            datos["Correlativo"] = str(fac.correlativo)
+            datos["Correlativo"] = unicode(fac.correlativo)
             my_dialog = EditarDocumentoModal(tipo, datos ) 
             if(my_dialog.resultado):
                 self.updateTablas()
@@ -673,7 +687,7 @@ class MainWindow(QtGui.QMainWindow):
         f = self.fechas[self.ui.fechaComboBox.currentIndex()]
         if data != "":
             for tabla in tablas:
-                documentos = DBController.obtenerLista(tabla.objectName(), str(self.empresas[data][0]), f[1], f[2])
+                documentos = DBController.obtenerLista(tabla.objectName(), unicode(self.empresas[data][0]), f[1], f[2])
 
                 tabla.clearContents()
                 tabla.setRowCount(len(documentos))
