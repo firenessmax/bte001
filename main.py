@@ -19,7 +19,7 @@ import LecturaController
 import DBController
 import ActivacionController
 from instance import *#para el manejo de multiples instancias
-import os
+import os,time
 from random import randint
 import traceback
 # Para que no use el icono de python
@@ -307,9 +307,13 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
+<<<<<<< HEAD
+        self.ser = LecturaController.iniciarReader(self, window.device)
+=======
         self.ui.estadoLabel.setText("Estado: Listo")
         self.ser = LecturaController.iniciarReader(self, window.device)
         
+>>>>>>> origin/master
         self.exec_()
     def terminar(self):
         self.ser.close()
@@ -533,6 +537,7 @@ class MainWindow(QtGui.QMainWindow):
     def escanear(self):
         if( self.sender().objectName()  == "escanearCompra"):
             my_dialog = EscanearModal(0, self) 
+            
         elif( self.sender().objectName()  == "escanearVenta"):
             my_dialog = EscanearModal(1, self) 
     def correlativoChanged(self):
@@ -777,7 +782,17 @@ class MainWindow(QtGui.QMainWindow):
         height = QtGui.QDesktopWidget().availableGeometry().bottom()
         width = QtGui.QDesktopWidget().availableGeometry().right()
         return self.height()==height and self.width()==width
-        
+    def zumbido(self,dialog):
+        point =dialog.pos()
+        dialog.move(point-QtCore.QPoint(15,0))
+        time.sleep(.03)
+        dialog.move(point+QtCore.QPoint(15,0))
+        time.sleep(.03)
+        dialog.move(point-QtCore.QPoint(15,0))
+        time.sleep(.03)
+        dialog.move(point+QtCore.QPoint(15,0))
+        time.sleep(.03)
+        dialog.move(point)
         
 def main():
     app = QtGui.QApplication(sys.argv)

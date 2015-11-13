@@ -37,7 +37,7 @@ TITLESV = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo
 			"Monto Impuesto 2", "Codigo Impuesto 3", "Monto Impuesto 3", u"Código de Impuesto 4",
 			"Monto de Impuesto 4", u"Código de Impuesto 5", "Monto de Impuesto 5"]
 
-def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False, correlativo = 1, aceptaBoleta = False): #false, las no contabilizadas, True todas
+def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarContabilizados = False, correlativo = 1, aceptaBoleta = False, codigoEspecial = "", centroResultado = ""): #false, las no contabilizadas, True todas
 	print "CORRELATIVO", correlativo
 	try:
 		libro = xlwt.Workbook(encoding="UTF-8")
@@ -51,7 +51,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 		correlativo += 1
 		fila = paginaCompra.row(num+1)
 		if guardarContabilizados:
-			datos = formatoFacturaXlsCompras(obj)
+			datos = formatoFacturaXlsCompras(obj, codigoEspecial, centroResultado)
 			if aceptaBoleta:#datos[1] != "NA":
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
@@ -59,7 +59,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 		elif not guardarContabilizados and obj.contabilizado == 0:
-			datos = formatoFacturaXlsCompras(obj)
+			datos = formatoFacturaXlsCompras(obj, codigoEspecial, centroResultado)
 			if aceptaBoleta:#datos[1] != "NA":
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
@@ -80,7 +80,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 		paginaVenta.row(0).write(i, e)
 	for num, obj in enumerate(fVentas):
 		fila = paginaVenta.row(num+1)
-		datos = formatoFacturaXlsVentas(obj)
+		datos = formatoFacturaXlsVentas(obj, codigoEspecial, centroResultado)
 		if True:#datos[1] != "NA":
 			if guardarContabilizados:
 				for index, dato in enumerate(datos):
@@ -108,7 +108,7 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 #	funcion que se utiliza para pasar de un objeto factura a una lista
 #	con los datos que se necesitan para exportar a .xls en comrpas
 #
-def formatoFacturaXlsCompras(factura):
+def formatoFacturaXlsCompras(factura, codigoEspecial, centroResultado):
 	#print "llamada a formatear xls de compras"
 	datos = []
 	datos.append(factura.sucursal)
@@ -131,10 +131,10 @@ def formatoFacturaXlsCompras(factura):
 	datos.append(factura.Glosa)
 	datos.append("")#es espacio en blanco
 	datos.append(factura.cuentaProveedores)
-	datos.append(factura.codigoEspecial)
+	datos.append(codigoEspecial)
 	datos.append(factura.fecha)
 	datos.append(factura.contracuenta)
-	datos.append(factura.centroResultados)
+	datos.append(centroResultado)
 	datos.append(factura.Glosa)
 	datos.append(factura.montoAfecto + factura.montoExento)#Monto de contracuenta
 	datos.append("")#Codigo especial contracuenta
@@ -167,7 +167,8 @@ def formatoFacturaXlsCompras(factura):
 	today = datetime.today()
 	formato = "%d/%m/%Y" 
 	fecha = datetime.strptime(factura.fecha, formato)
-	if (today.month > fecha.month and today.year == fecha.year) or today.year > fecha.year:
+	print "res	ta de dias , ", today - timedelta((90 + fecha.day))
+	if (today - timedelta((90 + fecha.day))) > fecha:
 		datos.append("S")
 	else:
 		datos.append("N")
@@ -196,7 +197,7 @@ def formatoFacturaXlsCompras(factura):
 #	funcion que se utiliza para pasar de un objeto factura a una lista
 #	con los datos que se necesitan para exportar a .xls en ventas
 #
-def formatoFacturaXlsVentas(factura):
+def formatoFacturaXlsVentas(factura, codigoEspecial):
 	#print "llamada a formatear xls de ventas"
 	datos = []
 	datos.append(factura.sucursal)
@@ -219,10 +220,10 @@ def formatoFacturaXlsVentas(factura):
 	datos.append(factura.Glosa)
 	datos.append(factura.cuentaProveedores)
 	datos.append("")#es espacio en blanco
-	datos.append(factura.codigoEspecial)
+	datos.append(codigoEspecial)
 	datos.append(factura.fecha)
 	datos.append(factura.contracuenta)
-	datos.append(factura.centroResultados)
+	datos.append(centroResultado)
 	datos.append(factura.Glosa)
 	datos.append(factura.montoAfecto + factura.montoExento)#Monto de Contracuenta
 	datos.append("")#Codigo especial contracuenta
