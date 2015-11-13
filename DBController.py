@@ -108,6 +108,7 @@ def modificarFactura(f, datos, venta):
      #print datos
 def existeFactura(venta, datos):
     try:
+        print "DATOS: ", datos
         f = Facturas.facturas(venta = venta, numDocumento = int(datos["Numero Documento"]), rutReceptor = datos["Rut Receptor"], rutEmisor = datos["Rut Emisor"])
         return False
     except Exception as e:

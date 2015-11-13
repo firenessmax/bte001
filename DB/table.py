@@ -5,7 +5,7 @@ import datetime
 import sqlite3
 import re
 from tableCreate import *
-
+from itertools import cycle
 
 class tabla(object):
 	conexion = None
@@ -30,11 +30,7 @@ class tabla(object):
 		self._identValue = self.getId()
 		self.consulta.close()
 		self.conexion.close()
-	def digito_verificador(self, rut):
-		reversed_digits = map(int, reversed(str(rut)))
-		factors = cycle(range(2, 8))
-		s = sum(d * f for d, f in zip(reversed_digits, factors))
-		return (-s) % 11
+	
 	def insertar(self, datos, nombre):
 		argumentos = []
 		llaves = []
@@ -99,6 +95,11 @@ class tabla(object):
 				 #print ("Se han econtrado problemas al realizar el Update")
 				
 				
+def digito_verificador( rut):
+		reversed_digits = map(int, reversed(str(rut)))
+		factors = cycle(range(2, 8))
+		s = sum(d * f for d, f in zip(reversed_digits, factors))
+		return (-s) % 11
 				
 def validarTipo(dato, tipo):
 	if tipo == "bool":
