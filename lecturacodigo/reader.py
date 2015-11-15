@@ -40,10 +40,11 @@ class serialReader(QtCore.QThread):
 			elif(bufer!='' and init):
 				if re.match('<TED (.*)',bufer[2:]):
 					self.emit(self.signal, bufer[2:], self)
+					ser.close()
 				else:
 					self.emit(self.codError, "el código no es válido", self)
 				bufer=''
-				ser.close()
+				
 				break
 	def open(self):
 		self._isAlive=True
