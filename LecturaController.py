@@ -10,6 +10,7 @@ def iniciarReader(s, d):
 
 	s.connect(ser, ser.signal, s.enc)
 	s.connect(ser, ser.error, s.error)
+	s.connect(ser, ser.codError, s.codError)
 	ser.open() 
 	return ser
 

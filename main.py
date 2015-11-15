@@ -328,7 +328,10 @@ class EscanearModal(QtGui.QDialog):
         qm.setIcon(QtGui.QMessageBox.Warning)
         reply = qm.exec_()
         self.close()
-        
+    def codError(self, d):
+        self.ui.estadoLabel.setText("Estado: El codigo no es legible")
+        self.window.zumbido(self)
+        self.ser.open()
     def enc(self, data, disp):
         self.ui.estadoLabel.setText("Estado: Factura encontrada")
         try:

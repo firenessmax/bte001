@@ -42,7 +42,7 @@ class serialReader(QtCore.QThread):
 					self.emit(self.signal, bufer[2:], self)
 					ser.close()
 				else:
-					self.emit(self.codError, "el código no es válido", self)
+					self.emit(self.codError, "el codigo no es valido", self)
 				bufer=''
 				
 				break
