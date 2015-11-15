@@ -349,9 +349,11 @@ class EscanearModal(QtGui.QDialog):
             datos["Tipo Documento"] = unicode(xmlp.TD)
             self.encontrado(datos)
         except Exception as e:
+            traceback.print_exc()
+            
             # Modal
             self.ui.estadoLabel.setText("Estado: El codigo no es legible")
-            self.ser.open()
+            self.ser.open()            
             self.window.zumbido(self)
         #disp.close()
     def encontrado(self, datos):
