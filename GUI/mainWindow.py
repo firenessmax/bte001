@@ -493,6 +493,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Segoe UI"))
         self.filtrarEmpresaComboBox.setFont(font)
+        self.filtrarEmpresaComboBox.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
         self.filtrarEmpresaComboBox.setModelColumn(0)
         self.filtrarEmpresaComboBox.setObjectName(_fromUtf8("filtrarEmpresaComboBox"))
         self.horizontalLayout_3.addWidget(self.filtrarEmpresaComboBox)
@@ -739,7 +740,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget_4.setCurrentIndex(1)
+        self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         QtCore.QObject.connect(self.tabWidget_4, QtCore.SIGNAL(_fromUtf8("currentChanged(int)")), MainWindow.cambiarTab_slot)
         QtCore.QObject.connect(self.escanearCompra, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.escanear_slot)

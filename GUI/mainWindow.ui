@@ -505,7 +505,7 @@ QTabBar::tab:selected {
              <enum>QTabWidget::North</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -989,6 +989,9 @@ QTabBar::tab:selected {
               </property>
               <property name="toolTip">
                <string>Filtro por rut de las empresas</string>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToContents</enum>
               </property>
               <property name="modelColumn">
                <number>0</number>

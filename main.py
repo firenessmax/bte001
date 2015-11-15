@@ -246,7 +246,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
         self.ui.montoExcentoSpinBox.setMaximum(2**53)
         
         if(self.tipo == 0):
-            self.ui.cuentaProveedoresClienteLineEdit.setText("11070100")
+            self.ui.cuentaProveedoresClienteLineEdit.setText("21070100")
         elif(self.tipo == 1):
             self.ui.cuentaProveedoresClienteLineEdit.setText("11040100")
         self.llenarUltima()
@@ -307,13 +307,9 @@ class EscanearModal(QtGui.QDialog):
         self.tipo = tipo
         self.window = window
         self.ui.setupUi(self)
-<<<<<<< HEAD
-        self.ser = LecturaController.iniciarReader(self, window.device)
-=======
         self.ui.estadoLabel.setText("Estado: Listo")
         self.ser = LecturaController.iniciarReader(self, window.device)
         
->>>>>>> origin/master
         self.exec_()
     def terminar(self):
         self.ser.close()
@@ -356,6 +352,7 @@ class EscanearModal(QtGui.QDialog):
             # Modal
             self.ui.estadoLabel.setText("Estado: El codigo no es legible")
             self.ser.open()
+            self.window.zumbido(self)
         #disp.close()
     def encontrado(self, datos):
         #Codigo encontrado, mostrar nuevo escanearDialog
@@ -368,6 +365,7 @@ class EscanearModal(QtGui.QDialog):
             qm.setIcon(QtGui.QMessageBox.Warning)
             reply = qm.exec_()
             self.ser.open()
+            self.ui.estadoLabel.setText("Estado: Listo")
             #if reply == QtGui.QMessageBox.Yes:
                 # Eliminar de la base de datos
              #   print "Editar Dilog!!!"
@@ -548,6 +546,8 @@ class MainWindow(QtGui.QMainWindow):
         # Opciones
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
+        centro = self.ui.centroLineEdit.text() 
+        especial = self.ui.codigoLineEdit.text()
         archivo = None
         correlativo = self.ui.correlativoDoubleSpinBox.value()
         if(self.sender().objectName() == "toolButtonPlano"):
@@ -564,7 +564,7 @@ class MainWindow(QtGui.QMainWindow):
                 print "YEYYEYE",year
                 print "MJSAASD",month
                 try:
-                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo)
+                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo, centro, especial)
                 except:
                     traceback.print_exc()
                     qm = QtGui.QMessageBox(self)

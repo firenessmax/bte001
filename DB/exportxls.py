@@ -197,7 +197,7 @@ def formatoFacturaXlsCompras(factura, codigoEspecial, centroResultado):
 #	funcion que se utiliza para pasar de un objeto factura a una lista
 #	con los datos que se necesitan para exportar a .xls en ventas
 #
-def formatoFacturaXlsVentas(factura, codigoEspecial):
+def formatoFacturaXlsVentas(factura, codigoEspecial, centroResultado):
 	#print "llamada a formatear xls de ventas"
 	datos = []
 	datos.append(factura.sucursal)

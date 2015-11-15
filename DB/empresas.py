@@ -46,9 +46,11 @@ class empresas(tabla):
 			WHERE rut=(?)
 			'''
 			tuplaRut = (rut,)
+
 			if (consulta.execute(exist, tuplaRut)):	
 				count = consulta.fetchone()
 				self._ident = "id"
+
 				if count[0] == 0:
 					self._listaDeCambio={"rut":(rut, "rut"), "razonSocial":(rs,"text")}
 					self._esNuevo = True

@@ -11,6 +11,7 @@ class serialReader(QtCore.QThread):
 	def setup(self,device,time_out):
 		self.signal = QtCore.SIGNAL("signal")
 		self.error = QtCore.SIGNAL("error")
+		self.codError = QtCore.SIGNAL("errorCodigo")
 		if isinstance(device,lectorDevice):
 			self._lector=device
 		else:
@@ -37,8 +38,10 @@ class serialReader(QtCore.QThread):
 				bufer=bufer+buf
 				init=True
 			elif(bufer!='' and init):
-				if re.match('<TED (.*)',bufer[2:])
-				self.emit(self.signal, bufer[2:], self)
+				if re.match('<TED (.*)',bufer[2:]):
+					self.emit(self.signal, bufer[2:], self)
+				else:
+					self.emit(self.codError, "el código no es válido", self)
 				bufer=''
 				ser.close()
 				break

@@ -5,7 +5,7 @@ import datetime
 import sqlite3
 import re
 from tableCreate import *
-
+from itertools import cycle
 
 class tabla(object):
 	conexion = None
@@ -30,7 +30,7 @@ class tabla(object):
 		self._identValue = self.getId()
 		self.consulta.close()
 		self.conexion.close()
-		
+	
 	def insertar(self, datos, nombre):
 		argumentos = []
 		llaves = []
@@ -82,7 +82,7 @@ class tabla(object):
 			if type(self._identValue) == str or type(self._identValue) == unicode:
 				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= '"+self._identValue+"'"
 			else:
-				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+str(self._identValue)+""
+				sql ="UPDATE "+self.__class__.__name__+ " SET "+ub+ " WHERE "+self._ident+"= "+unicode(self._identValue)+""
 			 #print "sql : ", sql
 			argumentos = tuple(argumentos)
 			# #print "args : ", argumentos
@@ -95,6 +95,11 @@ class tabla(object):
 				 #print ("Se han econtrado problemas al realizar el Update")
 				
 				
+def digito_verificador( rut):
+		reversed_digits = map(int, reversed(str(rut)))
+		factors = cycle(range(2, 8))
+		s = sum(d * f for d, f in zip(reversed_digits, factors))
+		return (-s) % 11
 				
 def validarTipo(dato, tipo):
 	if tipo == "bool":
@@ -143,12 +148,7 @@ def validarTipo(dato, tipo):
 			 #print (dato, " : no coincide con el formato de rut")
 			return False
 		dato = dato.split("-")
-		verificador = '0123456789k'[
-			11 - sum(
-				[int(digit) * factor
-				for digit, factor in zip(dato[0][::-1], 2 * range(2,8))]
-			) % 11
-		]
+		verificador = '0123456789k'[digito_verificador(dato[0])]
 		if not verificador == dato[1]:
 			return False
 	return True				
