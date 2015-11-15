@@ -1,4 +1,4 @@
-import serial, threading, time, signal
+import serial, threading, time, signal, re
 from PyQt4 import QtCore
 from devices import lectorDevice
 class serialEventListener():
@@ -37,6 +37,7 @@ class serialReader(QtCore.QThread):
 				bufer=bufer+buf
 				init=True
 			elif(bufer!='' and init):
+				if re.match('<TED (.*)',bufer[2:])
 				self.emit(self.signal, bufer[2:], self)
 				bufer=''
 				ser.close()
