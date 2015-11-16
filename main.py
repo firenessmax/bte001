@@ -596,8 +596,16 @@ class MainWindow(QtGui.QMainWindow):
                     self.ui.deshacerToolButton.setEnabled(True)
             self.updateTablas()
             self.mensaje("Archivo exportado en: " + unicode(archivo))
-
-
+            qm = QtGui.QMessageBox(self)
+            qm.setWindowTitle('Abrir archivo')
+            qm.setText("Exportado existosamente. Desea abrir el archivo?")
+            qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
+            qm.addButton(QtGui.QMessageBox.No).setText("No")
+            qm.setIcon(QtGui.QMessageBox.Information)
+            reply = qm.exec_()
+            if reply == QtGui.QMessageBox.Yes:
+                os.startfile(unicode(archivo))
+                
 
     def clicked(self, position):
         if(self.sender().rowCount()==0): # Ninguna fila en la tabla
