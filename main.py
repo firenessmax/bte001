@@ -570,6 +570,15 @@ class MainWindow(QtGui.QMainWindow):
                 print "MJSAASD",month
                 try:
                     DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo, centro, especial)
+                    qm = QtGui.QMessageBox(self)
+                    qm.setWindowTitle('Abrir archivo')
+                    qm.setText("Exportado existosamente. Desea abrir el archivo?")
+                    qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
+                    qm.addButton(QtGui.QMessageBox.No).setText("No")
+                    qm.setIcon(QtGui.QMessageBox.Information)
+                    reply = qm.exec_()
+                    if reply == QtGui.QMessageBox.Yes:
+                        os.startfile(unicode(archivo))
                 except:
                     traceback.print_exc()
                     qm = QtGui.QMessageBox(self)
@@ -577,6 +586,7 @@ class MainWindow(QtGui.QMainWindow):
                     qm.setText("Se produjo un error al exportar el archivo, verifique que no tiene el archivo de salida abierto")
                     qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
                     qm.setIcon(QtGui.QMessageBox.Warning)
+                    self.deshacer()
                     reply = qm.exec_()
             else:
                 DBController.exportarTCV(unicode(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
@@ -596,15 +606,7 @@ class MainWindow(QtGui.QMainWindow):
                     self.ui.deshacerToolButton.setEnabled(True)
             self.updateTablas()
             self.mensaje("Archivo exportado en: " + unicode(archivo))
-            qm = QtGui.QMessageBox(self)
-            qm.setWindowTitle('Abrir archivo')
-            qm.setText("Exportado existosamente. Desea abrir el archivo?")
-            qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
-            qm.addButton(QtGui.QMessageBox.No).setText("No")
-            qm.setIcon(QtGui.QMessageBox.Information)
-            reply = qm.exec_()
-            if reply == QtGui.QMessageBox.Yes:
-                os.startfile(unicode(archivo))
+            
                 
 
     def clicked(self, position):
