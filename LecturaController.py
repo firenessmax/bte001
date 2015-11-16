@@ -6,8 +6,9 @@ from lecturacodigo.lectores import debug
 
 def iniciarReader(s, d):
 	ser = serialReader()
-	ser.setup(d,.001)
-	
+	ser.setup(d,.01)
+
+
 	s.connect(ser, ser.signal, s.enc)
 	s.connect(ser, ser.error, s.error)
 	s.connect(ser, ser.codError, s.codError)

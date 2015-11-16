@@ -379,6 +379,7 @@ class facturas(tabla):
 			self._empresaEmisor.save()
 			#print u'Se creo la empresa : ', rutEmisor, ' razonSocial : ', nomEmisor
 		except:
+			traceback.print_exc()
 			self._empresaEmisor = empresas(rutEmisor, esNuevo = False)
 			#print u'La empresa con el rut : ', rutEmisor, u' ya existe en la base de datos'
 		try:
@@ -501,7 +502,7 @@ class facturas(tabla):
 				
 			self._listaDeCambio = {}
 			self._esNuevo = False
-			consulta.close()
+			consulta.close()		
 			conexion.close()
 			
 # funcion que obtiene la instancia de todas las facuturas ingresando su id
