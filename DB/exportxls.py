@@ -167,7 +167,6 @@ def formatoFacturaXlsCompras(factura, codigoEspecial, centroResultado):
 	today = datetime.today()
 	formato = "%d/%m/%Y" 
 	fecha = datetime.strptime(factura.fecha, formato)
-	print "res	ta de dias , ", today - timedelta((90 + fecha.day))
 	if (today - timedelta((90 + fecha.day))) > fecha:
 		datos.append("S")
 	else:

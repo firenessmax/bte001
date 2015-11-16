@@ -144,12 +144,12 @@ def validarTipo(dato, tipo):
 			return False
 	elif tipo == "rut":
 		if dato == "0-0":return True
-		if not re.match("\d{1,8}-[0-9k]", dato):
+		if not re.match("\d{1,8}-[0-9kK]", dato):
 			 #print (dato, " : no coincide con el formato de rut")
 			return False
 		dato = dato.split("-")
 		verificador = '0123456789k'[digito_verificador(dato[0])]
-		if not verificador == dato[1]:
+		if not verificador == dato[1].lower():
 			return False
 	return True				
 
