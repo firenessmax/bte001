@@ -34,10 +34,11 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 #       asdasd
 # Modal para Agregar documento
 debug = False
-
-if not Instance.verificar('main'):#cambiar 
-    Instance.traeralfrente()
-    exit(0) # Existe la instancia
+import sys
+#sys.stderr = sys.stdout
+#if not Instance.verificar('main'):#cambiar 
+#    Instance.traeralfrente()
+#    exit(0) # Existe la instancia
 
 
 class LoginModal(QtGui.QDialog):
@@ -471,7 +472,17 @@ class MainWindow(QtGui.QMainWindow):
     def backup(self):
         path = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"dump.sql"), filter="Sql Script (*.sql)")
         if(path!=""):
-            DBController.backup(path)
+            try:
+                DBController.backup(path)
+                #raise Exception("OIADIOASIOHDS")
+            except Exception as e:
+                qm = QtGui.QMessageBox(self)
+                qm.setWindowTitle('Advertencia')
+                qm.setText(QtCore.QString(u"Error:%s"%e))
+                qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+                qm.addButton(QtGui.QMessageBox.No).setText("Cancelar")
+                qm.setIcon(QtGui.QMessageBox.Critical)
+                reply = qm.exec_()
             self.mensaje("Base de datos respaldada en %s"%path)
     def rehacer(self):
         DBController.contabilizarFacturas(self.contabilizados, not self.cambiarContabilizados)
@@ -569,7 +580,26 @@ class MainWindow(QtGui.QMainWindow):
                 print "YEYYEYE",year
                 print "MJSAASD",month
                 try:
+                    if(contabilizar):
+                        tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
+                        self.contabilizados = []
+                        self.cambiarContabilizados = False
+                        for tabla in tablas:
+                            allRows = tabla.rowCount()
+                            for row in xrange(0,allRows):
+                                c = unicode(tabla.item(row,0).text())
+                                Id = unicode(tabla.item(row,tabla.horizontalHeader().count()-1).text())
+                                if(c == "No"):
+                                    self.contabilizados.append(int(Id))
                     DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo, centro, especial)
+                    print "WEWEWE"
+                    
+                    if(len(self.contabilizados)!=0):
+                        #DBController.contabilizarFacturas(self.contabilizados, 1)
+                        self.ui.deshacerToolButton.setEnabled(True)
+                    self.updateTablas()
+                    self.mensaje("Archivo exportado en: " + unicode(archivo))
+                    
                     qm = QtGui.QMessageBox(self)
                     qm.setWindowTitle('Abrir archivo')
                     qm.setText("Exportado existosamente. Desea abrir el archivo?")
@@ -586,26 +616,11 @@ class MainWindow(QtGui.QMainWindow):
                     qm.setText("Se produjo un error al exportar el archivo, verifique que no tiene el archivo de salida abierto")
                     qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
                     qm.setIcon(QtGui.QMessageBox.Warning)
-                    self.deshacer()
                     reply = qm.exec_()
+                    DBController.contabilizarFacturas(self.contabilizados, False)
             else:
                 DBController.exportarTCV(unicode(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
-            if(contabilizar):
-                tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
-                self.contabilizados = []
-                self.cambiarContabilizados = False
-                for tabla in tablas:
-                    allRows = tabla.rowCount()
-                    for row in xrange(0,allRows):
-                        c = unicode(tabla.item(row,0).text())
-                        Id = unicode(tabla.item(row,tabla.horizontalHeader().count()-1).text())
-                        if(c == "No"):
-                            self.contabilizados.append(int(Id))
-                if(len(self.contabilizados)!=0):
-                    #DBController.contabilizarFacturas(self.contabilizados, 1)
-                    self.ui.deshacerToolButton.setEnabled(True)
-            self.updateTablas()
-            self.mensaje("Archivo exportado en: " + unicode(archivo))
+            
             
                 
 
