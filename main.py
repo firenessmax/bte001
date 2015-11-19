@@ -35,10 +35,10 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 # Modal para Agregar documento
 debug = False
 import sys
-#sys.stderr = sys.stdout
-#if not Instance.verificar('main'):#cambiar 
-#    Instance.traeralfrente()
-#    exit(0) # Existe la instancia
+sys.stderr = open('%s\\CAMDE\\log.txt' %  os.environ['APPDATA'], 'w')#sys.stdout
+if not Instance.verificar('main'):#cambiar 
+    Instance.traeralfrente()
+    exit(0) # Existe la instancia
 
 
 class LoginModal(QtGui.QDialog):
@@ -269,7 +269,7 @@ class AgregarDocumentoModal(QtGui.QDialog):
             reply = qm.exec_()
         else:
             self.ui.fechaDateEdit.setDate(QtCore.QDate.fromString(self.datos["Fecha"], "yyyy-MM-dd"))
-            self.ui.glosaLineEdit.setFocus()
+            self.ui.contracuentaLineEdit.setFocus()
         
         if(self.datos["Tipo Documento"] == "34"):
             self.ui.montoExcentoSpinBox.setValue(float(self.datos["Monto Total"]))
@@ -458,7 +458,7 @@ class MainWindow(QtGui.QMainWindow):
                 qm.setText(QtCore.QString(u"Al restaurar la base de datos se perderán todos los datos ingresados posterior al respaldo.\nEstá seguro de que desea realizar esta operación?"))
                 qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
                 qm.addButton(QtGui.QMessageBox.No).setText("Cancelar")
-                qm.setIcon(QtGui.QMessageBox.Critical)
+                qm.setIcon(QtGui.QMessageBox.Warning)
                 reply = qm.exec_()
                 if reply == QtGui.QMessageBox.Yes:
                     DBController.restaurar(path)
@@ -476,13 +476,7 @@ class MainWindow(QtGui.QMainWindow):
                 DBController.backup(path)
                 #raise Exception("OIADIOASIOHDS")
             except Exception as e:
-                qm = QtGui.QMessageBox(self)
-                qm.setWindowTitle('Advertencia')
-                qm.setText(QtCore.QString(u"Error:%s"%e))
-                qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
-                qm.addButton(QtGui.QMessageBox.No).setText("Cancelar")
-                qm.setIcon(QtGui.QMessageBox.Critical)
-                reply = qm.exec_()
+                traceback.print_exc()
             self.mensaje("Base de datos respaldada en %s"%path)
     def rehacer(self):
         DBController.contabilizarFacturas(self.contabilizados, not self.cambiarContabilizados)
@@ -560,6 +554,18 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.correlativoDoubleSpinBox.setValue(1)
     def exportar(self):
         # Opciones
+        if(self.ui.filtrarEmpresaComboBox.currentIndex() == 0):
+            qm = QtGui.QMessageBox(self)
+            qm.setWindowTitle('Advertencia')
+            qm.setText(u'¿Esta seguro de que desea exportar todas las facturas?')
+            qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
+            qm.addButton(QtGui.QMessageBox.No).setText("No")
+            qm.setIcon(QtGui.QMessageBox.Warning)
+            reply = qm.exec_()
+            if reply == QtGui.QMessageBox.No:
+                return
+        
+        
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         centro = self.ui.centroLineEdit.text() 

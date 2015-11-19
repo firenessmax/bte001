@@ -23,7 +23,8 @@ class Instance(object):
 		top_windows = []
 		win32gui.EnumWindows(Instance.windowEnumerationHandler, top_windows)
 		for i in top_windows:
-			if "superprograma" in i[1].lower():
+			print "Ventana:",i[1]
+			if "Capturador CAMDE" in i[1]:
 				print i
 				win32gui.ShowWindow(i[0],win32con.SW_RESTORE)#9
 				win32gui.SetForegroundWindow(i[0])

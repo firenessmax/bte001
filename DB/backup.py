@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from sqlite3 import *
 import sqlite3
 import os.path
+import os
 from tableCreate import *
 import sys
 import codecs
@@ -91,10 +93,9 @@ def verificacionBackup(path):
 
 def dump_to_file(nombre = PATH):
 	conexion = sqlite3.connect(DB)
-	
-	#with io.open(unicode(nombre), 'w', encoding='utf-8') as f:
-#		for line in conexion.iterdump():
-#			f.write('%s\n' % unicode(line))
+	with io.open(unicode(nombre), 'w', encoding='utf-8') as f:
+		for line in conexion.iterdump():
+			f.write('%s\n' % unicode(line))
 	conexion.close()
 
 
