@@ -147,7 +147,7 @@ class facturas(tabla):
 	def montoExento(self, data):
 		self._montoExento = data
 		afecto = (self._montoTotal - data)/1.19
-		self.montoAfecto=(int(round(afecto, 2)))
+		self.montoAfecto=(int(round(afecto)))
 		self.montoIVA=self._montoTotal - self._montoExento - self._montoAfecto
 		self._listaDeCambio['montoExento'] = (data, 'int')
 		 #print 'cambio: ',self._listaDeCambio
@@ -174,7 +174,7 @@ class facturas(tabla):
 	def montoTotal(self, data):
 		self._montoTotal = data
 		afecto = (data - self._montoExento)/1.19
-		self.montoAfecto=(int(round(afecto, 2)))
+		self.montoAfecto=(int(round(afecto)))
 		self.montoIVA=self._montoTotal - self._montoExento - self._montoAfecto
 		self._listaDeCambio['montoTotal'] = (data, 'int')
 		 #print 'cambio: ',self._listaDeCambio
