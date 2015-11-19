@@ -71,8 +71,6 @@ class empresas(tabla):
 				self._id = row[0]
 				self._rut = row[1]
 				self._rS = row[2]
-				
-				
 				self._ident = "id"
 				self._identValue = self._id
 				self._listaDeCambio = {}
@@ -86,9 +84,22 @@ def obtenerEmpresas():
 	conexion = sqlite3.connect(DB)
 	consulta = conexion.cursor()
 	listaEmpresas = []
-	for row in consulta.execute("SELECT * FROM empresas"):
-		listaEmpresas.append(empresas(row[1], esNuevo = False))
+	idEmpresas = []
+	rutEmpresas= []
+	for row in consulta.execute('''SELECT rut 
+									FROM empresas, facturas
+									WHERE (empresas.id = facturas.idReceptor AND facturas.venta = 0) 
+									OR (empresas.id = facturas.idEmisor AND facturas.venta = 1) GROUP BY rut'''):
+		rutEmpresas.append(row[0])
+	for rut in rutEmpresas:#list(set(idEmpresas())):
+		#if(consulta.execute("SELECT rut FROM empresas WHERE id = ?", (id,))): 	
+		#	row = consulta.fetchone()
+		listaEmpresas.append(empresas(rut, esNuevo = False))
 	consulta.close()
 	conexion.close()
 	return listaEmpresas
 	
+
+for empresa in obtenerEmpresas():
+	print empresa.rut
+	print empresa.rS
