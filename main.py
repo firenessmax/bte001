@@ -34,10 +34,11 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 #       asdasd
 # Modal para Agregar documento
 debug = False
-
-if not Instance.verificar('main'):#cambiar 
-    Instance.traeralfrente()
-    exit(0) # Existe la instancia
+import sys
+#sys.stderr = sys.stdout
+#if not Instance.verificar('main'):#cambiar 
+#    Instance.traeralfrente()
+#    exit(0) # Existe la instancia
 
 
 class LoginModal(QtGui.QDialog):
@@ -471,7 +472,17 @@ class MainWindow(QtGui.QMainWindow):
     def backup(self):
         path = QtGui.QFileDialog.getSaveFileName(self, directory=(os.path.expanduser("~/Documents/")+"dump.sql"), filter="Sql Script (*.sql)")
         if(path!=""):
-            DBController.backup(path)
+            try:
+                DBController.backup(path)
+                #raise Exception("OIADIOASIOHDS")
+            except Exception as e:
+                qm = QtGui.QMessageBox(self)
+                qm.setWindowTitle('Advertencia')
+                qm.setText(QtCore.QString(u"Error:%s"%e))
+                qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
+                qm.addButton(QtGui.QMessageBox.No).setText("Cancelar")
+                qm.setIcon(QtGui.QMessageBox.Critical)
+                reply = qm.exec_()
             self.mensaje("Base de datos respaldada en %s"%path)
     def rehacer(self):
         DBController.contabilizarFacturas(self.contabilizados, not self.cambiarContabilizados)
@@ -569,16 +580,6 @@ class MainWindow(QtGui.QMainWindow):
                 print "YEYYEYE",year
                 print "MJSAASD",month
                 try:
-                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo, centro, especial)
-                    qm = QtGui.QMessageBox(self)
-                    qm.setWindowTitle('Abrir archivo')
-                    qm.setText("Exportado existosamente. Desea abrir el archivo?")
-                    qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
-                    qm.addButton(QtGui.QMessageBox.No).setText("No")
-                    qm.setIcon(QtGui.QMessageBox.Information)
-                    reply = qm.exec_()
-                    if reply == QtGui.QMessageBox.Yes:
-                        os.startfile(unicode(archivo))
                     if(contabilizar):
                         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
                         self.contabilizados = []
@@ -590,9 +591,25 @@ class MainWindow(QtGui.QMainWindow):
                                 Id = unicode(tabla.item(row,tabla.horizontalHeader().count()-1).text())
                                 if(c == "No"):
                                     self.contabilizados.append(int(Id))
-                        if(len(self.contabilizados)!=0):
-                            #DBController.contabilizarFacturas(self.contabilizados, 1)
-                            self.ui.deshacerToolButton.setEnabled(True)
+                    DBController.exportarExcel(unicode(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()][0]), archivo, contabilizar, guardar, month, year, correlativo, centro, especial)
+                    print "WEWEWE"
+                    
+                    if(len(self.contabilizados)!=0):
+                        #DBController.contabilizarFacturas(self.contabilizados, 1)
+                        self.ui.deshacerToolButton.setEnabled(True)
+                    self.updateTablas()
+                    self.mensaje("Archivo exportado en: " + unicode(archivo))
+                    
+                    qm = QtGui.QMessageBox(self)
+                    qm.setWindowTitle('Abrir archivo')
+                    qm.setText("Exportado existosamente. Desea abrir el archivo?")
+                    qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
+                    qm.addButton(QtGui.QMessageBox.No).setText("No")
+                    qm.setIcon(QtGui.QMessageBox.Information)
+                    reply = qm.exec_()
+                    if reply == QtGui.QMessageBox.Yes:
+                        os.startfile(unicode(archivo))
+                    
                 except:
                     traceback.print_exc()
                     qm = QtGui.QMessageBox(self)
@@ -600,13 +617,11 @@ class MainWindow(QtGui.QMainWindow):
                     qm.setText("Se produjo un error al exportar el archivo, verifique que no tiene el archivo de salida abierto")
                     qm.addButton(QtGui.QMessageBox.Yes).setText("Aceptar")
                     qm.setIcon(QtGui.QMessageBox.Warning)
-
                     reply = qm.exec_()
-            else:
-                DBController.exportarTCV(unicode(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
-            
-            self.updateTablas()
-            self.mensaje("Archivo exportado en: " + unicode(archivo))
+                    DBController.contabilizarFacturas(self.contabilizados, False)
+
+
+
             
                 
 

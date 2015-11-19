@@ -5,7 +5,8 @@ import sqlite3
 import os.path
 from tableCreate import *
 import sys
-
+import codecs
+import io
 dir_path = '%s\\CAMDE\\' %  os.environ['APPDATA'] 
 if not os.path.exists(dir_path):
     os.makedirs(dir_path)
@@ -13,7 +14,7 @@ if not os.path.exists(dir_path):
 PATH = '%sdump.sql' % dir_path.decode('latin_1')
 
 def verificacionBackup(path):
-	archivo = open(path,'r')
+	archivo = io.open(unicode(path),'r', encoding='utf-8')
 	lineas = archivo.readlines()
 	texto = ""
 	for linea in lineas:
@@ -90,9 +91,10 @@ def verificacionBackup(path):
 
 def dump_to_file(nombre = PATH):
 	conexion = sqlite3.connect(DB)
-	with open(nombre, 'w') as f:
-		for line in conexion.iterdump():
-			f.write('%s\n' % line)
+	
+	#with io.open(unicode(nombre), 'w', encoding='utf-8') as f:
+#		for line in conexion.iterdump():
+#			f.write('%s\n' % unicode(line))
 	conexion.close()
 
 

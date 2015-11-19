@@ -49,54 +49,61 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	for num, obj in enumerate(fCompras):
 		obj.correlativo = correlativo
 		correlativo += 1
-		fila = paginaCompra.row(num+1)
+		fila = paginaCompra.row(num)
 		if guardarContabilizados:
 			datos = formatoFacturaXlsCompras(obj, codigoEspecial, centroResultado)
 			if aceptaBoleta:#datos[1] != "NA":
+				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 			elif aceptaBoleta == False and datos[1] != "NA":
+				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 		elif not guardarContabilizados and obj.contabilizado == 0:
 			datos = formatoFacturaXlsCompras(obj, codigoEspecial, centroResultado)
 			if aceptaBoleta:#datos[1] != "NA":
+				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 			elif aceptaBoleta == False and datos[1] != "NA":
+				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
-					fila.write(index, dato)
+					fila.write(index, dato)	
 		if contabilizar:
 			obj.contabilizado=1
 		
 		obj.save()
 	hoja = paginaCompra.col(9)
-	hoja.width = 0
+	hoja.width = 100
 	hoja = paginaCompra.col(16)
-	hoja.width = 0
+	hoja.width = 100
 			
 	paginaVenta = libro.add_sheet("Ventas")
 	for i, e in enumerate(TITLESV):
 		paginaVenta.row(0).write(i, e)
+	fila = paginaVenta.row(1)
 	for num, obj in enumerate(fVentas):
-		fila = paginaVenta.row(num+1)
+		fila = paginaVenta.row(num)
 		datos = formatoFacturaXlsVentas(obj, codigoEspecial, centroResultado)
 		if True:#datos[1] != "NA":
 			if guardarContabilizados:
+				fila = paginaVenta.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 			elif not guardarContabilizados and obj.contabilizado == 0:
+				fila = paginaVenta.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
 	hoja = paginaVenta.col(4)
-	hoja.width = 0
+	hoja.width = 100
 	hoja = paginaVenta.col(8)
-	hoja.width = 0
+	hoja.width = 100
 	hoja = paginaVenta.col(16)
-	hoja.width = 0
+	hoja.width = 100
 	try:
 		libro.save(unicode(path))
 	except:
@@ -287,5 +294,7 @@ def switch(tipoDocumento, montoExento):
 #	print formatoFacturaXls(e)
 
 #ventas = obtenerVentas()
+#print ventas
 #compras = obtenerCompras()
+#print compras
 #exportarxls(ventas, compras, path = "prueba.xls", contabilizar = False, guardarContabilizados = False)

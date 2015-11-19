@@ -9,6 +9,6 @@ setup(
             "includes":["sip"],
         }
     },
-    windows = [{'script' : 'main.py',
-    'uac_info': "requireAdministrator"}]
+    windows = [{'script' : 'main.py'}]
+    #'uac_info': "requireAdministrator"}]
 )
