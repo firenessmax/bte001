@@ -603,6 +603,7 @@ class MainWindow(QtGui.QMainWindow):
                     reply = qm.exec_()
                     if reply == QtGui.QMessageBox.Yes:
                         os.startfile(unicode(archivo))
+                    
                 except:
                     traceback.print_exc()
                     qm = QtGui.QMessageBox(self)
@@ -612,9 +613,9 @@ class MainWindow(QtGui.QMainWindow):
                     qm.setIcon(QtGui.QMessageBox.Warning)
                     reply = qm.exec_()
                     DBController.contabilizarFacturas(self.contabilizados, False)
-            else:
-                DBController.exportarTCV(unicode(self.ui.filtrarEmpresaComboBox.currentText()), archivo, contabilizar, guardar)
-            
+
+
+
             
                 
 
