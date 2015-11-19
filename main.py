@@ -554,6 +554,18 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.correlativoDoubleSpinBox.setValue(1)
     def exportar(self):
         # Opciones
+        if(self.ui.filtrarEmpresaComboBox.currentIndex() == 0):
+            qm = QtGui.QMessageBox(self)
+            qm.setWindowTitle('Advertencia')
+            qm.setText(u'¿Esta seguro de que desea exportar todas las facturas?')
+            qm.addButton(QtGui.QMessageBox.Yes).setText("Si")
+            qm.addButton(QtGui.QMessageBox.No).setText("No")
+            qm.setIcon(QtGui.QMessageBox.Warning)
+            reply = qm.exec_()
+            if reply == QtGui.QMessageBox.No:
+                return
+        
+        
         contabilizar = self.ui.contabilizarCheckBox.isChecked()
         guardar = self.ui.guardarCheckBox.isChecked()
         centro = self.ui.centroLineEdit.text() 
