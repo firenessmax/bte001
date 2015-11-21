@@ -74,10 +74,10 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 			obj.contabilizado=1
 		
 		obj.save()
-	hoja = paginaCompra.col(9)
-	hoja.width = 100
-	hoja = paginaCompra.col(16)
-	hoja.width = 100
+	#hoja = paginaCompra.col(9)
+	#hoja.width = 100
+	#hoja = paginaCompra.col(16)
+	#hoja.width = 100
 			
 	paginaVenta = libro.add_sheet("Ventas")
 	for i, e in enumerate(TITLESV):
@@ -98,12 +98,12 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
-	hoja = paginaVenta.col(4)
-	hoja.width = 100
-	hoja = paginaVenta.col(8)
-	hoja.width = 100
-	hoja = paginaVenta.col(16)
-	hoja.width = 100
+	#hoja = paginaVenta.col(4)
+	#hoja.width = 100
+	#hoja = paginaVenta.col(8)
+	#hoja.width = 100
+	#hoja = paginaVenta.col(16)
+	#hoja.width = 100
 	try:
 		libro.save(unicode(path))
 	except:
