@@ -173,6 +173,7 @@ def formatoFacturaXlsCompras(factura, codigoEspecial, centroResultado):
 	else:
 		datos.append("S")
 		
+	from datetime import *
 	today = datetime.today()
 	formato = "%d/%m/%Y" 
 	fecha = datetime.strptime(factura.fecha, formato)
