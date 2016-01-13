@@ -197,4 +197,6 @@ def restaurar(path):
     Backup.restore_db(nombre = path)
     
 def empresaPorRut(rut):
-    return Empresas.empresas(rut=empresa, esNuevo = False)
+    return Empresas.empresas(rut=rut, esNuevo = False)
+def obtenerCodigos(empresa):
+    return Empresas.codigosDocumento(empresa)

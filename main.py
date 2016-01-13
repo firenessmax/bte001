@@ -52,33 +52,37 @@ class ConfigModal(QtGui.QDialog):
         self.resultado = False
         self.empresa = empresa
         #self.ui.labelTitulo.setText("Editar Empresa " + empresa[0] + " " +empresa[1])
-        
+        self.cargarDatos()
         self.exec_()
     def cargarDatos(self):
-        self.empresaObj = DBController.empresaPorRut(self.empresa[0])
         
+        self.empresaObj = DBController.empresaPorRut(self.empresa[0])
+        self.codigos = DBController.obtenerCodigos(self.empresaObj)
+        if(not self.codigos._esNuevo):
+            self.ui.labelInfo.setVisible(False)
         #TODO: Cargar datos con la cosa de la bd
         # self.empresa = arreglo con empresa[0] = rut, empresa[1] = nombre, 
-        self.ui.facturaElectronicaLineEdit.setText("FE")
-        self.ui.facturaParcialElectronicaLineEdit.setText("FP")
-        self.ui.facturaExcentaElectronicaLineEdit.setText("FT")
-        self.ui.facturaDeCompraElectronicaLineEdit.setText("FE")
-        self.ui.facturaDeCompraParcialElectronicaLineEdit.setText("FP")  
-        self.ui.notaDebitoElectronicaLineEdit.setText("ND")  
-        self.ui.notaDebitoParcialElectronicaLineEdit.setText("ND")
-        self.ui.notaCreditoElectronicaLineEdit.setText("NE")
-        self.ui.notaCreditoParcialElectronicaLineEdit.setText("NE")
+        self.ui.facturaElectronicaLineEdit.setText(self.codigos.c33)
+        self.ui.facturaParcialElectronicaLineEdit.setText(self.codigos.c33p)
+        self.ui.facturaExcentaElectronicaLineEdit.setText(self.codigos.c34)
+        self.ui.facturaDeCompraElectronicaLineEdit.setText(self.codigos.c46)
+        self.ui.facturaDeCompraParcialElectronicaLineEdit.setText(self.codigos.c46p)  
+        self.ui.notaDebitoElectronicaLineEdit.setText(self.codigos.c56)  
+        self.ui.notaDebitoParcialElectronicaLineEdit.setText(self.codigos.c56p)
+        self.ui.notaCreditoElectronicaLineEdit.setText(self.codigos.c61)
+        self.ui.notaCreditoParcialElectronicaLineEdit.setText(self.codigos.c61p)
     def aceptar(self):
         #TODO: guardar los datos con la cosa de bd
-        self.ui.facturaElectronicaLineEdit.setText("FE")
-        self.ui.facturaParcialElectronicaLineEdit.setText("FP")
-        self.ui.facturaExcentaElectronicaLineEdit.setText("FT")
-        self.ui.facturaDeCompraElectronicaLineEdit.setText("FE")
-        self.ui.facturaDeCompraParcialElectronicaLineEdit.setText("FP")  
-        self.ui.notaDebitoElectronicaLineEdit.setText("ND")  
-        self.ui.notaDebitoParcialElectronicaLineEdit.setText("ND")
-        self.ui.notaCreditoElectronicaLineEdit.setText("NE")
-        self.ui.notaCreditoParcialElectronicaLineEdit.setText("NE")
+        self.codigos.c33 = unicode(self.ui.facturaElectronicaLineEdit.text())
+        self.codigos.c33p = unicode(self.ui.facturaParcialElectronicaLineEdit.text())
+        self.codigos.c34 = unicode(self.ui.facturaExcentaElectronicaLineEdit.text())
+        self.codigos.c46 = unicode(self.ui.facturaDeCompraElectronicaLineEdit.text())
+        self.codigos.c46p = unicode(self.ui.facturaDeCompraParcialElectronicaLineEdit.text())
+        self.codigos.c56 = unicode(self.ui.notaDebitoElectronicaLineEdit.text())
+        self.codigos.c56p = unicode(self.ui.notaDebitoParcialElectronicaLineEdit.text())
+        self.codigos.c61 = unicode(self.ui.notaCreditoElectronicaLineEdit.text())
+        self.codigos.c61p = unicode(self.ui.notaCreditoParcialElectronicaLineEdit.text())
+        self.codigos.save()
         self.close()
     def cancelar(self):
         self.close()
@@ -383,6 +387,7 @@ class EscanearModal(QtGui.QDialog):
             datos["Rut Emisor"] = unicode(xmlp.RE)
             datos["Rut Receptor"] = unicode(xmlp.RR)
             datos["RS Emisor"] = unicode(xmlp.RS)
+            
             datos["RS Receptor"] = unicode(xmlp.RSR)
             datos["Activo Fijo"] = 0
             try:
@@ -417,8 +422,14 @@ class EscanearModal(QtGui.QDialog):
                 # Eliminar de la base de datos
              #   print "Editar Dilog!!!"
         else:
+            
             agregar = AgregarDocumentoModal(self.tipo, datos)
             if(agregar.resultado):
+                self.empresaObj = DBController.empresaPorRut(datos[("Rut Receptor","Rut Emisor")[self.tipo]])
+                self.codigos = DBController.obtenerCodigos(self.empresaObj)
+                if(self.codigos._esNuevo):
+                    my_dialog = ConfigModal([datos[("Rut Receptor","Rut Emisor")[self.tipo]], ""])
+                    #la wea y la wehiaguñouoihe´rghioerabrir la wea
                 self.window.updateTablas()
             else:
                 pass

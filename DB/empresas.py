@@ -231,7 +231,7 @@ class codigosDocumento(tabla):
 		conexion = sqlite3.connect(DB)
 		consulta = conexion.cursor()
 		exist = '''
-		SELECT COUNT(*) FROM codigos
+		SELECT COUNT(*) FROM codigosDocumento
 		WHERE empresaId=(?)
 		'''
 		tuplaEmpresa = (empresa.id,)
@@ -261,7 +261,7 @@ class codigosDocumento(tabla):
 				self._esNuevo = False
 				conexion = sqlite3.connect(DB)
 				consulta = conexion.cursor()
-				if(consulta.execute("SELECT * FROM codigos WHERE empresaId = ?", (empresa.id,))): 	
+				if(consulta.execute("SELECT * FROM codigosDocumento WHERE empresaId = ?", (empresa.id,))): 	
 					row = consulta.fetchone()
 					self._id = row[0]
 					#self._empresa.id = row[1]

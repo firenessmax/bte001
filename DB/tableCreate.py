@@ -72,8 +72,8 @@ def iniciarDB():
 								so TEXT, 
 								idUsuario INTEGER DEFAULT 0
 								) ''')
-	cursor.execute(''' CREATE TABLE IF NOT EXISTS codigos(id INTEGER PRIMARY KEY, 
-								FOREIGN KEY(empresaId) REFERENCES empresas(id),
+	cursor.execute(''' CREATE TABLE IF NOT EXISTS codigosDocumento(id INTEGER PRIMARY KEY, 
+								empresaId INTEGER,
 								c33 TEXT, 
 								c33p TEXT,
 								c34 TEXT, 
@@ -88,7 +88,9 @@ def iniciarDB():
 								c43 TEXT, 
 								c101 TEXT,
 								c111 TEXT,
-								c112 TEXT) ''')
+								c112 TEXT,
+								FOREIGN KEY(empresaId) REFERENCES empresas(id)
+								)''')
 	
 	conexion.close()
 	
