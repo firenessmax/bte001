@@ -196,4 +196,5 @@ def verificar(path):
 def restaurar(path):
     Backup.restore_db(nombre = path)
     
-    
+def empresaPorRut(rut):
+    return Empresas.empresas(rut=empresa, esNuevo = False)

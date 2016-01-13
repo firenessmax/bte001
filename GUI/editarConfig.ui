@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>402</width>
-    <height>296</height>
+    <width>407</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -140,7 +140,7 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
         </font>
        </property>
        <property name="text">
-        <string>Editar Empresa</string>
+        <string>Editar codigos de documentos</string>
        </property>
       </widget>
      </item>
@@ -150,7 +150,11 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
        <item row="1" column="0">
-        <widget class="QLineEdit" name="facturaElectronicaLineEdit"/>
+        <widget class="QLineEdit" name="facturaElectronicaLineEdit">
+         <property name="maxLength">
+          <number>32767</number>
+         </property>
+        </widget>
        </item>
        <item row="1" column="1">
         <widget class="QLabel" name="facturaElectronicaLabel">
@@ -159,23 +163,23 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLineEdit" name="facturaNoAfectaLineEdit"/>
-       </item>
        <item row="2" column="1">
-        <widget class="QLabel" name="facturaNoAfectaLabel">
+        <widget class="QLabel" name="facturaParcialElectronicaLabel">
          <property name="text">
-          <string>Factura no Afecta</string>
+          <string>Factura parcial electronica</string>
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QLineEdit" name="facturaParcialElectronicaLineEdit"/>
+       </item>
        <item row="3" column="0">
-        <widget class="QLineEdit" name="liquidacionFacturaElectronicaLineEdit"/>
+        <widget class="QLineEdit" name="facturaExcentaElectronicaLineEdit"/>
        </item>
        <item row="3" column="1">
-        <widget class="QLabel" name="liquidacionFacturaElectronicaLabel">
+        <widget class="QLabel" name="facturaExcentaElectronicaLabel">
          <property name="text">
-          <string>Liquidacion Factura Electronica</string>
+          <string>Factura excenta electronica</string>
          </property>
         </widget>
        </item>
@@ -185,29 +189,59 @@ QLineEdit,QDateEdit,QDoubleSpinBox{
        <item row="4" column="1">
         <widget class="QLabel" name="facturaDeCompraElectronicaLabel">
          <property name="text">
-          <string>Factura de Compra electronica</string>
+          <string>Factura de compra electronica</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0">
-        <widget class="QLineEdit" name="notaDeDebitoElectronicaLineEdit"/>
+        <widget class="QLineEdit" name="facturaDeCompraParcialElectronicaLineEdit"/>
        </item>
        <item row="5" column="1">
-        <widget class="QLabel" name="notaDeDebitoElectronicaLabel">
+        <widget class="QLabel" name="facturaDeCompraParcialElectronicaLabel">
          <property name="text">
-          <string>Nota de debito electronica</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLabel" name="notaDeCreditoElectronicaLabel">
-         <property name="text">
-          <string>Nota de credito Electronica</string>
+          <string>Factura de compra parcial electronica</string>
          </property>
         </widget>
        </item>
        <item row="6" column="0">
-        <widget class="QLineEdit" name="notaDeCreditoElectronicaLineEdit"/>
+        <widget class="QLineEdit" name="notaDebitoElectronicaLineEdit"/>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="notaDebitoElectronicaLabel">
+         <property name="text">
+          <string>Nota debito electronica</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLineEdit" name="notaDebitoParcialElectronicaLineEdit"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLabel" name="notaDebitoParcialElectronicaLabel">
+         <property name="text">
+          <string>Nota debito parcial electronica</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLineEdit" name="notaCreditoElectronicaLineEdit"/>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLabel" name="notaCreditoElectronicaLabel">
+         <property name="text">
+          <string>Nota credito electronica</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLineEdit" name="notaCreditoParcialElectronicaLineEdit"/>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="notaCreditoParcialElectronicaLabel">
+         <property name="text">
+          <string>Nota credito parcial electronica</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

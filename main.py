@@ -40,7 +40,7 @@ import sys
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
     exit(0) # Existe la instancia
-s
+
 class ConfigModal(QtGui.QDialog):
     
     def __init__(self, empresa):
@@ -51,15 +51,34 @@ class ConfigModal(QtGui.QDialog):
         self.ui.setupUi(self)
         self.resultado = False
         self.empresa = empresa
-        self.ui.labelTitulo.setText("Editar Empresa " + empresa[0] + " " +empresa[1])
+        #self.ui.labelTitulo.setText("Editar Empresa " + empresa[0] + " " +empresa[1])
+        
         self.exec_()
+    def cargarDatos(self):
+        self.empresaObj = DBController.empresaPorRut(self.empresa[0])
+        
+        #TODO: Cargar datos con la cosa de la bd
+        # self.empresa = arreglo con empresa[0] = rut, empresa[1] = nombre, 
+        self.ui.facturaElectronicaLineEdit.setText("FE")
+        self.ui.facturaParcialElectronicaLineEdit.setText("FP")
+        self.ui.facturaExcentaElectronicaLineEdit.setText("FT")
+        self.ui.facturaDeCompraElectronicaLineEdit.setText("FE")
+        self.ui.facturaDeCompraParcialElectronicaLineEdit.setText("FP")  
+        self.ui.notaDebitoElectronicaLineEdit.setText("ND")  
+        self.ui.notaDebitoParcialElectronicaLineEdit.setText("ND")
+        self.ui.notaCreditoElectronicaLineEdit.setText("NE")
+        self.ui.notaCreditoParcialElectronicaLineEdit.setText("NE")
     def aceptar(self):
-        self.facturaElectronica = self.ui.facturaElectronicaLineEdit.text()
-        self.facturaNoAfecta = self.ui.facturaNoAfectaLineEdit.text()
-        self.liquidacionFacturaElectronica = self.ui.liquidacionFacturaElectronicaLineEdit.text()
-        self.facturaDeCompraElectronica = self.ui.facturaDeCompraElectronicaLineEdit.text()
-        self.notaDeDebitoElectronica = self.ui.notaDeDebitoElectronicaLineEdit.text()  
-        self.notaDeCreditoElectronica = self.ui.notaDeCreditoElectronicaLineEdit.text()  
+        #TODO: guardar los datos con la cosa de bd
+        self.ui.facturaElectronicaLineEdit.setText("FE")
+        self.ui.facturaParcialElectronicaLineEdit.setText("FP")
+        self.ui.facturaExcentaElectronicaLineEdit.setText("FT")
+        self.ui.facturaDeCompraElectronicaLineEdit.setText("FE")
+        self.ui.facturaDeCompraParcialElectronicaLineEdit.setText("FP")  
+        self.ui.notaDebitoElectronicaLineEdit.setText("ND")  
+        self.ui.notaDebitoParcialElectronicaLineEdit.setText("ND")
+        self.ui.notaCreditoElectronicaLineEdit.setText("NE")
+        self.ui.notaCreditoParcialElectronicaLineEdit.setText("NE")
         self.close()
     def cancelar(self):
         self.close()
