@@ -103,10 +103,12 @@ class codigosDocumento(tabla):
 	_empresa = None
 	_33  = "FE" #factura electronica
 	_33p = "FP" #factura parcial electronica
-	_34  = "FT" #factura excenta electronica
+	_34  = "FT"
+	 #factura excenta electronica
 	_46  = "FE" #factura de compra electronica
 	_46p = "FP" #factura de compra parcial electronica
 	_56  = "ND" #nota debito electronica
+
 	_56p = "ND" #nota debito parcial electronica
 	_61  = "NE" #nota credito electronica
 	_61p = "NE" #nota credito parcial electronica
@@ -119,63 +121,63 @@ class codigosDocumento(tabla):
 	_112 = "" #Nota de Credito Exportacion Electronica
 
 	@property
-	def _33 (self):
+	def c33 (self):
 		return self._33 
 	@c33.setter
 	def c33 (self,data):
 		self._33  =data
 		self._listaDeCambio["c33"] = (data,"text")   
 	@property
-	def _33p(self):
+	def c33p(self):
 		return self._33p
 	@c33p.setter
 	def c33p(self,data):
 		self._33p =data
 		self._listaDeCambio["c33p"] = (data,"text")   
 	@property
-	def _34 (self):
+	def c34 (self):
 		return self._34 
 	@c34.setter
 	def c34 (self,data):
 		self._34  =data
 		self._listaDeCambio["c34"] = (data,"text")   
 	@property
-	def _46 (self):
+	def c46 (self):
 		return self._46 
 	@c46.setter
 	def c46 (self,data):
 		self._46  =data
 		self._listaDeCambio["c46"] = (data,"text")   
 	@property
-	def _46p(self):
+	def c46p(self):
 		return self._46p
 	@c46p.setter
 	def c46p(self,data):
 		self._46p =data
 		self._listaDeCambio["c46p"] = (data,"text")   
 	@property
-	def _56 (self):
+	def c56 (self):
 		return self._56 
 	@c56.setter
 	def c56 (self,data):
 		self._56  =data
 		self._listaDeCambio["c56"] = (data,"text")   
 	@property
-	def _56p(self):
+	def c56p(self):
 		return self._56p
 	@c56p.setter
 	def c56p(self,data):
 		self._56p =data
 		self._listaDeCambio["c56p"] = (data,"text")   
 	@property
-	def _61 (self):
+	def c61 (self):
 		return self._61 
 	@c61.setter
 	def c61 (self,data):
 		self._61  =data
 		self._listaDeCambio["c61"] = (data,"text")   
 	@property
-	def _61p(self):
+	def c61p(self):
 		return self._61p
 	@c61p.setter
 	def c61p(self,data):
@@ -183,42 +185,42 @@ class codigosDocumento(tabla):
 		self._listaDeCambio["c61p"] = (data,"text")   
 #para mas despues
 	@property
-	def _39 (self):
+	def c39 (self):
 		return self._39 
 	@c39.setter
 	def c39 (self,data):
 		self._39  =data
 		self._listaDeCambio["c39"] = (data,"text")   
 	@property
-	def _41 (self):
+	def c41 (self):
 		return self._41 
 	@c41.setter
 	def c41 (self,data):
 		self._41  =data
 		self._listaDeCambio["c41"] = (data,"text")   
 	@property
-	def _43 (self):
+	def c43 (self):
 		return self._43 
 	@c43.setter
 	def c43 (self,data):
 		self._43  =data
 		self._listaDeCambio["c43"] = (data,"text")   
 	@property
-	def _101(self):
+	def c101(self):
 		return self._101
 	@c101.setter
 	def c101(self,data):
 		self._101 =data
 		self._listaDeCambio["c101"] = (data,"text")   
 	@property
-	def _111(self):
+	def c111(self):
 		return self._111
 	@c111.setter
 	def c111(self,data):
 		self._111 =data
 		self._listaDeCambio["c111"] = (data,"text")   
 	@property
-	def _112(self):
+	def c112(self):
 		return self._112
 	@c112.setter
 	def c112(self,data):
