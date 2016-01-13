@@ -46,9 +46,10 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	except:
 		raise Exception ("No se puede guardar")
 	paginaCompra = libro.add_sheet("Compras")
+	num = 0
 	for i, e in enumerate(TITLESC):
 		paginaCompra.row(0).write(i, e)
-	for num, obj in enumerate(fCompras):
+	for obj in fCompras:
 		obj.correlativo = correlativo
 		correlativo += 1
 		fila = paginaCompra.row(num)
@@ -58,20 +59,24 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
+					num += 1
 			elif aceptaBoleta == False and datos[1] != "NA":
 				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
+					num += 1
 		elif not guardarContabilizados and obj.contabilizado == 0:
 			datos = formatoFacturaXlsCompras(obj, codigoEspecial, centroResultado)
 			if aceptaBoleta:#datos[1] != "NA":
 				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
+					num += 1
 			elif aceptaBoleta == False and datos[1] != "NA":
 				fila = paginaCompra.row(num+1)
 				for index, dato in enumerate(datos):
-					fila.write(index, dato)	
+					fila.write(index, dato)
+					num += 1
 		if contabilizar:
 			obj.contabilizado=1
 		
@@ -84,8 +89,9 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 	paginaVenta = libro.add_sheet("Ventas")
 	for i, e in enumerate(TITLESV):
 		paginaVenta.row(0).write(i, e)
+	num = 0
 	fila = paginaVenta.row(1)
-	for num, obj in enumerate(fVentas):
+	for obj in (fVentas):
 		fila = paginaVenta.row(num)
 		datos = formatoFacturaXlsVentas(obj, codigoEspecial, centroResultado)
 		if True:#datos[1] != "NA":
@@ -93,10 +99,12 @@ def exportarxls(fVentas, fCompras, path = u"", contabilizar = False, guardarCont
 				fila = paginaVenta.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
+					num += 1
 			elif not guardarContabilizados and obj.contabilizado == 0:
 				fila = paginaVenta.row(num+1)
 				for index, dato in enumerate(datos):
 					fila.write(index, dato)
+					num += 1
 		if contabilizar:
 			obj.contabilizado=1
 			obj.save()
