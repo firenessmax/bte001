@@ -4,6 +4,8 @@
 import xlwt
 from facturas import *
 from datetime import *
+from empresas import *
+
 TITLESC = ["Sucursal", "Tipo de Documento", u"Nº de Documento", "Documento Nulo", "Correlativo", 
 			"Fecha", "Rut Nacional", "Rut", "Nombre Proveedor", "", "Monto Exento", "Monto Neto", 
 			"Monto Iva", "Monto Total",	"Glosa General de Detalle", "",	"Cuenta de Proveedores", 
@@ -119,7 +121,7 @@ def formatoFacturaXlsCompras(factura, codigoEspecial, centroResultado):
 	#print "llamada a formatear xls de compras"
 	datos = []
 	datos.append(factura.sucursal)
-	datos.append(switch(factura.TipoDocumento, factura.montoExento))
+	datos.append(switch(factura.TipoDocumento, factura.montoExento,factura.empresaReceptor))
 	datos.append(factura.numDocumento)
 	if factura.nulo == 0: 
 		datos.append("N")
@@ -207,7 +209,7 @@ def formatoFacturaXlsVentas(factura, codigoEspecial, centroResultado):
 	#print "llamada a formatear xls de ventas"
 	datos = []
 	datos.append(factura.sucursal)
-	datos.append(switch(factura.TipoDocumento, factura.montoExento))
+	datos.append(switch(factura.TipoDocumento, factura.montoExento,factura.empresaEmisor))
 	datos.append(factura.numDocumento)
 	if factura.nulo == 0: 
 		datos.append("N")
@@ -276,16 +278,17 @@ def formatoFacturaXlsVentas(factura, codigoEspecial, centroResultado):
 #	Funcion para cambiar el tipo de documento
 #	desde un int a un str
 #	
-def switch(tipoDocumento, montoExento):
+def switch(tipoDocumento, montoExento,empresa=None):
+	codigos = codigosDocumento(empresa)
 	if tipoDocumento == 33:
-		if montoExento > 0:return "FP"
-		return "FE"
-	elif tipoDocumento == 34:return "FT"
+		if montoExento > 0:return codigos.c33p
+		return codigos.c33
+	elif tipoDocumento == 34:return codigos.c34
 	elif tipoDocumento == 46:
-		if montoExento > 0:return "FP"
-		return "FE"
-	elif tipoDocumento == 56:return "ND"
-	elif tipoDocumento == 61:return "NE"
+		if montoExento > 0:return codigos.c46p
+		return codigos.c46
+	elif tipoDocumento == 56:return codigos.c56
+	elif tipoDocumento == 61:return codigos.c61
 	else:return "NA"
 
 
