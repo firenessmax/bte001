@@ -40,7 +40,7 @@ import sys
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
     exit(0) # Existe la instancia
-
+s
 class ConfigModal(QtGui.QDialog):
     
     def __init__(self, empresa):
@@ -54,6 +54,12 @@ class ConfigModal(QtGui.QDialog):
         self.ui.labelTitulo.setText("Editar Empresa " + empresa[0] + " " +empresa[1])
         self.exec_()
     def aceptar(self):
+        self.facturaElectronica = self.ui.facturaElectronicaLineEdit.text()
+        self.facturaNoAfecta = self.ui.facturaNoAfectaLineEdit.text()
+        self.liquidacionFacturaElectronica = self.ui.liquidacionFacturaElectronicaLineEdit.text()
+        self.facturaDeCompraElectronica = self.ui.facturaDeCompraElectronicaLineEdit.text()
+        self.notaDeDebitoElectronica = self.ui.notaDeDebitoElectronicaLineEdit.text()  
+        self.notaDeCreditoElectronica = self.ui.notaDeCreditoElectronicaLineEdit.text()  
         self.close()
     def cancelar(self):
         self.close()
