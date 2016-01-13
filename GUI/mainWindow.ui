@@ -1034,6 +1034,26 @@ QTabBar::tab:selected {
              </spacer>
             </item>
             <item>
+             <widget class="QToolButton" name="editarEmpresaToolButton">
+              <property name="text">
+               <string>Editar empresa</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
              <widget class="QToolButton" name="deshacerToolButton">
               <property name="toolTip">
                <string>Deshace los cambios hechos al exportar Excel</string>
@@ -1703,8 +1723,8 @@ QTabWidget::tab-bar {
    <slot>deshacer_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>712</x>
-     <y>182</y>
+     <x>664</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
      <x>524</x>
@@ -1719,7 +1739,7 @@ QTabWidget::tab-bar {
    <slot>rehacer_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>636</x>
+     <x>743</x>
      <y>187</y>
     </hint>
     <hint type="destinationlabel">
@@ -1792,6 +1812,22 @@ QTabWidget::tab-bar {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>editarEmpresaToolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>config_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>473</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>361</x>
+     <y>-8</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>escanear_slot()</slot>
@@ -1807,5 +1843,6 @@ QTabWidget::tab-bar {
   <slot>respaldar_slot()</slot>
   <slot>filtrarFecha_slot()</slot>
   <slot>correlativo_changed_slot()</slot>
+  <slot>config_slot()</slot>
  </slots>
 </ui>

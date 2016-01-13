@@ -11,6 +11,7 @@ from GUI.escanearDialog import *
 from GUI.nuevoDocumentoDialog import Ui_Dialog as Ui_Dialog_nuevoDocumento
 from GUI.editarDocumentoDialog import Ui_Dialog as Ui_Dialog_editarDocumento
 from GUI.login import Ui_Dialog as Ui_Dialog_login
+from GUI.editarConfig import Ui_Dialog as Ui_Dialog_config
 import math
 from lecturacodigo.devices import lectorDevice
 from lecturacodigo.reader import *
@@ -35,12 +36,27 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 # Modal para Agregar documento
 debug = False
 import sys
-sys.stderr = open('%s\\CAMDE\\log.txt' %  os.environ['APPDATA'], 'w')#sys.stdout
+#sys.stderr = open('%s\\CAMDE\\log.txt' %  os.environ['APPDATA'], 'w')#sys.stdout
 if not Instance.verificar('main'):#cambiar 
     Instance.traeralfrente()
     exit(0) # Existe la instancia
 
-
+class ConfigModal(QtGui.QDialog):
+    
+    def __init__(self, empresa):
+        super(ConfigModal, self).__init__()
+        self.ui=Ui_Dialog_config()
+        self.reject_slot = self.cancelar
+        self.accept_slot = self.aceptar
+        self.ui.setupUi(self)
+        self.resultado = False
+        self.empresa = empresa
+        self.ui.labelTitulo.setText("Editar Empresa " + empresa[0] + " " +empresa[1])
+        self.exec_()
+    def aceptar(self):
+        self.close()
+    def cancelar(self):
+        self.close()
 class LoginModal(QtGui.QDialog):
     
     def __init__(self):
@@ -397,6 +413,7 @@ class MainWindow(QtGui.QMainWindow):
         self.cambiarTab_slot = self.cambiarTab
         self.correlativo_changed_slot = self.correlativoChanged
         self.buscar_slot = self.buscarDevices
+        self.config_slot = self.configDialog
         self.filtrar_slot = self.filtrar
         self.deshacer_slot = self.deshacer
         self.rehacer_slot = self.rehacer
@@ -448,6 +465,8 @@ class MainWindow(QtGui.QMainWindow):
         LecturaController.iniciarDevice(self)
         
         self.show()
+    def configDialog(self):
+        my_dialog = ConfigModal(self.empresas[self.ui.filtrarEmpresaComboBox.currentIndex()])
     def restaurarDB(self):
         path = QtGui.QFileDialog.getOpenFileName(self, directory=(os.path.expanduser("~/Documents/")+"dump.sql"), filter="Sql Script (*.sql)")
         if(path!=""):
@@ -712,6 +731,7 @@ class MainWindow(QtGui.QMainWindow):
         self.updateFechas()
         self.filtrar(self.ui.filtrarEmpresaComboBox.currentIndex())
         self.updateEmpresas()
+        
     def updateFechas(self):
         self.ui.fechaComboBox.clear()
         self.fechas = DBController.obtenerFechas()
@@ -720,6 +740,10 @@ class MainWindow(QtGui.QMainWindow):
     def filtrarFecha(self, fechaData):
         self.filtrar(self.ui.filtrarEmpresaComboBox.currentIndex())
     def filtrar(self, data):
+        if(self.ui.filtrarEmpresaComboBox.currentIndex() == 0):
+            self.ui.editarEmpresaToolButton.setEnabled(False)
+        else:
+            self.ui.editarEmpresaToolButton.setEnabled(True)
         tablas = [self.ui.tableWidget_Compras, self.ui.tableWidget_Ventas]
         f = self.fechas[self.ui.fechaComboBox.currentIndex()]
         if data != "":
