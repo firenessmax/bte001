@@ -94,4 +94,4 @@ def iniciarDB():
 	
 
 
-iniciarDB()
+#iniciarDB()
